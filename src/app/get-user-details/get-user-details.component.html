@@ -1,0 +1,59 @@
+<ion-tabs (ionTabsDidChange)="onTabChange($event)">
+  <ion-tab tab="home">
+    <ion-header>
+      <app-header-component [HeaderTitle]="'Billing'"></app-header-component>
+    </ion-header>
+    <ion-content>
+      <app-billing></app-billing>
+    </ion-content>
+  </ion-tab>
+  <ion-tab tab="radio">
+    <div id="radio-page" class="ion-page">
+      <ion-header>
+        <app-header-component [HeaderTitle]="'Quote price'"></app-header-component>
+      </ion-header>
+      <ion-content>
+        <app-quote-price></app-quote-price>
+      </ion-content>
+    </div>
+  </ion-tab>
+  <ion-tab tab="library">
+    <div id="library-page" class="ion-page">
+      <ion-header>
+        <ion-toolbar>
+          <app-header-component [HeaderTitle]="'Product List'"></app-header-component>
+        </ion-toolbar>
+      </ion-header>
+      <app-list-product></app-list-product>
+    </div>
+  </ion-tab>
+  <ion-tab tab="search">
+    <div id="search-page" class="ion-page">
+      <ion-header>
+        <app-header-component [HeaderTitle]="'Search'"></app-header-component>
+      </ion-header>
+      <ion-content [scrollY]="false">
+        <app-create-user></app-create-user>
+      </ion-content>
+    </div>
+  </ion-tab>
+
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home">
+      <ion-icon name="cash-outline"></ion-icon>
+      Billing
+    </ion-tab-button>
+    <ion-tab-button tab="radio">
+      <ion-icon name="pricetags"></ion-icon>
+      Quote price
+    </ion-tab-button>
+    <ion-tab-button tab="library">
+      <ion-icon name="library"></ion-icon>
+      Grocery List
+    </ion-tab-button>
+    <ion-tab-button tab="search">
+      <ion-icon name="person-add"></ion-icon>
+      Add User
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

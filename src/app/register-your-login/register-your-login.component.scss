@@ -1,0 +1,124 @@
+$brand-blue: #1E3A8A;
+$brand-green: #10B981;
+$bg-color: #F8FAFC;
+$text-dark: #0F172A;
+$text-light: #64748B;
+$error-red: #EF4444; 
+
+*
+{
+  cursor: pointer;
+}
+.auth-bg {
+  --background: #{$bg-color};
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+  padding: 20px 10px;
+}
+
+.brand-header {
+  text-align: center;
+  margin-bottom: 30px;
+
+  .brand-icon {
+    font-size: 56px;
+    color: $brand-green; // Green for "New Account" creation
+    margin-bottom: 10px;
+  }
+
+  .brand-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0;
+  }
+
+  .brand-tagline {
+    font-size: 14px;
+    color: $text-light;
+    margin-top: 5px;
+  }
+}
+
+.login-card {
+  background: white;
+  border-radius: 24px;
+  padding: 30px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.input-group {
+  margin-bottom: 20px;
+
+  .input-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: $text-dark;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .custom-input {
+    --background: #F1F5F9;
+    --border-radius: 12px;
+    --padding-start: 15px;
+    border: 1px solid transparent;
+    transition: 0.2s ease-in-out;
+    --color:#{$text-dark};
+
+    &:focus-within {
+      border: 1px solid $brand-blue;
+    }
+
+    .country-code {
+      font-weight: 600;
+      color: $text-dark;
+      margin-right: 10px;
+      padding-right: 10px;
+      border-right: 1px solid #CBD5E1;
+    }
+  }
+
+  .error-msg {
+    font-size: 12px;
+    color: $error-red;
+    margin-top: 5px;
+    padding-left: 5px;
+  }
+}
+
+.eye-btn {
+  --color: #{$text-light};
+}
+
+.submit-btn {
+  --background: #{$brand-green}; // Using green to indicate a successful creation action
+  --border-radius: 12px;
+  font-weight: 600;
+  height: 48px;
+  margin-top: 15px;
+}
+
+.register-section {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 14px;
+  color: $text-light;
+
+  .register-link {
+    color: $brand-blue;
+    font-weight: 700;
+    text-decoration: none;
+  }
+} 
+
+
+
+.locked-otp {
+  pointer-events: none;
+}

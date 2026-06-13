@@ -1,0 +1,67 @@
+<ion-content class="ion-padding auth-bg">
+  <div class="auth-container">
+    
+    <div class="brand-header">
+      <ion-icon name="calculator-outline" class="brand-icon"></ion-icon>
+      <h1 class="brand-name">ShopCalc</h1>
+      <p class="brand-tagline">Smart billing & daily accounts</p>
+    </div>
+
+    <div class="login-card">
+      <h2 class="welcome-text">Log in to your shop</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+
+        <!-- Store Name Field -->
+        <div class="input-group">
+          <ion-label class="input-label">Store Name</ion-label>
+          <ion-item lines="none" class="custom-input">
+            <ion-icon name="storefront-outline" slot="start" style="margin-right: 8px; color: #888;"></ion-icon>
+            <ion-input 
+              type="text" 
+              formControlName="storename" 
+              placeholder="Enter your store name">
+            </ion-input>
+          </ion-item>
+          <div class="error-msg" *ngIf="loginForm.get('storename')?.touched && loginForm.get('storename')?.invalid">
+            Please enter a valid store name.
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="input-group">
+          <ion-label class="input-label">Password</ion-label>
+          <ion-item lines="none" class="custom-input">
+            <ion-input 
+              type="password" 
+              formControlName="password" 
+              placeholder="Enter your password">
+              <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+            </ion-input>
+          </ion-item>
+          <div class="error-msg" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+            Please enter your password.
+          </div>
+        </div>
+
+        <div class="forgot-link-container">
+          <a class="forgot-link" (click)="onForgotPassword()" style="cursor: pointer;">Forgot Password?</a>
+        </div>
+
+        <ion-button 
+          expand="block" 
+          type="submit" 
+          class="submit-btn" 
+          [disabled]="loginForm.invalid">
+          LOG IN
+        </ion-button>
+        
+      </form>
+    </div>
+
+    <div class="register-section" (click)="NavigateToRegister()">
+      <p>New to the app? <a class="register-link">Register Your Shop</a></p>
+    </div>
+
+  </div>
+</ion-content>

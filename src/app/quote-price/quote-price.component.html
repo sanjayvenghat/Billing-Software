@@ -1,0 +1,46 @@
+<ion-content class="ion-padding">
+  <div style="display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 10px; flex-wrap: wrap;">
+    <ion-input fill="outline" shape="round" label="Item Name" labelPlacement="floating" [(ngModel)]="ProductName"
+      (ngModelChange)="savedItemUrl = ''" placeholder="Enter item name" style="flex: 1 1 200px;">
+    </ion-input>
+
+    <ion-input fill="outline" shape="round" label="Buying Price" labelPlacement="floating" type="number"
+      [(ngModel)]="BuyingPrice" (ngModelChange)="savedItemUrl = ''" placeholder="Enter buying price"
+      style="flex: 1 1 200px;">
+    </ion-input>
+
+    <ion-input fill="outline" shape="round" label="Selling Price" labelPlacement="floating" type="number"
+      [(ngModel)]="SellingPrice" (ngModelChange)="savedItemUrl = ''" placeholder="Enter selling price"
+      style="flex: 1 1 200px;">
+    </ion-input>
+
+    <ion-button shape="round" style="height: 56px; margin: 0; flex: 1 1 100px;" color="success"
+      (click)="AddGroceryData()">
+      Save
+    </ion-button>
+  </div>
+  <div style="margin-top: 10px;">
+    <ion-item lines="none">
+      <ion-checkbox justify="space-between" [(ngModel)]="generateQrCode">Make QR Code For This Item</ion-checkbox>
+    </ion-item>
+  </div>
+
+  @if (generateQrCode) {
+  @if (savedItemUrl) {
+  <div style="display: flex; justify-content: center; margin-top: 20px;">
+    <qrcode [qrdata]="savedItemUrl" [width]="250" [errorCorrectionLevel]="'M'"></qrcode>
+  </div>
+  <p
+    style="display: flex; justify-content: center; align-items: center; gap: 6px; color: gray; font-size: 14px; margin-top: 8px;">
+    Scan to view live item details
+    <ion-icon name="download" title="Download QR Code"
+      style="font-size: 18px; cursor: pointer; color: var(--ion-color-primary);" (click)="downloadQR()"></ion-icon>
+  </p>
+  } @else {
+  <div style="margin-top: 20px; text-align: center; color: var(--ion-color-medium);">
+    <p>Please click <b>Save</b> to generate the QR Code for this item.</p>
+  </div>
+  }
+  }
+
+</ion-content>

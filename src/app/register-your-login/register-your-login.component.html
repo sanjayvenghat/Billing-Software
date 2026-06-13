@@ -1,0 +1,122 @@
+<ion-content class="ion-padding auth-bg">
+  <div class="auth-container">
+
+    <div class="brand-header">
+      <ion-icon name="wallet-outline" class="brand-icon"></ion-icon>
+      <h1 class="brand-name">New Account</h1>
+      <p class="brand-tagline">Setup your digital cashbox in seconds</p>
+    </div>
+
+    <div class="login-card">
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+
+        <!-- Name Field -->
+        <div class="input-group">
+          <ion-label class="input-label">Your Name or Shop Name</ion-label>
+          <ion-item lines="none" class="custom-input">
+            <ion-input type="text" formControlName="name" placeholder="e.g., Manoj Tea Stall">
+            </ion-input>
+          </ion-item>
+          <div class="error-msg" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+            Please enter a name.
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="input-group">
+          <ion-label class="input-label">Email Address</ion-label>
+          <ion-item lines="none" class="custom-input">
+            <ion-icon name="mail-outline" slot="start" style="margin-right: 8px; color: #888;"></ion-icon>
+            <ion-input type="email" formControlName="email" placeholder="e.g., you@example.com"
+              [readonly]="isOtpVerified">
+            </ion-input>
+            <ion-button fill="clear" slot="end" class="verify-btn" (click)="sendOtp()" [disabled]="isOtpSent">
+              <span *ngIf="IsloadingOtp">
+                <ion-spinner name="crescent"></ion-spinner>
+              </span>
+              @if(!IsloadingOtp){
+              {{ isOtpSent ? 'Sent ✓' : 'Send OTP' }}
+              }
+            </ion-button>
+          </ion-item>
+          <div class="error-msg" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+            Please enter a valid email address.
+          </div>
+        </div>
+
+        <!-- OTP Section -->
+        @if(isOtpVisible) {
+        <div class="otp-container">
+          <ion-label class="input-label">Enter OTP</ion-label>
+          <p class="otp-hint">A 6-digit code was sent to <strong>{{ registerForm.get('email')?.value }}</strong></p>
+
+          <ion-grid class="ion-no-padding ion-margin-top">
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+
+              <ion-col size="auto" class="ion-no-padding">
+                <ion-input-otp style="--color: #222; --placeholder-color: #999;" length="6" formControlName="otp"
+                  [class.locked-otp]="isOtpVerified" [attr.tabindex]="isOtpVerified ? -1 : 0" class="ion-no-margin">
+                </ion-input-otp>
+              </ion-col>
+
+              <ion-col size="auto" class="ion-no-padding">
+                <ion-button color="primary" class="ion-margin-start" (click)="verifyOtp()" [disabled]="isOtpVerified">
+                  {{ isOtpVerified ? 'Verified ✓' : 'Verify' }}
+                </ion-button>
+              </ion-col>
+
+            </ion-row>
+            @if(!isOtpVerified){
+            <ion-row>
+              <ion-col class="ion-text-center ion-padding-top">
+                <p class="resend-text">
+                  Didn't receive the code?
+                  <a (click)="resendOtp()" [class.disabled-link]="resendCooldown > 0" style="cursor: pointer;">
+                    {{ resendCooldown > 0 ? 'Resend in ' + resendCooldown + 's' : 'Resend OTP' }}
+                  </a>
+                </p>
+              </ion-col>
+            </ion-row>
+            }
+          </ion-grid>
+
+        </div>
+        }
+
+        <!-- Password Field -->
+        <div class="input-group">
+          <ion-label class="input-label">Create a Password</ion-label>
+          <ion-item lines="none" class="custom-input">
+            <ion-input type="password" formControlName="password" placeholder="Enter your password"
+              (ionInput)="checkPasswordStrength($event)">
+              <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+            </ion-input>
+          </ion-item>
+
+          <div class="strength-container" *ngIf="registerForm.get('password')?.value"
+            style="margin-top: 15px; padding: 0 5px;">
+            <ion-progress-bar [value]="strengthValue" [color]="strengthColor"></ion-progress-bar>
+            <ion-text [color]="strengthColor">
+              <p class="strength-text" style="font-size: 12px; margin-top: 5px; font-weight: 500;">Password Strength: {{
+                strengthLabel }}</p>
+            </ion-text>
+          </div>
+          <div class="error-msg" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+            Password must be at least 6 characters.
+          </div>
+        </div>
+
+        <ion-button expand="block" type="submit" class="submit-btn" [disabled]="registerForm.invalid || !isOtpVerified">
+          CREATE ACCOUNT
+        </ion-button>
+
+      </form>
+    </div>
+
+
+    <div class="register-section">
+      <p>Already have an account? <a class="register-link" (click)="goToLogin()" style="cursor: pointer;">Log In</a></p>
+    </div>
+
+  </div>
+</ion-content>

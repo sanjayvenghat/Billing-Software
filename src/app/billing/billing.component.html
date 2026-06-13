@@ -1,0 +1,35 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-searchbar animated="true" shape="round" placeholder="Search or Scan Barcode..."
+      (search)="onSearch($event)"></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="scanBarcode()" *ngIf="!isScanning">
+        <ion-icon slot="icon-only" name="barcode-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div *ngIf="isScanning" style="padding: 16px;">
+  <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto; background: white;"></div>
+  <ion-button style="margin-top: 16px;" (click)="stopScanner()" color="danger" expand="block">Cancel Scan</ion-button>
+</div>
+
+<div *ngIf="scannedProduct" style="padding: 16px; text-align: center;">
+  <ion-card>
+    <img *ngIf="scannedProduct.Image" [src]="scannedProduct.Image" alt="Product Image"
+      style="max-height: 200px; margin: 0 auto;" />
+    <ion-card-header>
+      <ion-card-title>{{ scannedProduct.ProductName }}</ion-card-title>
+      <ion-card-subtitle>{{ scannedProduct.Brand }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Barcode: {{ scannedProduct.Barcode }}</p>
+      <p *ngIf="scannedProduct.Price">Price: {{ scannedProduct.Price }}</p>
+    </ion-card-content>
+  </ion-card>
+</div>
+
+<div *ngIf="errorMessage" style="padding: 16px; text-align: center; color: red;">
+  <p>{{ errorMessage }}</p>
+</div>

@@ -1,0 +1,33 @@
+<div class="center-container">
+  <div class="form-wrapper">
+    <div class="form-header">
+      <div class="header-icon-container">
+        <ion-icon name="person-outline" class="header-icon"></ion-icon>
+      </div>
+      <h2 class="ion-text-center form-title" color="primary">New Customer</h2>
+      <p class="ion-text-center text-muted ">Fill in the details below to add a new customer.</p>
+    </div>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" class="custom-col">
+          <div class="input-with-icon">
+            <ion-icon name="person-outline" class="input-icon"></ion-icon>
+            <ion-input placeholder="Enter the customer Name" class="custom-input"
+              [(ngModel)]="customerName"></ion-input>
+          </div>
+        </ion-col>
+      </ion-row>
+
+
+      <ion-row class="ion-margin-top">
+        <ion-col size="12" class="custom-col">
+          <ion-button expand="block" class="custom-button gradient-button" (click)="AddCustomer()">
+            <ion-icon slot="start" name="save-outline"></ion-icon>
+            Add Customer
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</div>
