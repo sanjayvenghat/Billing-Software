@@ -7,7 +7,6 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-  IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { HeaderComponentComponent } from '../header-component/header-component.component';
@@ -23,7 +22,7 @@ import { CreateUserComponent } from '../create-user/create-user.component';
   selector: 'app-get-user-details',
   templateUrl: './get-user-details.component.html',
   styleUrls: ['./get-user-details.component.scss'],
-  imports: [IonContent, IonHeader, IonIcon, IonTab, IonTabBar, IonTabButton, IonTabs, IonTitle, IonToolbar, HeaderComponentComponent, BillingComponent, QuotePriceComponent, ListProductComponent, CommonModule, CreateUserComponent],
+  imports: [IonContent, IonHeader, IonIcon, IonTab, IonTabBar, IonTabButton, IonTabs, IonToolbar, HeaderComponentComponent, BillingComponent, QuotePriceComponent, ListProductComponent, CommonModule, CreateUserComponent],
 })
 export class GetUserDetailsComponent {
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonHeader, IonTitle, IonToolbar, IonContent, IonInput, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonInput, IonButton } from '@ionic/angular/standalone';
 import { QuoteService } from './quote-service';
 import { ToastService } from 'src/Service/ToasterService';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
   selector: 'app-quote-price',
   templateUrl: './quote-price.component.html',
   styleUrls: ['./quote-price.component.scss'],
-  imports: [FormsModule, IonHeader, IonTitle, IonToolbar, IonContent, IonInput, IonButton, IonCheckbox, IonItem, QRCodeComponent, IonIcon]
+  imports: [FormsModule, IonContent, IonInput, IonButton, IonCheckbox, IonItem, QRCodeComponent, IonIcon]
 })
 export class QuotePriceComponent implements OnInit {
 
