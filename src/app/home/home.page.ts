@@ -65,7 +65,7 @@ export class HomePage implements OnInit {
               this.router.navigate(['/GetUserDetails']);
             }, 1000);
           } else {
-            this.toastService.showError(val?.message || 'Invalid store name or password.');
+            this.toastService.showWarning(val?.message || 'Invalid store name or password.');
           }
         },
         error: (err) => {

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonHeader, IonSearchbar, IonToolbar, IonButtons, IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent } from '@ionic/angular/standalone';
+import { IonHeader, IonSearchbar, IonToolbar, IonButtons, IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { barcodeOutline } from 'ionicons/icons';
+import { barcodeOutline, addOutline, personAddOutline, personOutline, searchOutline } from 'ionicons/icons';
 import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
   selector: 'app-billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  imports: [CommonModule, HttpClientModule, IonHeader, IonSearchbar, IonToolbar, IonButtons, IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent]
+  imports: [CommonModule, HttpClientModule, IonHeader, IonSearchbar, IonToolbar, IonButtons, IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover]
 })
 export class BillingComponent implements OnInit, OnDestroy {
   private scanner: Html5QrcodeScanner | null = null;
@@ -20,8 +20,15 @@ export class BillingComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
 
   constructor(private http: HttpClient) {
-    addIcons({ barcodeOutline });
+    addIcons({ barcodeOutline, 'add-outline': addOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline });
   }
+
+  userSuggestions: any[] = [];
+  dummyUsers = [
+    { id: 1, name: 'John Doe', phone: '123-456-7890' },
+    { id: 2, name: 'Jane Smith', phone: '987-654-3210' },
+    { id: 3, name: 'Alice Johnson', phone: '555-123-4567' }
+  ];
 
   ngOnInit() { }
 
@@ -35,6 +42,28 @@ export class BillingComponent implements OnInit, OnDestroy {
       console.log(`Manual/Physical Barcode Entered: ${value}`);
       this.fetchProductDetails(value);
     }
+  }
+
+  onUserSearchInput(event: any) {
+    debugger
+    const rawQuery = event.detail.value || '';
+    const query = rawQuery.toLowerCase().replace(/\s+/g, '');
+    if (query === '') {
+      this.userSuggestions = [];
+      return;
+    }
+    // Filter dummy data. Replace this with API call if needed.
+    this.userSuggestions = this.dummyUsers.filter(user =>
+      user.name.toLowerCase().replace(/\s+/g, '').includes(query) ||
+      user.phone.replace(/\D/g, '').includes(query) ||
+      user.phone.includes(rawQuery)
+    );
+  }
+
+  selectUser(user: any) {
+    console.log('Selected User:', user);
+    this.userSuggestions = [];
+    // Logic to attach user to the current bill can go here
   }
 
   scanBarcode() {

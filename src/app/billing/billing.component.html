@@ -1,8 +1,44 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
+<ion-header class="ion-no-border" style="z-index: 100; position: relative;">
+  <!-- Replaced ion-toolbar with a standard div to bypass all Shadow DOM clipping constraints -->
+  <div style="background: var(--ion-toolbar-background, #fff); position: relative; z-index: 1000; padding: 4px 0;">
+    <ion-grid class="ion-no-padding" style="overflow: visible !important;">
+      <ion-row class="ion-align-items-center ion-justify-content-center"
+        style="flex-wrap: nowrap; overflow: visible !important; contain: none !important;">
+        <ion-col
+          style="flex: 1; min-width: 0; max-width: 600px; position: relative; overflow: visible !important; contain: none !important;">
+          <ion-searchbar id="user-searchbar" animated="true" shape="round" placeholder="Search User..."
+            (ionInput)="onUserSearchInput($event)"></ion-searchbar>
+
+          <!-- Search Suggestions (Google Style) -->
+          <div *ngIf="userSuggestions.length > 0" class="google-dropdown">
+            <ion-list lines="none" class="ion-no-padding">
+              <ion-item *ngFor="let user of userSuggestions" button (click)="selectUser(user)" class="google-item">
+                <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
+                <ion-label>
+                  <span class="user-name">{{ user.name }}</span>
+                  <span class="user-phone"> - {{ user.phone }}</span>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </div>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button color="success" shape="round" class="add-user-btn">
+            <ion-icon slot="start" name="person-add-outline"></ion-icon>
+            <span class="ion-hide-sm-down">Add User</span>
+            <span class="ion-hide-md-up">Add</span>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <ion-toolbar style="z-index: 5; position: relative;">
     <ion-searchbar animated="true" shape="round" placeholder="Search or Scan Barcode..."
       (search)="onSearch($event)"></ion-searchbar>
     <ion-buttons slot="end">
+      <ion-button color="primary">
+        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
       <ion-button (click)="scanBarcode()" *ngIf="!isScanning">
         <ion-icon slot="icon-only" name="barcode-outline"></ion-icon>
       </ion-button>
