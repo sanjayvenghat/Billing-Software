@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonHeader, IonSearchbar, IonToolbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover, IonModal } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { barcodeOutline, addOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline } from 'ionicons/icons';
+import { barcodeOutline, addOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline } from 'ionicons/icons';
 import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -11,7 +11,7 @@ import { IonFooter, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { Billingservice } from './billingservice';
 import { FormsModule } from '@angular/forms';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
-
+import { documentTextOutline, documentOutline } from 'ionicons/icons'
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.component.html',
@@ -25,8 +25,13 @@ export class BillingComponent implements OnInit, OnDestroy {
   scannedProduct: any = null;
   errorMessage: string = '';
   searchQuery: string = ""
+  totalPrice: Number = 0;
   constructor(private http: HttpClient, private toasterService: ToastService, private BillingService: Billingservice, private keysStorage: KEYSSTORAGE) {
-    addIcons({ barcodeOutline, 'add-outline': addOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline, 'trash-outline': trashOutline, 'add-circle-outline': addCircleOutline, 'remove-circle-outline': removeCircleOutline });
+    addIcons({
+      barcodeOutline, 'add-outline': addOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline, 'trash-outline': trashOutline, 'add-circle-outline': addCircleOutline, 'remove-circle-outline': removeCircleOutline, 'arrow-forward-outline': arrowForwardOutline,
+      'document-text-outline': documentTextOutline,
+      'document-outline': documentOutline
+    });
   }
   SearchProduct: string = "";
   userSuggestions: any[] = [];
@@ -84,6 +89,10 @@ export class BillingComponent implements OnInit, OnDestroy {
     }
   }
 
+  calculateTotal() {
+    this.totalPrice = this.cartItems.reduce((acc, item) => acc + ((item.SellingPrice || 0) * (item.Quantity || 1)), 0);
+  }
+
   addToCart(product: any) {
     if (!product) return;
     const existingItem = this.cartItems.find(item =>
@@ -97,10 +106,12 @@ export class BillingComponent implements OnInit, OnDestroy {
       this.cartItems.push(product);
     }
     this.scannedProduct = product; // keep it if needed
+    this.calculateTotal();
   }
 
   increaseQuantity(index: number) {
     this.cartItems[index].Quantity++;
+    this.calculateTotal();
   }
 
   decreaseQuantity(index: number) {
@@ -109,10 +120,12 @@ export class BillingComponent implements OnInit, OnDestroy {
     } else {
       this.cartItems.splice(index, 1);
     }
+    this.calculateTotal();
   }
 
   removeItem(index: number) {
     this.cartItems.splice(index, 1);
+    this.calculateTotal();
   }
 
   onUserSearchInput(event: any) {
