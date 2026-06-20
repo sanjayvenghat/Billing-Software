@@ -1,36 +1,41 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonHeader, IonSearchbar, IonToolbar, IonButtons, IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover } from '@ionic/angular/standalone';
+import { IonHeader, IonSearchbar, IonToolbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover, IonModal } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { barcodeOutline, addOutline, personAddOutline, personOutline, searchOutline } from 'ionicons/icons';
+import { barcodeOutline, addOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline } from 'ionicons/icons';
 import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { ToastService } from 'src/Service/ToasterService';
+import { IonFooter, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { Billingservice } from './billingservice';
+import { FormsModule } from '@angular/forms';
+import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  imports: [CommonModule, HttpClientModule, IonHeader, IonSearchbar, IonToolbar, IonButtons, IonButton, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover]
+  imports: [IonContent, CommonModule, HttpClientModule, IonHeader, IonSearchbar, IonToolbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, IonTitle, FormsModule, IonModal]
 })
 export class BillingComponent implements OnInit, OnDestroy {
   private scanner: Html5QrcodeScanner | null = null;
   isScanning = false;
+  isProductModalOpen = false;
   scannedProduct: any = null;
   errorMessage: string = '';
-
-  constructor(private http: HttpClient) {
-    addIcons({ barcodeOutline, 'add-outline': addOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline });
+  searchQuery: string = ""
+  constructor(private http: HttpClient, private toasterService: ToastService, private BillingService: Billingservice, private keysStorage: KEYSSTORAGE) {
+    addIcons({ barcodeOutline, 'add-outline': addOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline, 'trash-outline': trashOutline, 'add-circle-outline': addCircleOutline, 'remove-circle-outline': removeCircleOutline });
   }
-
+  SearchProduct: string = "";
   userSuggestions: any[] = [];
-  dummyUsers = [
-    { id: 1, name: 'John Doe', phone: '123-456-7890' },
-    { id: 2, name: 'Jane Smith', phone: '987-654-3210' },
-    { id: 3, name: 'Alice Johnson', phone: '555-123-4567' }
-  ];
+  productSuggestions: any[] = [];
+  cartItems: any[] = [];
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.toasterService.showWarning("To Save In the Data Please Add User Else Billing Alone can be done");
+  }
 
   ngOnDestroy() {
     this.stopScanner();
@@ -43,25 +48,99 @@ export class BillingComponent implements OnInit, OnDestroy {
       this.fetchProductDetails(value);
     }
   }
+  OnSearchproduct(event: any) {
+    console.log(event, "SearchProduct")
+    const rawQuery = event.target.value || '';
+    if (!rawQuery.trim()) {
+      this.productSuggestions = [];
+      return;
+    }
+    let query = {
+      searchValue: rawQuery,
+      companyId: this.keysStorage.getItem("CompanyId")
+    }
+    this.BillingService.searchProduct(query).subscribe({
+      next: (response: any) => {
+        console.log('Product Details Fetched Successfully:');
+        console.log(response);
+        this.productSuggestions = response.userdata || response.data || (Array.isArray(response) ? response : []);
+      },
+      error: (err) => {
+        console.error('Error fetching product details:', err);
+        this.productSuggestions = [];
+      }
+    })
+    console.log(query, "event")
+  }
+
+  selectProduct(product: any) {
+    console.log('Selected Product:', product);
+    this.SearchProduct = ''; // Clear search
+    this.productSuggestions = [];
+    if (product.Barcode) {
+      this.fetchProductDetails(product.Barcode);
+    } else {
+      this.addToCart(product);
+    }
+  }
+
+  addToCart(product: any) {
+    if (!product) return;
+    const existingItem = this.cartItems.find(item =>
+      (item.Barcode && item.Barcode === product.Barcode) ||
+      (item._id && item._id === product._id)
+    );
+    if (existingItem) {
+      existingItem.Quantity = (existingItem.Quantity || 1) + 1;
+    } else {
+      product.Quantity = 1;
+      this.cartItems.push(product);
+    }
+    this.scannedProduct = product; // keep it if needed
+  }
+
+  increaseQuantity(index: number) {
+    this.cartItems[index].Quantity++;
+  }
+
+  decreaseQuantity(index: number) {
+    if (this.cartItems[index].Quantity > 1) {
+      this.cartItems[index].Quantity--;
+    } else {
+      this.cartItems.splice(index, 1);
+    }
+  }
+
+  removeItem(index: number) {
+    this.cartItems.splice(index, 1);
+  }
 
   onUserSearchInput(event: any) {
     debugger
     const rawQuery = event.detail.value || '';
-    const query = rawQuery.toLowerCase().replace(/\s+/g, '');
-    if (query === '') {
-      this.userSuggestions = [];
-      return;
+    const searchValue = rawQuery.toLowerCase().replace(/\s+/g, '');
+    let query = {
+      searchValue: searchValue,
+      companyId: this.keysStorage.getItem("CompanyId")
     }
-    // Filter dummy data. Replace this with API call if needed.
-    this.userSuggestions = this.dummyUsers.filter(user =>
-      user.name.toLowerCase().replace(/\s+/g, '').includes(query) ||
-      user.phone.replace(/\D/g, '').includes(query) ||
-      user.phone.includes(rawQuery)
-    );
+    this.BillingService.searchUsers(query).subscribe({
+      next: (response: any) => {
+        console.log('User Details Fetched Successfully:');
+        console.log(response);
+        this.userSuggestions = response.userdata;
+        this.errorMessage = '';
+      },
+      error: (err) => {
+        console.error('Error fetching user details from barcode id:', err);
+        this.userSuggestions = [];
+        this.errorMessage = 'User not found in databases.';
+      }
+    });
   }
 
   selectUser(user: any) {
     console.log('Selected User:', user);
+    this.searchQuery = user.CustomerName;
     this.userSuggestions = [];
     // Logic to attach user to the current bill can go here
   }
@@ -122,7 +201,7 @@ export class BillingComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         console.log('Product Details Fetched Successfully:');
         console.log(response);
-        this.scannedProduct = response.data;
+        this.addToCart(response.data || response);
         this.errorMessage = '';
       },
       error: (err) => {
@@ -132,4 +211,12 @@ export class BillingComponent implements OnInit, OnDestroy {
       }
     });
   }
+  OpenProductModel() {
+    if (this.SearchProduct == "") {
+      this.toasterService.showWarning("Please Enter Product Name");
+      return;
+    }
+    this.isProductModalOpen = true
+  }
+
 }

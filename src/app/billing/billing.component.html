@@ -7,7 +7,7 @@
         <ion-col
           style="flex: 1; min-width: 0; max-width: 600px; position: relative; overflow: visible !important; contain: none !important;">
           <ion-searchbar id="user-searchbar" animated="true" shape="round" placeholder="Search User..."
-            (ionInput)="onUserSearchInput($event)"></ion-searchbar>
+            (ionInput)="onUserSearchInput($event)" [debounce]="1000" [(ngModel)]="searchQuery"></ion-searchbar>
 
           <!-- Search Suggestions (Google Style) -->
           <div *ngIf="userSuggestions.length > 0" class="google-dropdown">
@@ -15,8 +15,7 @@
               <ion-item *ngFor="let user of userSuggestions" button (click)="selectUser(user)" class="google-item">
                 <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
                 <ion-label>
-                  <span class="user-name">{{ user.name }}</span>
-                  <span class="user-phone"> - {{ user.phone }}</span>
+                  <span class="user-name" (click)="selectUser(user)">{{ user.CustomerName }}</span>
                 </ion-label>
               </ion-item>
             </ion-list>
@@ -32,18 +31,44 @@
       </ion-row>
     </ion-grid>
   </div>
-  <ion-toolbar style="z-index: 5; position: relative;">
-    <ion-searchbar animated="true" shape="round" placeholder="Search or Scan Barcode..."
-      (search)="onSearch($event)"></ion-searchbar>
-    <ion-buttons slot="end">
-      <ion-button color="primary">
-        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
-      </ion-button>
-      <ion-button (click)="scanBarcode()" *ngIf="!isScanning">
-        <ion-icon slot="icon-only" name="barcode-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+  <!-- Replaced ion-toolbar with a standard div for product search to bypass clipping -->
+  <div
+    style="background: var(--ion-toolbar-background, #fff); position: relative; z-index: 500; padding: 4px 0; border-bottom: 1px solid #eee;">
+    <ion-grid class="ion-no-padding" style="overflow: visible !important;">
+      <ion-row class="ion-align-items-center ion-justify-content-center"
+        style="flex-wrap: nowrap; overflow: visible !important; contain: none !important;">
+        <ion-col
+          style="flex: 1; min-width: 0; position: relative; overflow: visible !important; contain: none !important;">
+          <ion-searchbar animated="true" shape="round" placeholder="Search or Scan Barcode..."
+            (ionInput)="OnSearchproduct($event)" [(ngModel)]="SearchProduct" [debounce]="1000"></ion-searchbar>
+
+          <!-- Product Search Suggestions (Google Style) -->
+          <div *ngIf="productSuggestions.length > 0" class="google-dropdown"
+            style="top: 100%; left: 16px; right: 16px;">
+            <ion-list lines="none" class="ion-no-padding">
+              <ion-item *ngFor="let product of productSuggestions" button (click)="selectProduct(product)"
+                class="google-item">
+                <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
+                <ion-label>
+                  <span class="user-name">{{ product.ProductName || product.name }}</span>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </div>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-buttons>
+            <ion-button color="primary" (click)="OpenProductModel()">
+              <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+            </ion-button>
+            <ion-button (click)="scanBarcode()" *ngIf="!isScanning">
+              <ion-icon slot="icon-only" name="barcode-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-header>
 
 <div *ngIf="isScanning" style="padding: 16px;">
@@ -51,21 +76,64 @@
   <ion-button style="margin-top: 16px;" (click)="stopScanner()" color="danger" expand="block">Cancel Scan</ion-button>
 </div>
 
-<div *ngIf="scannedProduct" style="padding: 16px; text-align: center;">
-  <ion-card>
-    <img *ngIf="scannedProduct.Image" [src]="scannedProduct.Image" alt="Product Image"
-      style="max-height: 200px; margin: 0 auto;" />
-    <ion-card-header>
-      <ion-card-title>{{ scannedProduct.ProductName }}</ion-card-title>
-      <ion-card-subtitle>{{ scannedProduct.Brand }}</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      <p>Barcode: {{ scannedProduct.Barcode }}</p>
-      <p *ngIf="scannedProduct.Price">Price: {{ scannedProduct.Price }}</p>
-    </ion-card-content>
-  </ion-card>
+<!-- Cart Items List -->
+<div *ngIf="cartItems.length > 0" style="padding: 16px;">
+  <ion-list>
+    <ion-item *ngFor="let item of cartItems; let i = index">
+      <!-- Optional Image -->
+      <img *ngIf="item.Image" [src]="item.Image" slot="start"
+        style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;" />
+
+      <ion-label>
+        <h2>{{ item.ProductName || item.name }}</h2>
+        <p>Price: ₹{{ item.SellingPrice }}</p>
+        <p *ngIf="item.Barcode">Barcode: {{ item.Barcode }}</p>
+      </ion-label>
+
+      <div slot="end" style="display: flex; align-items: center;">
+        <ion-button fill="clear" color="danger" (click)="decreaseQuantity(i)">
+          <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+        </ion-button>
+        <span style="font-weight: bold; margin: 0 8px; font-size: 16px;">{{ item.Quantity }}</span>
+        <ion-button fill="clear" color="success" (click)="increaseQuantity(i)">
+          <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+        </ion-button>
+
+        <span style="font-weight: bold; margin-left: 16px; color: var(--ion-color-primary);">
+          ₹{{ item.SellingPrice * item.Quantity }}
+        </span>
+
+        <ion-button fill="clear" color="medium" (click)="removeItem(i)" style="margin-left: 8px;">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-item>
+  </ion-list>
 </div>
 
 <div *ngIf="errorMessage" style="padding: 16px; text-align: center; color: red;">
   <p>{{ errorMessage }}</p>
 </div>
+
+<ion-footer style="position: fixed; bottom: 0px; left: 0; right: 0; z-index: 1000;">
+  <ion-toolbar>
+    <ion-title>Total</ion-title>
+  </ion-toolbar>
+</ion-footer>
+
+<!-- Add Product Modal -->
+<ion-modal [isOpen]="isProductModalOpen" (didDismiss)="isProductModalOpen = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Add Product</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isProductModalOpen = false">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <p>Add product form will be here.</p>
+    </ion-content>
+  </ng-template>
+</ion-modal>

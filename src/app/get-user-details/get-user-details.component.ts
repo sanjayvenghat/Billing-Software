@@ -12,7 +12,7 @@ import {
 import { HeaderComponentComponent } from '../header-component/header-component.component';
 import { BillingComponent } from '../billing/billing.component';
 import { addIcons } from 'ionicons';
-import { library, playCircle, radio, search, cashOutline, pricetags, personAdd } from 'ionicons/icons';
+import { library, playCircle, radio, search, cashOutline, pricetags, personAdd, wallet } from 'ionicons/icons';
 import { QuotePriceComponent } from '../quote-price/quote-price.component';
 import { ListProductComponent } from '../list-product/list-product.component';
 import { CommonModule } from '@angular/common';
@@ -29,7 +29,7 @@ export class GetUserDetailsComponent {
   @ViewChild(ListProductComponent) listProductComponent!: ListProductComponent;
 
   constructor() {
-    addIcons({ library, playCircle, radio, search, cashOutline, pricetags, personAdd });
+    addIcons({ library, playCircle, radio, search, cashOutline, pricetags, personAdd, wallet });
   }
 
   ngOnInit() { }

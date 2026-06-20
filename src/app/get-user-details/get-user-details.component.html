@@ -27,17 +27,27 @@
       <app-list-product></app-list-product>
     </div>
   </ion-tab>
-  <ion-tab tab="search">
+  <ion-tab tab="Accounts and pending">
+    <div id="accounts-page" class="ion-page">
+      <ion-header>
+        <app-header-component [HeaderTitle]="'Accounts and pending'"></app-header-component>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <h2 style="text-align: center; margin-top: 20px;">Accounts and Pending</h2>
+        <p style="text-align: center;">This section is currently under development.</p>
+      </ion-content>
+    </div>
+  </ion-tab>
+  <ion-tab tab="Add User">
     <div id="search-page" class="ion-page">
       <ion-header>
-        <app-header-component [HeaderTitle]="'Search'"></app-header-component>
+        <app-header-component [HeaderTitle]="'Add User'"></app-header-component>
       </ion-header>
       <ion-content [scrollY]="false">
         <app-create-user></app-create-user>
       </ion-content>
     </div>
   </ion-tab>
-
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="home">
       <ion-icon name="cash-outline"></ion-icon>
@@ -51,9 +61,13 @@
       <ion-icon name="library"></ion-icon>
       Grocery List
     </ion-tab-button>
-    <ion-tab-button tab="search">
+    <ion-tab-button tab="Add User">
       <ion-icon name="person-add"></ion-icon>
       Add User
+    </ion-tab-button>
+    <ion-tab-button tab="Accounts and pending">
+      <ion-icon name="wallet"></ion-icon>
+      Pending
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

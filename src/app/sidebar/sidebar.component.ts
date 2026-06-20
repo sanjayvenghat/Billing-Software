@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { IonMenu, IonHeader, IonToolbar, IonIcon, IonContent, IonList, IonMenuToggle, IonItem, IonLabel, IonButton } from '@ionic/angular/standalone';
+import { IonIcon, IonList, IonMenuToggle, IonItem, IonLabel, IonButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { basket, documentText, documents, trendingUp, statsChart, logOut, diamond } from 'ionicons/icons';
 
@@ -13,7 +13,7 @@ import { basket, documentText, documents, trendingUp, statsChart, logOut, diamon
   imports: [
     CommonModule,
     RouterModule,
-    IonMenu, IonHeader, IonToolbar, IonIcon, IonContent, IonList, IonMenuToggle, IonItem, IonLabel, IonButton
+    IonIcon, IonList, IonMenuToggle, IonItem, IonLabel, IonButton
   ]
 })
 export class SidebarComponent implements OnInit {
