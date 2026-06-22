@@ -1,27 +1,34 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonHeader, IonSearchbar, IonToolbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover, IonModal } from '@ionic/angular/standalone';
+import { IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover, IonModal } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { barcodeOutline, addOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline } from 'ionicons/icons';
+import { barcodeOutline, addOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline, closeCircle, cartOutline, downloadOutline, personCircle, alertCircleOutline } from 'ionicons/icons';
 import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ToastService } from 'src/Service/ToasterService';
-import { IonFooter, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { IonFooter } from '@ionic/angular/standalone';
 import { Billingservice } from './billingservice';
 import { FormsModule } from '@angular/forms';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { documentTextOutline, documentOutline } from 'ionicons/icons'
+import { GenerateBillComponent } from '../generate-bill/generate-bill.component';
+import { AddProductComponent } from '../add-product/add-product.component';
+import { QuotePriceBillingComponent } from '../quote-price-billing/quote-price-billing.component';
+
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  imports: [IonContent, CommonModule, HttpClientModule, IonHeader, IonSearchbar, IonToolbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, IonTitle, FormsModule, IonModal]
+  imports: [CommonModule, HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, AddProductComponent, QuotePriceBillingComponent]
 })
 export class BillingComponent implements OnInit, OnDestroy {
   private scanner: Html5QrcodeScanner | null = null;
   isScanning = false;
   isProductModalOpen = false;
+  isBillModalOpen = false;
+  isCustomDialogOpen = false;
+  currentDate: Date = new Date();
   scannedProduct: any = null;
   errorMessage: string = '';
   searchQuery: string = ""
@@ -30,7 +37,12 @@ export class BillingComponent implements OnInit, OnDestroy {
     addIcons({
       barcodeOutline, 'add-outline': addOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline, 'trash-outline': trashOutline, 'add-circle-outline': addCircleOutline, 'remove-circle-outline': removeCircleOutline, 'arrow-forward-outline': arrowForwardOutline,
       'document-text-outline': documentTextOutline,
-      'document-outline': documentOutline
+      'document-outline': documentOutline,
+      'close-circle': closeCircle,
+      'cart-outline': cartOutline,
+      'download-outline': downloadOutline,
+      'person-circle': personCircle,
+      'alert-circle-outline': alertCircleOutline
     });
   }
   SearchProduct: string = "";
@@ -66,9 +78,12 @@ export class BillingComponent implements OnInit, OnDestroy {
     }
     this.BillingService.searchProduct(query).subscribe({
       next: (response: any) => {
-        console.log('Product Details Fetched Successfully:');
-        console.log(response);
-        this.productSuggestions = response.userdata || response.data || (Array.isArray(response) ? response : []);
+        if (response?.userdata?.length === 0) {
+          this.isCustomDialogOpen = true;
+        }
+        else {
+          this.productSuggestions = response?.userdata ?? []
+        }
       },
       error: (err) => {
         console.error('Error fetching product details:', err);
@@ -224,12 +239,17 @@ export class BillingComponent implements OnInit, OnDestroy {
       }
     });
   }
-  OpenProductModel() {
-    if (this.SearchProduct == "") {
-      this.toasterService.showWarning("Please Enter Product Name");
+
+  OpenProductModelFromDialog() {
+    this.isCustomDialogOpen = false;
+    this.isProductModalOpen = true;
+  }
+  DownloadPDF() {
+    if (this.cartItems.length === 0) {
+      this.toasterService.showWarning("Cart is empty. Cannot generate bill.");
       return;
     }
-    this.isProductModalOpen = true
+    this.currentDate = new Date();
+    this.isBillModalOpen = true;
   }
-
 }

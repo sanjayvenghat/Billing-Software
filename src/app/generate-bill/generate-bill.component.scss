@@ -1,0 +1,189 @@
+:host {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 400px;
+  z-index: -1;
+}
+
+.receipt-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin: 16px auto;
+  max-width: 350px;
+  position: relative;
+  overflow: hidden;
+
+  /* Jagged edge effect for receipt */
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 16px;
+    background-size: 16px 16px;
+    background-image: radial-gradient(circle at 8px 16px, transparent 10px, white 11px);
+    background-repeat: repeat-x;
+  }
+
+  .receipt-header {
+    text-align: center;
+    margin-bottom: 20px;
+
+    .store-logo {
+      width: 60px;
+      height: 60px;
+      background: var(--ion-color-primary-tint, #e6f0ff);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+
+      ion-icon {
+        font-size: 32px;
+        color: var(--ion-color-primary);
+      }
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+      color: #222;
+      letter-spacing: -0.5px;
+    }
+
+    p {
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: #777;
+    }
+  }
+
+  .receipt-divider {
+    height: 1px;
+    background: #eee;
+    margin: 16px 0;
+
+    &.border-dashed {
+      background: none;
+      border-top: 2px dashed #e0e0e0;
+    }
+  }
+
+  .receipt-info {
+    font-size: 14px;
+    color: #555;
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+
+      span:last-child {
+        font-weight: 600;
+        color: #333;
+      }
+    }
+  }
+
+  .receipt-items {
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 14px;
+
+      &.header {
+        font-weight: 700;
+        color: #888;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .item-name {
+        flex: 0 0 50%;
+        max-width: 50%;
+        color: #333;
+        font-weight: 500;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 8px;
+      }
+
+      .item-qty {
+        flex: 0 0 20%;
+        max-width: 20%;
+        text-align: center;
+        color: #666;
+      }
+
+      .item-price {
+        flex: 0 0 30%;
+        max-width: 30%;
+        text-align: right;
+        font-weight: 600;
+        color: #222;
+      }
+    }
+  }
+
+  .receipt-total {
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      span:first-child {
+        font-size: 16px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .total-amount {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--ion-color-primary);
+      }
+    }
+  }
+
+  .barcode-container {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 16px;
+
+    .fake-barcode {
+      font-size: 64px;
+      color: #333;
+      transform: scaleX(2);
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 12px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+.download-btn {
+  --box-shadow: 0 8px 20px rgba(var(--ion-color-success-rgb), 0.35);
+  font-size: 16px;
+  font-weight: 700;
+  height: 54px;
+}

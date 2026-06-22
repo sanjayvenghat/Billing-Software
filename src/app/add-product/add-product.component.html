@@ -1,0 +1,22 @@
+<!-- Custom Dialog Modal -->
+<ion-modal id="custom-dialog-modal" [isOpen]="isOpen" (didDismiss)="close.emit()" [enterAnimation]="enterAnimation"
+  [leaveAnimation]="leaveAnimation">
+  <ng-template>
+    <div class="wrapper ion-padding custom-dialog-content">
+      <div class="dialog-icon-container">
+        <ion-icon name="alert-circle-outline" color="warning"></ion-icon>
+      </div>
+      <h2>Product Not Found</h2>
+      <p>We couldn't find this product in your database. Would you like to add it manually?</p>
+
+      <div class="dialog-actions">
+        <ion-button fill="clear" color="medium" (click)="close.emit()">
+          No, Cancel
+        </ion-button>
+        <ion-button color="success" shape="round" (click)="confirm.emit()">
+          Yes, Add Product
+        </ion-button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>

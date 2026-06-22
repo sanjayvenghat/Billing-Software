@@ -1,5 +1,4 @@
 <ion-header class="ion-no-border" style="z-index: 100; position: relative;">
-  <!-- Replaced ion-toolbar with a standard div to bypass all Shadow DOM clipping constraints -->
   <div style="background: var(--ion-toolbar-background, #fff); position: relative; z-index: 1000; padding: 4px 0;">
     <ion-grid class="ion-no-padding" style="overflow: visible !important;">
       <ion-row class="ion-align-items-center ion-justify-content-center"
@@ -8,9 +7,8 @@
           style="flex: 1; min-width: 0; max-width: 600px; position: relative; overflow: visible !important; contain: none !important;">
           <ion-searchbar id="user-searchbar" animated="true" shape="round" placeholder="Search User..."
             (ionInput)="onUserSearchInput($event)" [debounce]="1000" [(ngModel)]="searchQuery"></ion-searchbar>
-
-          <!-- Search Suggestions (Google Style) -->
-          <div *ngIf="userSuggestions.length > 0" class="google-dropdown">
+          @if(userSuggestions.length > 0) {
+          <div class="google-dropdown">
             <ion-list lines="none" class="ion-no-padding">
               <ion-item *ngFor="let user of userSuggestions" button (click)="selectUser(user)" class="google-item">
                 <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
@@ -20,6 +18,8 @@
               </ion-item>
             </ion-list>
           </div>
+          }
+
         </ion-col>
         <ion-col size="auto">
           <ion-button color="success" shape="round" class="add-user-btn">
@@ -31,7 +31,6 @@
       </ion-row>
     </ion-grid>
   </div>
-  <!-- Replaced ion-toolbar with a standard div for product search to bypass clipping -->
   <div
     style="background: var(--ion-toolbar-background, #fff); position: relative; z-index: 500; padding: 4px 0; border-bottom: 1px solid #eee;">
     <ion-grid class="ion-no-padding" style="overflow: visible !important;">
@@ -41,53 +40,50 @@
           style="flex: 1; min-width: 0; position: relative; overflow: visible !important; contain: none !important;">
           <ion-searchbar animated="true" shape="round" placeholder="Search or Scan Barcode..."
             (ionInput)="OnSearchproduct($event)" [(ngModel)]="SearchProduct" [debounce]="1000"></ion-searchbar>
-
-          <!-- Product Search Suggestions (Google Style) -->
-          <div *ngIf="productSuggestions.length > 0" class="google-dropdown"
-            style="top: 100%; left: 16px; right: 16px;">
+          @if(productSuggestions.length > 0) {
+          <div class="google-dropdown" style="top: 100%; left: 16px; right: 16px;">
             <ion-list lines="none" class="ion-no-padding">
-              <ion-item *ngFor="let product of productSuggestions" button (click)="selectProduct(product)"
-                class="google-item">
+              @for(product of productSuggestions; track $index; let i = $index) {
+              <ion-item button (click)="selectProduct(product)" class="google-item">
                 <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
                 <ion-label>
                   <span class="user-name">{{ product.ProductName || product.name }}</span>
                 </ion-label>
               </ion-item>
+              }
             </ion-list>
           </div>
+          }
         </ion-col>
         <ion-col size="auto">
           <ion-buttons>
-            <ion-button color="primary" (click)="OpenProductModel()">
-              <ion-icon slot="icon-only" name="add-outline"></ion-icon>
-            </ion-button>
-            <ion-button (click)="scanBarcode()" *ngIf="!isScanning">
+            @if(!isScanning) {
+            <ion-button (click)="scanBarcode()">
               <ion-icon slot="icon-only" name="barcode-outline"></ion-icon>
             </ion-button>
+            }
           </ion-buttons>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
 </ion-header>
-
-<div *ngIf="isScanning" style="padding: 16px;">
+@if(isScanning) {
+<div style="padding: 16px;">
   <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto; background: white;"></div>
   <ion-button style="margin-top: 16px;" (click)="stopScanner()" color="danger" expand="block">Cancel Scan</ion-button>
 </div>
-
-<!-- Cart Items List -->
-<div *ngIf="cartItems.length > 0" style="padding: 16px;">
+}
+@if(cartItems.length > 0) {
+<div style="padding: 16px;">
   <ion-list>
     <ion-item *ngFor="let item of cartItems; let i = index">
-      <!-- Optional Image -->
-      <img *ngIf="item.Image" [src]="item.Image" slot="start"
-        style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;" />
-
       <ion-label>
         <h2>{{ item.ProductName || item.name }}</h2>
         <p>Price: ₹{{ item.SellingPrice }}</p>
-        <p *ngIf="item.Barcode">Barcode: {{ item.Barcode }}</p>
+        @if(item.Barcode) {
+        <p>Barcode: {{ item.Barcode }}</p>
+        }
       </ion-label>
 
       <div slot="end" style="display: flex; align-items: center;">
@@ -103,17 +99,19 @@
           ₹{{ item.SellingPrice * item.Quantity }}
         </span>
 
-        <ion-button fill="clear" color="medium" (click)="removeItem(i)" style="margin-left: 8px;">
+        <ion-button fill="clear" (click)="removeItem(i)" style="margin-left: 8px; color: red;">
           <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
         </ion-button>
       </div>
     </ion-item>
   </ion-list>
 </div>
-
-<div *ngIf="errorMessage" style="padding: 16px; text-align: center; color: red;">
+}
+@if(errorMessage) {
+<div style="padding: 16px; text-align: center; color: red;">
   <p>{{ errorMessage }}</p>
 </div>
+}
 
 <ion-footer class="ion-no-border"
   style="position: fixed; bottom: 0px; left: 0; right: 0; z-index: 1000; background: transparent;">
@@ -149,26 +147,19 @@
       text-transform: none;
       --padding-start: 28px;
       --padding-end: 28px;
-    ">
-      Download pdf for Bill
+    " (click)="DownloadPDF()">
+      Invoice
       <ion-icon name="document-text-outline" color="danger"></ion-icon>
     </ion-button>
   </div>
 </ion-footer>
-
-<!-- Add Product Modal -->
-<ion-modal [isOpen]="isProductModalOpen" (didDismiss)="isProductModalOpen = false">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Add Product</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="isProductModalOpen = false">Close</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <p>Add product form will be here.</p>
-    </ion-content>
-  </ng-template>
-</ion-modal>
+<app-quote-price-billing [isOpen]="isProductModalOpen" (close)="isProductModalOpen = false">
+</app-quote-price-billing>
+@if(isBillModalOpen) {
+<app-generate-bill [cartItems]="cartItems" [totalPrice]="totalPrice" [searchQuery]="searchQuery"
+  [currentDate]="currentDate" (close)="isBillModalOpen = false">
+</app-generate-bill>
+}
+<app-add-product [isOpen]="isCustomDialogOpen" (close)="isCustomDialogOpen = false"
+  (confirm)="OpenProductModelFromDialog()">
+</app-add-product>

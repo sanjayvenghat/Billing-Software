@@ -1,0 +1,53 @@
+<div style="background: #f4f5f8; padding: 16px;">
+  <!-- Receipt Card -->
+  <div class="receipt-card" id="receipt-card-pdf">
+    <div class="receipt-header">
+      <div class="store-logo">
+        <ion-icon name="cart-outline"></ion-icon>
+      </div>
+      <h2>FreshMart</h2>
+      <p>123 Grocery Lane, Fresh City</p>
+      <div class="receipt-divider"></div>
+    </div>
+
+    <div class="receipt-info">
+      <div class="info-row">
+        <span>Date:</span>
+        <span>{{ currentDate | date:'short' }}</span>
+      </div>
+      <div class="info-row" *ngIf="searchQuery">
+        <span>Customer:</span>
+        <span>{{ searchQuery }}</span>
+      </div>
+    </div>
+
+    <div class="receipt-divider border-dashed"></div>
+
+    <div class="receipt-items">
+      <div class="item-row header">
+        <span class="item-name">Item</span>
+        <span class="item-qty">Qty</span>
+        <span class="item-price">Price</span>
+      </div>
+      <div class="item-row" *ngFor="let item of cartItems">
+        <span class="item-name">{{ item.ProductName || item.name }}</span>
+        <span class="item-qty">x{{ item.Quantity }}</span>
+        <span class="item-price">₹{{ item.SellingPrice * item.Quantity }}</span>
+      </div>
+    </div>
+
+    <div class="receipt-divider border-dashed"></div>
+
+    <div class="receipt-total">
+      <div class="total-row">
+        <span>Total Amount</span>
+        <span class="total-amount">₹{{ totalPrice }}</span>
+      </div>
+    </div>
+
+    <div class="barcode-container">
+      <ion-icon name="barcode-outline" class="fake-barcode"></ion-icon>
+      <p>Thank you for shopping!</p>
+    </div>
+  </div>
+</div>
