@@ -66,12 +66,10 @@ export class BillingComponent implements OnInit, OnDestroy {
   onSearch(event: any) {
     const value = event.detail.value;
     if (value) {
-      console.log(`Manual/Physical Barcode Entered: ${value}`);
       this.fetchProductDetails(value);
     }
   }
   OnSearchproduct(event: any) {
-    console.log(event, "SearchProduct")
     const rawQuery = event.target.value || '';
     if (!rawQuery.trim()) {
       this.productSuggestions = [];
@@ -95,11 +93,9 @@ export class BillingComponent implements OnInit, OnDestroy {
         this.productSuggestions = [];
       }
     })
-    console.log(query, "event")
   }
 
   selectProduct(product: any) {
-    console.log('Selected Product:', product);
     this.SearchProduct = ''; // Clear search
     this.productSuggestions = [];
     if (product.Barcode) {
@@ -149,7 +145,6 @@ export class BillingComponent implements OnInit, OnDestroy {
   }
 
   onUserSearchInput(event: any) {
-    debugger
     const rawQuery = event.detail.value || '';
     const searchValue = rawQuery.toLowerCase().replace(/\s+/g, '');
     let query = {
@@ -158,8 +153,6 @@ export class BillingComponent implements OnInit, OnDestroy {
     }
     this.BillingService.searchUsers(query).subscribe({
       next: (response: any) => {
-        console.log('User Details Fetched Successfully:');
-        console.log(response);
         this.userSuggestions = response.userdata;
         this.errorMessage = '';
       },
@@ -172,7 +165,6 @@ export class BillingComponent implements OnInit, OnDestroy {
   }
 
   selectUser(user: any) {
-    console.log('Selected User:', user);
     this.searchQuery = user.CustomerName;
     this.userSuggestions = [];
     // Logic to attach user to the current bill can go here
@@ -218,8 +210,7 @@ export class BillingComponent implements OnInit, OnDestroy {
     this.isScanning = false;
   }
 
-  onScanSuccess(decodedText: string, decodedResult: any) {
-    console.log(`Barcode Scanned = ${decodedText}`);
+  onScanSuccess(decodedText: string) {
     this.stopScanner();
     this.fetchProductDetails(decodedText);
   }
@@ -232,8 +223,6 @@ export class BillingComponent implements OnInit, OnDestroy {
     const url = `${environment.LoginUrl}/api/grocery/getProductDetails?id=${id}`;
     this.http.get(url).subscribe({
       next: (response: any) => {
-        console.log('Product Details Fetched Successfully:');
-        console.log(response);
         this.addToCart(response.data || response);
         this.errorMessage = '';
       },
@@ -265,7 +254,7 @@ export class BillingComponent implements OnInit, OnDestroy {
     this.billStatus = 'PENDING';
     this.currentDate = new Date();
     this.isPendingModalOpen = false;
-    
+
     // Wait for the modal dismissal transition to complete (300ms) before launching the PDF generator
     setTimeout(() => {
       this.isBillModalOpen = true;

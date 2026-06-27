@@ -54,7 +54,7 @@ export class HomePage implements OnInit {
         password: this.loginForm.value.password
       };
 
-      console.log('Attempting login with:', payload);
+
       this.loaderService.showLoader("please wait...")
       this.loginService.Login(payload).subscribe({
         next: (val: any) => {

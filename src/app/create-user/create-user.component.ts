@@ -30,7 +30,7 @@ export class CreateUserComponent implements OnInit {
     }
     this.newUserService.AddCustomer(customerDetails).subscribe({
       next: (response: any) => {
-        console.log("Customer added:", response);
+
         this.toastr.showSuccess(response.message || "Customer added successfully");
         this.customerName = ""
       },

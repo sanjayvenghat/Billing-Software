@@ -52,7 +52,6 @@ export class QuotePriceComponent implements OnInit {
           // Generate the unique QR code URL using the ID returned from backend
           if (val.CreatedUserInfo && val.CreatedUserInfo._id) {
             this.savedItemUrl = `${environment.LoginUrl}/view-item/getItem?id=${val.CreatedUserInfo._id}`;
-            console.log(this.savedItemUrl, "this.savedItemUrl")
 
           }
 
@@ -64,13 +63,11 @@ export class QuotePriceComponent implements OnInit {
         else {
           this.toaster.showWarning(val.message)
         }
-        console.log(val);
       },
       error: (err: any) => {
         console.error('Error fetching grocery data:', err);
       }
     });
-    console.log(this.ProductName, this.BuyingPrice, this.SellingPrice);
 
   }
   downloadQR() {

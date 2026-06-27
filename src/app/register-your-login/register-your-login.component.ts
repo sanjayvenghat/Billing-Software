@@ -96,7 +96,6 @@ export class RegisterYourLoginComponent implements OnInit, OnDestroy {
   verifyOtp() {
     const otp = this.registerForm.get('otp')?.value;
     const email = this.registerForm.get('email')?.value;
-    console.log(otp, "otp")
     if (!otp || String(otp).length !== 6) {
       this.toastService.showError('Please enter the 6-digit OTP.');
       return;

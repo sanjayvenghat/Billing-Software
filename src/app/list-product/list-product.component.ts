@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastService } from 'src/Service/ToasterService';
 import { addIcons } from 'ionicons';
 import { createOutline, checkmarkOutline, closeOutline, funnel, trashOutline } from 'ionicons/icons';
-
+import { LoaderService } from 'src/Service/LoaderService';
 @Component({
   selector: 'app-list-product',
   templateUrl: './list-product.component.html',
@@ -23,7 +23,8 @@ export class ListProductComponent implements OnInit {
     private keysStorage: KEYSSTORAGE,
     private productService: ProductService,
     private toastService: ToastService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private LoaderService: LoaderService
   ) {
     addIcons({ createOutline, checkmarkOutline, closeOutline, funnel, trashOutline });
   }
@@ -33,7 +34,6 @@ export class ListProductComponent implements OnInit {
   }
   GetProductList() {
     let companyId = this.keysStorage.getItem("CompanyId");
-    console.log(companyId, "companyId")
     this.productService.GetUserProducts(companyId).subscribe({
       next: (val: any) => {
         this.Grocery_List = val.GetUserProducts;
@@ -85,15 +85,17 @@ export class ListProductComponent implements OnInit {
       this.toastService.showWarning("Please enter valid prices");
       return;
     }
-
+    this.LoaderService.showLoader("The product Price Is Updating")
     this.productService.UpdateProductPrice(item._id, item.editSellingPrice, item.editBuyingPrice).subscribe({
       next: (val: any) => {
+        this.LoaderService.hideLoader()
         item.SellingPrice = item.editSellingPrice;
         item.BuyingPrice = item.editBuyingPrice;
         item.isEditing = false;
         this.toastService.showSuccess("Prices updated successfully");
       },
       error: (err: any) => {
+        this.LoaderService.hideLoader()
         console.error('Error updating price:', err);
         this.toastService.showError("Failed to update prices. Make sure backend route exists.");
       }
@@ -125,13 +127,16 @@ export class ListProductComponent implements OnInit {
   }
 
   private confirmDelete(item: any) {
+    this.LoaderService.showLoader("Product Is Deleting...")
     this.productService.DeleteProduct(item._id).subscribe({
       next: (val: any) => {
+        this.LoaderService.hideLoader()
         this.Grocery_List = this.Grocery_List.filter((g: any) => g._id !== item._id);
         this.Filtered_Grocery_List = this.Filtered_Grocery_List.filter((g: any) => g._id !== item._id);
         this.toastService.showSuccess("Product deleted successfully");
       },
       error: (err: any) => {
+        this.LoaderService.hideLoader()
         console.error('Error deleting product:', err);
         this.toastService.showError("Failed to delete product");
       }
