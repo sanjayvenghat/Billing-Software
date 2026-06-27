@@ -38,4 +38,17 @@ export class ProductService {
     );
   }
 
+  DeleteProduct(ProductId: string): Observable<any> {
+    const payload = { ProductId };
+    return this.http.post(`${this.apiUrl}/DeleteProduct`, payload).pipe(
+      map((val: any) => {
+        return val;
+      }),
+      catchError((error) => {
+        console.error('Error deleting grocery product:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
 }

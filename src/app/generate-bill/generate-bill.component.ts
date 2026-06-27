@@ -17,6 +17,8 @@ export class GenerateBillComponent implements OnInit, AfterViewInit {
   @Input() cartItems: any[] = [];
   @Input() totalPrice!: Number;
   @Input() status: 'PAID' | 'PENDING' = 'PAID';
+  @Input() amountPaid: number = 0;
+  @Input() balanceAmount: number = 0;
 
   @Output() close = new EventEmitter<void>();
 

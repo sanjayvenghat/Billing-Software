@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { ProductService } from './product-service';
-import { IonItem, IonLabel, IonList, IonNote, IonAvatar, IonListHeader, IonInput, IonButton, IonIcon, IonSearchbar, IonHeader, IonToolbar, IonContent, IonButtons } from '@ionic/angular/standalone';
+import { IonItem, IonLabel, IonList, IonNote, IonAvatar, IonListHeader, IonInput, IonButton, IonIcon, IonSearchbar, IonHeader, IonToolbar, IonContent, IonButtons, AlertController } from '@ionic/angular/standalone';
 import { CurrencyPipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from 'src/Service/ToasterService';
 import { addIcons } from 'ionicons';
-import { createOutline, checkmarkOutline, closeOutline, funnel } from 'ionicons/icons';
+import { createOutline, checkmarkOutline, closeOutline, funnel, trashOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-list-product',
@@ -19,8 +19,13 @@ export class ListProductComponent implements OnInit {
   Filtered_Grocery_List: any = [];
   isAscending: boolean = true;
 
-  constructor(private keysStorage: KEYSSTORAGE, private productService: ProductService, private toastService: ToastService) {
-    addIcons({ createOutline, checkmarkOutline, closeOutline, funnel });
+  constructor(
+    private keysStorage: KEYSSTORAGE,
+    private productService: ProductService,
+    private toastService: ToastService,
+    private alertController: AlertController
+  ) {
+    addIcons({ createOutline, checkmarkOutline, closeOutline, funnel, trashOutline });
   }
 
   ngOnInit() {
@@ -91,6 +96,44 @@ export class ListProductComponent implements OnInit {
       error: (err: any) => {
         console.error('Error updating price:', err);
         this.toastService.showError("Failed to update prices. Make sure backend route exists.");
+      }
+    });
+  }
+
+  async deleteProduct(item: any) {
+    const alert = await this.alertController.create({
+      header: 'Confirm Delete',
+      message: `Are you sure you want to delete "${item.ProductName}"?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'alert-button-cancel'
+        },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          cssClass: 'alert-button-confirm',
+          handler: () => {
+            this.confirmDelete(item);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  private confirmDelete(item: any) {
+    this.productService.DeleteProduct(item._id).subscribe({
+      next: (val: any) => {
+        this.Grocery_List = this.Grocery_List.filter((g: any) => g._id !== item._id);
+        this.Filtered_Grocery_List = this.Filtered_Grocery_List.filter((g: any) => g._id !== item._id);
+        this.toastService.showSuccess("Product deleted successfully");
+      },
+      error: (err: any) => {
+        console.error('Error deleting product:', err);
+        this.toastService.showError("Failed to delete product");
       }
     });
   }

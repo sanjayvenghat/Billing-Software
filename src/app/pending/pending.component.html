@@ -1,0 +1,96 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="close.emit()" [enterAnimation]="enterAnimation"
+  [leaveAnimation]="leaveAnimation" class="pending-modal">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar color="primary">
+        <ion-title style="font-weight: 700; color: #1e1e1e;">Pending Checkout</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="close.emit()" style="color: #1e1e1e; font-weight: 600;">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <!-- Info Header Card -->
+      <div class="transaction-summary-card">
+        <div class="summary-section">
+          <span class="summary-label">Total Bill Amount</span>
+          <h1 class="summary-value">₹{{ totalPrice }}</h1>
+        </div>
+
+        <div class="customer-info-section">
+          <div *ngIf="customerName" class="customer-chip">
+            <ion-icon name="person-outline"></ion-icon>
+            <span>Customer: <strong>{{ customerName }}</strong></span>
+          </div>
+          <div *ngIf="!customerName" class="no-customer-warning">
+            <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
+            <span>No customer selected. Credit billing requires an associated customer profile.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Form -->
+      <div class="payment-form">
+        <!-- Amount Paid -->
+        <div class="input-group">
+          <div class="input-header">
+            <ion-icon name="cash-outline"></ion-icon>
+            <label>Amount Paid Now (₹)</label>
+          </div>
+          <ion-input type="number" class="custom-input amount-paid-input" placeholder="Enter payment amount"
+            [(ngModel)]="amountPaid" (ionInput)="updateBalance()" min="0" [max]="totalPrice">
+          </ion-input>
+          <ion-note class="input-helper">How much the customer is paying right now.</ion-note>
+        </div>
+
+        <!-- Balance Due -->
+        <div class="input-group">
+          <div class="input-header">
+            <ion-icon name="wallet-outline"></ion-icon>
+            <label>Balance Remaining (₹)</label>
+          </div>
+          <div class="balance-display-box" [class.has-balance]="balanceAmount > 0">
+            <span class="balance-currency">₹</span>
+            <span class="balance-value">{{ balanceAmount }}</span>
+          </div>
+          <ion-note class="input-helper">Calculated automatically as Total - Paid Amount.</ion-note>
+        </div>
+
+        <!-- Due Date -->
+        <div class="input-group">
+          <div class="input-header">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <label>Expected Balance Due Date</label>
+          </div>
+          <ion-input type="date" class="custom-input" [(ngModel)]="dueDate">
+          </ion-input>
+          <ion-note class="input-helper">Target date for recovering the remaining balance.</ion-note>
+        </div>
+
+        <!-- Notes -->
+        <div class="input-group">
+          <div class="input-header">
+            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+            <label>Payment Notes</label>
+          </div>
+          <ion-textarea class="custom-input" rows="3"
+            placeholder="Add comments or payment terms (e.g., will pay via UPI on Monday)" [(ngModel)]="notes">
+          </ion-textarea>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="actions-container">
+        <ion-button fill="outline" color="medium" shape="round" class="cancel-btn" (click)="close.emit()">
+          Cancel
+        </ion-button>
+        <ion-button color="success" shape="round" class="confirm-btn" [disabled]="!customerName"
+          (click)="submitPending()">
+          Confirm Pending
+        </ion-button>
+      </div>
+
+    </ion-content>
+  </ng-template>
+</ion-modal>

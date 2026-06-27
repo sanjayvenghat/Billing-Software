@@ -15,12 +15,12 @@ import { documentTextOutline, documentOutline } from 'ionicons/icons'
 import { GenerateBillComponent } from '../generate-bill/generate-bill.component';
 import { AddProductComponent } from '../add-product/add-product.component';
 import { QuotePriceBillingComponent } from '../quote-price-billing/quote-price-billing.component';
-
+import { PendingComponent } from '../pending/pending.component';
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  imports: [CommonModule, HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, AddProductComponent, QuotePriceBillingComponent]
+  imports: [CommonModule, HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, AddProductComponent, QuotePriceBillingComponent, PendingComponent]
 })
 export class BillingComponent implements OnInit, OnDestroy {
   private scanner: Html5QrcodeScanner | null = null;
@@ -33,6 +33,9 @@ export class BillingComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   searchQuery: string = ""
   totalPrice: Number = 0;
+  isPendingModalOpen: boolean = false;
+  pendingAmountPaid: number = 0;
+  pendingBalanceAmount: number = 0;
   constructor(private http: HttpClient, private toasterService: ToastService, private BillingService: Billingservice, private keysStorage: KEYSSTORAGE) {
     addIcons({
       barcodeOutline, 'add-outline': addOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline, 'trash-outline': trashOutline, 'add-circle-outline': addCircleOutline, 'remove-circle-outline': removeCircleOutline, 'arrow-forward-outline': arrowForwardOutline,
@@ -253,9 +256,20 @@ export class BillingComponent implements OnInit, OnDestroy {
       this.toasterService.showWarning("Cannot Mark Payment As Cart is Empty");
       return;
     }
+    this.isPendingModalOpen = true;
+  }
+
+  handlePendingConfirm(event: { amountPaid: number, balanceAmount: number, dueDate?: string, notes?: string }) {
+    this.pendingAmountPaid = event.amountPaid;
+    this.pendingBalanceAmount = event.balanceAmount;
     this.billStatus = 'PENDING';
     this.currentDate = new Date();
-    this.isBillModalOpen = true;
+    this.isPendingModalOpen = false;
+    
+    // Wait for the modal dismissal transition to complete (300ms) before launching the PDF generator
+    setTimeout(() => {
+      this.isBillModalOpen = true;
+    }, 350);
   }
 
   DownloadPDF() {

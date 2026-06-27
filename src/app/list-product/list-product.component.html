@@ -51,6 +51,9 @@
         <ion-button fill="clear" size="small" (click)="editPrice(item); $event.stopPropagation()">
           <ion-icon name="create-outline"></ion-icon>
         </ion-button>
+        <ion-button fill="clear" color="danger" size="small" (click)="deleteProduct(item); $event.stopPropagation()">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
         } @else {
         <div class="edit-price-container" (click)="$event.stopPropagation()">
           <ion-input type="number" [(ngModel)]="item.editSellingPrice" placeholder="Price"></ion-input>

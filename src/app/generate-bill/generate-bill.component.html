@@ -5,8 +5,8 @@
       <div class="store-logo">
         <ion-icon name="cart-outline"></ion-icon>
       </div>
-      <h2>FreshMart</h2>
-      <p>123 Grocery Lane, Fresh City</p>
+      <h2>Handy Bill</h2>
+
 
       <div class="status-badge" [ngClass]="status.toLowerCase()">
         {{ status }}
@@ -47,6 +47,16 @@
       <div class="total-row">
         <span>Total Amount</span>
         <span class="total-amount">₹{{ totalPrice }}</span>
+      </div>
+      <div class="total-row sub-row" *ngIf="status === 'PENDING'"
+        style="font-size: 14px; margin-top: 6px; color: #555;">
+        <span>Amount Paid:</span>
+        <span style="font-weight: 600;">₹{{ amountPaid }}</span>
+      </div>
+      <div class="total-row sub-row" *ngIf="status === 'PENDING'"
+        style="font-size: 14px; margin-top: 4px; color: #ea580c; font-weight: bold;">
+        <span>Balance Pending:</span>
+        <span>₹{{ balanceAmount }}</span>
       </div>
     </div>
 

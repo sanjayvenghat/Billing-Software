@@ -162,9 +162,13 @@
 </app-quote-price-billing>
 @if(isBillModalOpen) {
 <app-generate-bill [cartItems]="cartItems" [totalPrice]="totalPrice" [searchQuery]="searchQuery"
-  [currentDate]="currentDate" [status]="billStatus" (close)="isBillModalOpen = false">
+  [currentDate]="currentDate" [status]="billStatus" [amountPaid]="pendingAmountPaid"
+  [balanceAmount]="pendingBalanceAmount" (close)="isBillModalOpen = false">
 </app-generate-bill>
 }
+<app-pending [isOpen]="isPendingModalOpen" [totalPrice]="totalPrice" [customerName]="searchQuery"
+  (close)="isPendingModalOpen = false" (confirmPending)="handlePendingConfirm($event)">
+</app-pending>
 <app-add-product [isOpen]="isCustomDialogOpen" (close)="isCustomDialogOpen = false"
   (confirm)="OpenProductModelFromDialog()">
 </app-add-product>
