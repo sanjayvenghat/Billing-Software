@@ -61,3 +61,110 @@
   --max-width: 400px;
   --max-height: 85vh;
 }
+
+.checkout-footer-container {
+  background: var(--ion-color-light, #ffffff);
+  border-top: 1px solid var(--ion-color-step-100, #eaeaea);
+  padding: 12px 16px;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 30px 30px 0 0;
+  flex-wrap: wrap;
+  /* enables wrapping if screen is extremely narrow */
+  gap: 12px;
+
+  @media (max-width: 480px) {
+    padding: 10px 12px;
+    border-radius: 20px 20px 0 0;
+    gap: 8px;
+  }
+}
+
+.total-display-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.total-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ion-color-medium);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.total-amount-row {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.total-currency {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ion-color-primary);
+}
+
+.total-value {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--ion-color-dark);
+  letter-spacing: -1px;
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
+}
+
+.checkout-actions-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  @media (max-width: 480px) {
+    gap: 6px;
+  }
+}
+
+.pending-btn {
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(var(--ion-color-warning-rgb), 0.25);
+  height: 48px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: none;
+  --padding-start: 10px;
+  --padding-end: 12px;
+
+  @media (max-width: 480px) {
+    height: 42px;
+    font-size: 12px;
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+}
+
+.invoice-btn {
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.25);
+  height: 48px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: none;
+  --padding-start: 16px;
+  --padding-end: 16px;
+
+  @media (max-width: 480px) {
+    height: 42px;
+    font-size: 12px;
+    --padding-start: 10px;
+    --padding-end: 10px;
+  }
+}
