@@ -51,7 +51,9 @@ export class BillingComponent implements OnInit, OnDestroy {
   cartItems: any[] = [];
 
   ngOnInit() {
-    this.toasterService.showWarning("To Save In the Data Please Add User Else Billing Alone can be done");
+    setTimeout(() => {
+      this.toasterService.showWarning("To Save In the Data Please Add User Else Billing Alone can be done");
+    }, 1000)
   }
 
   ngOnDestroy() {
@@ -248,7 +250,7 @@ export class BillingComponent implements OnInit, OnDestroy {
 
   onPendingCheckout() {
     if (this.cartItems.length === 0) {
-      this.toasterService.showWarning("Cart is empty. Cannot generate bill.");
+      this.toasterService.showWarning("Cannot Mark Payment As Cart is Empty");
       return;
     }
     this.billStatus = 'PENDING';
