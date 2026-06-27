@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { LoginService } from './LoginService';
 import { ToastService } from 'src/Service/ToasterService';
+import { LoaderService } from 'src/Service/LoaderService';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,8 @@ export class HomePage implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private loginService: LoginService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private loaderService: LoaderService
   ) { }
 
   ngOnInit() {
@@ -53,11 +55,11 @@ export class HomePage implements OnInit {
       };
 
       console.log('Attempting login with:', payload);
-
+      this.loaderService.showLoader("please wait...")
       this.loginService.Login(payload).subscribe({
         next: (val: any) => {
           this.isLoading = false;
-
+          this.loaderService.hideLoader()
           if (val?.message === 'Login SuccessFul') {
             this.toastService.showSuccess(val.message);
             this.loginForm.reset();
