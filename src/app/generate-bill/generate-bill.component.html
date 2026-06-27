@@ -7,6 +7,11 @@
       </div>
       <h2>FreshMart</h2>
       <p>123 Grocery Lane, Fresh City</p>
+
+      <div class="status-badge" [ngClass]="status.toLowerCase()">
+        {{ status }}
+      </div>
+
       <div class="receipt-divider"></div>
     </div>
 

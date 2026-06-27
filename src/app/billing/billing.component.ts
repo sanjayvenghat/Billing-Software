@@ -244,11 +244,24 @@ export class BillingComponent implements OnInit, OnDestroy {
     this.isCustomDialogOpen = false;
     this.isProductModalOpen = true;
   }
+  billStatus: 'PAID' | 'PENDING' = 'PAID';
+
+  onPendingCheckout() {
+    if (this.cartItems.length === 0) {
+      this.toasterService.showWarning("Cart is empty. Cannot generate bill.");
+      return;
+    }
+    this.billStatus = 'PENDING';
+    this.currentDate = new Date();
+    this.isBillModalOpen = true;
+  }
+
   DownloadPDF() {
     if (this.cartItems.length === 0) {
       this.toasterService.showWarning("Cart is empty. Cannot generate bill.");
       return;
     }
+    this.billStatus = 'PAID';
     this.currentDate = new Date();
     this.isBillModalOpen = true;
   }

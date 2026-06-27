@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonIcon } from '@ionic/angular/standalone';
 // @ts-ignore
 import html2pdf from 'html2pdf.js';
-
+import { LoaderService } from 'src/Service/LoaderService';
 @Component({
   selector: 'app-generate-bill',
   templateUrl: './generate-bill.component.html',
@@ -16,15 +16,17 @@ export class GenerateBillComponent implements OnInit, AfterViewInit {
   @Input() searchQuery!: string;
   @Input() cartItems: any[] = [];
   @Input() totalPrice!: Number;
+  @Input() status: 'PAID' | 'PENDING' = 'PAID';
 
   @Output() close = new EventEmitter<void>();
 
-  constructor() { }
+  constructor(private loaderservice: LoaderService) { }
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
+    this.loaderservice.showLoader("Generating Bill...")
     // Need a slight delay to ensure the DOM is completely ready and CSS is applied
     setTimeout(() => {
       this.confirmDownload();
@@ -44,6 +46,7 @@ export class GenerateBillComponent implements OnInit, AfterViewInit {
 
       // @ts-ignore
       html2pdf().from(element).set(opt).save().then(() => {
+        this.loaderservice.hideLoader()
         this.close.emit();
       });
     } else {

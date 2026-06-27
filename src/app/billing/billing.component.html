@@ -136,28 +136,67 @@
       </div>
     </div>
 
-    <ion-button shape="round" color="primary" style="
-      --border-radius: 16px;
-      --box-shadow: 0 8px 20px rgba(var(--ion-color-primary-rgb), 0.35);
-      height: 56px;
-      margin: 0;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: none;
-      --padding-start: 28px;
-      --padding-end: 28px;
-    " (click)="DownloadPDF()">
-      Invoice
-      <ion-icon name="document-text-outline" color="danger"></ion-icon>
-    </ion-button>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <!-- Pending Button with Custom SVG Icon -->
+      <ion-button shape="round" color="warning" style="
+        --border-radius: 16px;
+        --box-shadow: 0 8px 20px rgba(var(--ion-color-warning-rgb), 0.35);
+        height: 56px;
+        margin: 0;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: none;
+        --padding-start: 16px;
+        --padding-end: 20px;
+      " (click)="onPendingCheckout()">
+        <svg viewBox="0 0 512 512"
+          style="width: 28px; height: 28px; margin-right: 8px; display: inline-block; vertical-align: middle;">
+          <rect x="30" y="30" width="452" height="270" rx="36" fill="#7ed7f5" />
+          <path d="M256,30 h190 a36,36 0 0 1 36,36 v198 a36,36 0 0 1 -36,36 h-190 z" fill="#4d9bd6" />
+          <rect x="30" y="70" width="452" height="64" fill="#3b6580" />
+          <path d="M256,70 h226 v64 h-226 z" fill="#254254" />
+          <rect x="90" y="180" width="120" height="32" rx="4" fill="#eef5fa" />
+          <rect x="316" y="210" width="32" height="32" rx="4" fill="#3b7cb5" />
+          <rect x="376" y="210" width="32" height="32" rx="4" fill="#3b7cb5" />
+          <rect x="436" y="210" width="32" height="32" rx="4" fill="#3b7cb5" />
+          <path d="M216,360 h266 v120 h-266 z" fill="#ffffff" />
+          <rect x="324" y="380" width="140" height="24" rx="4" fill="#e2e8f0" />
+          <rect x="324" y="420" width="140" height="24" rx="4" fill="#e2e8f0" />
+          <rect x="280" y="380" width="24" height="24" rx="4" fill="#98e37d" />
+          <rect x="280" y="420" width="24" height="24" rx="4" fill="#98e37d" />
+          <path d="M190,390 L260,460 L240,480 L170,410 Z" fill="#eef5fa" />
+          <circle cx="120" cy="380" r="110" fill="#fce068" />
+          <path d="M120,270 A110,110 0 0 1 120,490 z" fill="#fcae47" />
+          <path d="M114,300 h12 v80 h50 v12 h-62 z" fill="#d9534f" />
+        </svg>
+        Pending
+      </ion-button>
+
+      <!-- Invoice Button -->
+      <ion-button shape="round" color="primary" style="
+        --border-radius: 16px;
+        --box-shadow: 0 8px 20px rgba(var(--ion-color-primary-rgb), 0.35);
+        height: 56px;
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: none;
+        --padding-start: 24px;
+        --padding-end: 24px;
+      " (click)="DownloadPDF()">
+        Invoice
+        <ion-icon name="document-text-outline" color="danger"></ion-icon>
+      </ion-button>
+    </div>
   </div>
 </ion-footer>
 <app-quote-price-billing [isOpen]="isProductModalOpen" (close)="isProductModalOpen = false">
 </app-quote-price-billing>
 @if(isBillModalOpen) {
 <app-generate-bill [cartItems]="cartItems" [totalPrice]="totalPrice" [searchQuery]="searchQuery"
-  [currentDate]="currentDate" (close)="isBillModalOpen = false">
+  [currentDate]="currentDate" [status]="billStatus" (close)="isBillModalOpen = false">
 </app-generate-bill>
 }
 <app-add-product [isOpen]="isCustomDialogOpen" (close)="isCustomDialogOpen = false"
