@@ -72,6 +72,7 @@ export class HomePage implements OnInit {
         },
         error: (err) => {
           this.isLoading = false;
+          this.loaderService.hideLoader()
           console.error('Login error:', err);
           this.toastService.showError('Something went wrong. Please try again.');
         }
