@@ -14,6 +14,7 @@ import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 })
 export class CreateUserComponent implements OnInit {
   customerName: String = ""
+  phoneNumber: String = ""
   constructor(private newUserService: NewUser, private toastr: ToastService, private keysStorage: KEYSSTORAGE) {
     addIcons({ personOutline, mailOutline, lockClosedOutline, callOutline, globeOutline, saveOutline });
   }
@@ -24,8 +25,13 @@ export class CreateUserComponent implements OnInit {
       this.toastr.showWarning("Please enter customer name");
       return;
     }
+    if (!this.phoneNumber) {
+      this.toastr.showWarning("Please enter Valid Mobile Number Before Saving The data");
+      return;
+    }
     let customerDetails = {
       CustomerName: this.customerName,
+      MobileNumber: this.phoneNumber,
       companyId: this.keysStorage.getItem("CompanyId")
     }
     this.newUserService.AddCustomer(customerDetails).subscribe({
@@ -33,6 +39,7 @@ export class CreateUserComponent implements OnInit {
 
         this.toastr.showSuccess(response.message || "Customer added successfully");
         this.customerName = ""
+        this.phoneNumber = ""
       },
       error: (err: any) => {
         console.error("Error adding customer:", err);
@@ -41,5 +48,18 @@ export class CreateUserComponent implements OnInit {
     });
 
 
+  }
+  validateNumber(event: any) {
+    // Get the current value from the input
+    const value = event.target.value;
+
+    // Replace any non-digit character (anything not 0-9) with an empty string
+    const numericValue = value.replace(/[^0-9]/g, '');
+
+    // Update the input field visually
+    event.target.value = numericValue;
+
+    // Update the Angular model
+    this.phoneNumber = numericValue;
   }
 }

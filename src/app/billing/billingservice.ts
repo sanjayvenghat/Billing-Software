@@ -15,4 +15,7 @@ export class Billingservice {
   searchProduct(query: any): Observable<any[]> {
     return this.http.post<any[]>(`${environment.LoginUrl}/api/Billing/searchProduct`, query);
   }
+  SavePendingBill(request: any): Observable<any[]> {
+    return this.http.post<any[]>(`${environment.LoginUrl}/api/Billing/SavePendingBill`, request);
+  }
 }

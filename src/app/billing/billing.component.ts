@@ -10,6 +10,7 @@ import { ToastService } from 'src/Service/ToasterService';
 import { IonFooter } from '@ionic/angular/standalone';
 import { Billingservice } from './billingservice';
 import { FormsModule } from '@angular/forms';
+import { LoaderService } from 'src/Service/LoaderService';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { documentTextOutline, documentOutline } from 'ionicons/icons'
 import { GenerateBillComponent } from '../generate-bill/generate-bill.component';
@@ -31,12 +32,12 @@ export class BillingComponent implements OnInit, OnDestroy {
   currentDate: Date = new Date();
   scannedProduct: any = null;
   errorMessage: string = '';
-  searchQuery: string = ""
+  searchQuery: any = {}
   totalPrice: Number = 0;
   isPendingModalOpen: boolean = false;
   pendingAmountPaid: number = 0;
   pendingBalanceAmount: number = 0;
-  constructor(private http: HttpClient, private toasterService: ToastService, private BillingService: Billingservice, private keysStorage: KEYSSTORAGE) {
+  constructor(private http: HttpClient, private toasterService: ToastService, private BillingService: Billingservice, private keysStorage: KEYSSTORAGE, private LoaderService: LoaderService) {
     addIcons({
       barcodeOutline, 'add-outline': addOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline, 'trash-outline': trashOutline, 'add-circle-outline': addCircleOutline, 'remove-circle-outline': removeCircleOutline, 'arrow-forward-outline': arrowForwardOutline,
       'document-text-outline': documentTextOutline,
@@ -151,6 +152,7 @@ export class BillingComponent implements OnInit, OnDestroy {
       searchValue: searchValue,
       companyId: this.keysStorage.getItem("CompanyId")
     }
+
     this.BillingService.searchUsers(query).subscribe({
       next: (response: any) => {
         this.userSuggestions = response.userdata;
@@ -165,7 +167,7 @@ export class BillingComponent implements OnInit, OnDestroy {
   }
 
   selectUser(user: any) {
-    this.searchQuery = user.CustomerName;
+    this.searchQuery = { customerName: user.CustomerName, customerId: user._id };
     this.userSuggestions = [];
     // Logic to attach user to the current bill can go here
   }
@@ -254,7 +256,26 @@ export class BillingComponent implements OnInit, OnDestroy {
     this.billStatus = 'PENDING';
     this.currentDate = new Date();
     this.isPendingModalOpen = false;
-
+    let request = {
+      customerId: this.searchQuery.customerId,
+      companyId: this.keysStorage.getItem("CompanyId"),
+      totalAmount: this.totalPrice,
+      amountPaid: event.amountPaid,
+      balanceAmount: event.balanceAmount,
+      notes: event.notes,
+      cartItems: this.cartItems
+    }
+    this.LoaderService.showLoader(`Pending Bill for the customer ${this.searchQuery.customerName}`)
+    this.BillingService.SavePendingBill(request).subscribe({
+      next: (response: any) => {
+        this.toasterService.showSuccess(`Pending Bill Saved Successfully for the customer ${this.searchQuery.customerName}`);
+      },
+      error: (err) => {
+        console.error('Error fetching product details from barcode id:', err);
+        this.toasterService.showError("Error Saving Pending Bill");
+        this.LoaderService.hideLoader();
+      }
+    })
     // Wait for the modal dismissal transition to complete (300ms) before launching the PDF generator
     setTimeout(() => {
       this.isBillModalOpen = true;

@@ -6,7 +6,8 @@
         <ion-col
           style="flex: 1; min-width: 0; max-width: 600px; position: relative; overflow: visible !important; contain: none !important;">
           <ion-searchbar id="user-searchbar" animated="true" shape="round" placeholder="Search User..."
-            (ionInput)="onUserSearchInput($event)" [debounce]="1000" [(ngModel)]="searchQuery"></ion-searchbar>
+            (ionInput)="onUserSearchInput($event)" [debounce]="1000"
+            [(ngModel)]="searchQuery.customerName"></ion-searchbar>
           @if(userSuggestions.length > 0) {
           <div class="google-dropdown">
             <ion-list lines="none" class="ion-no-padding">
@@ -161,12 +162,12 @@
 <app-quote-price-billing [isOpen]="isProductModalOpen" (close)="isProductModalOpen = false">
 </app-quote-price-billing>
 @if(isBillModalOpen) {
-<app-generate-bill [cartItems]="cartItems" [totalPrice]="totalPrice" [searchQuery]="searchQuery"
+<app-generate-bill [cartItems]="cartItems" [totalPrice]="totalPrice" [searchQuery]="searchQuery.customerName"
   [currentDate]="currentDate" [status]="billStatus" [amountPaid]="pendingAmountPaid"
   [balanceAmount]="pendingBalanceAmount" (close)="isBillModalOpen = false">
 </app-generate-bill>
 }
-<app-pending [isOpen]="isPendingModalOpen" [totalPrice]="totalPrice" [customerName]="searchQuery"
+<app-pending [isOpen]="isPendingModalOpen" [totalPrice]="totalPrice" [customerName]="searchQuery.customerName"
   (close)="isPendingModalOpen = false" (confirmPending)="handlePendingConfirm($event)">
 </app-pending>
 <app-add-product [isOpen]="isCustomDialogOpen" (close)="isCustomDialogOpen = false"

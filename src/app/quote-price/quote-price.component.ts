@@ -9,7 +9,7 @@ import { QRCodeComponent } from 'angularx-qrcode';
 import { addIcons } from 'ionicons';
 import { download } from 'ionicons/icons';
 import { environment } from 'src/environments/environment';
-
+import { LoaderService } from 'src/Service/LoaderService';
 @Component({
   selector: 'app-quote-price',
   templateUrl: './quote-price.component.html',
@@ -25,7 +25,7 @@ export class QuotePriceComponent implements OnInit {
   generateQrCode: boolean = false;
   savedItemUrl: string = '';
 
-  constructor(private quoteService: QuoteService, private toaster: ToastService, private keysStorage: KEYSSTORAGE) {
+  constructor(private quoteService: QuoteService, private toaster: ToastService, private keysStorage: KEYSSTORAGE, private LoaderService: LoaderService) {
     addIcons({ download });
   }
 
@@ -40,6 +40,7 @@ export class QuotePriceComponent implements OnInit {
       this.toaster.showWarning('Please enter product name, buying price and selling price');
       return;
     }
+    this.LoaderService.showLoader("Please wait while adding product")
     let payload = {
       "ProductName": this.ProductName,
       "BuyingPrice": this.BuyingPrice,
@@ -54,6 +55,7 @@ export class QuotePriceComponent implements OnInit {
             this.savedItemUrl = `${environment.LoginUrl}/view-item/getItem?id=${val.CreatedUserInfo._id}`;
 
           }
+          this.LoaderService.hideLoader();
 
           this.ProductName = "";
           this.BuyingPrice = "";
@@ -61,10 +63,12 @@ export class QuotePriceComponent implements OnInit {
           this.toaster.showSuccess(val.message);
         }
         else {
+          this.LoaderService.hideLoader();
           this.toaster.showWarning(val.message)
         }
       },
       error: (err: any) => {
+        this.LoaderService.hideLoader();
         console.error('Error fetching grocery data:', err);
       }
     });
