@@ -19,14 +19,18 @@
         </div>
 
         <div class="customer-info-section">
-          <div *ngIf="customerName" class="customer-chip">
-            <ion-icon name="person-outline"></ion-icon>
-            <span>Customer: <strong>{{ customerName }}</strong></span>
-          </div>
-          <div *ngIf="!customerName" class="no-customer-warning">
-            <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
-            <span>No customer selected. Credit billing requires an associated customer profile.</span>
-          </div>
+          @if (customerName) {
+            <div class="customer-chip">
+              <ion-icon name="person-outline"></ion-icon>
+              <span>Customer: <strong>{{ customerName }}</strong></span>
+            </div>
+          }
+          @if (!customerName) {
+            <div class="no-customer-warning">
+              <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
+              <span>No customer selected. Credit billing requires an associated customer profile.</span>
+            </div>
+          }
         </div>
       </div>
 

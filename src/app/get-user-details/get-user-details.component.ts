@@ -15,18 +15,19 @@ import { addIcons } from 'ionicons';
 import { library, playCircle, radio, search, cashOutline, pricetags, personAdd, wallet } from 'ionicons/icons';
 import { QuotePriceComponent } from '../quote-price/quote-price.component';
 import { ListProductComponent } from '../list-product/list-product.component';
-import { CommonModule } from '@angular/common';
-import { CreateUserComponent } from '../create-user/create-user.component';
 
+import { CreateUserComponent } from '../create-user/create-user.component';
+import { IonTableComponent } from '../ion-table/ion-table.component';
 @Component({
   selector: 'app-get-user-details',
   templateUrl: './get-user-details.component.html',
   styleUrls: ['./get-user-details.component.scss'],
-  imports: [IonContent, IonHeader, IonIcon, IonTab, IonTabBar, IonTabButton, IonTabs, IonToolbar, HeaderComponentComponent, BillingComponent, QuotePriceComponent, ListProductComponent, CommonModule, CreateUserComponent],
+  imports: [IonTableComponent, IonContent, IonHeader, IonIcon, IonTab, IonTabBar, IonTabButton, IonTabs, IonToolbar, HeaderComponentComponent, BillingComponent, QuotePriceComponent, ListProductComponent, CreateUserComponent],
 })
 export class GetUserDetailsComponent {
 
   @ViewChild(ListProductComponent) listProductComponent!: ListProductComponent;
+  @ViewChild(IonTableComponent) ionTableComponent!: IonTableComponent;
 
   constructor() {
     addIcons({ library, playCircle, radio, search, cashOutline, pricetags, personAdd, wallet });
@@ -39,7 +40,10 @@ export class GetUserDetailsComponent {
       if (this.listProductComponent) {
         this.listProductComponent.GetProductList();
       }
+    } else if (event.tab === 'Accounts and pending') {
+      if (this.ionTableComponent) {
+        this.ionTableComponent.loadCustomers();
+      }
     }
   }
-
 }

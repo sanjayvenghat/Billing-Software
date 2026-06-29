@@ -7,18 +7,21 @@
           style="flex: 1; min-width: 0; max-width: 600px; position: relative; overflow: visible !important; contain: none !important;">
           <ion-searchbar id="user-searchbar" animated="true" shape="round" placeholder="Search User..."
             (ionInput)="onUserSearchInput($event)" [debounce]="1000"
-            [(ngModel)]="searchQuery.customerName"></ion-searchbar>
+          [(ngModel)]="searchQuery.customerName"></ion-searchbar>
           @if(userSuggestions.length > 0) {
-          <div class="google-dropdown">
-            <ion-list lines="none" class="ion-no-padding">
-              <ion-item *ngFor="let user of userSuggestions" button (click)="selectUser(user)" class="google-item">
-                <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
-                <ion-label>
-                  <span class="user-name" (click)="selectUser(user)">{{ user.CustomerName }}</span>
-                </ion-label>
-              </ion-item>
-            </ion-list>
-          </div>
+            <div class="google-dropdown">
+              <ion-list lines="none" class="ion-no-padding">
+                @for (user of userSuggestions; track user) {
+                  <ion-item button (click)="selectUser(user)" class="google-item">
+                    <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
+                    <ion-label>
+                      <span class="user-name" (click)="selectUser(user)">{{ user.CustomerName }}({{ user.MobileNumber
+                      }})</span>
+                    </ion-label>
+                  </ion-item>
+                }
+              </ion-list>
+            </div>
           }
 
         </ion-col>
@@ -40,28 +43,28 @@
         <ion-col
           style="flex: 1; min-width: 0; position: relative; overflow: visible !important; contain: none !important;">
           <ion-searchbar animated="true" shape="round" placeholder="Search or Scan Barcode..."
-            (ionInput)="OnSearchproduct($event)" [(ngModel)]="SearchProduct" [debounce]="1000"></ion-searchbar>
+          (ionInput)="OnSearchproduct($event)" [(ngModel)]="SearchProduct" [debounce]="1000"></ion-searchbar>
           @if(productSuggestions.length > 0) {
-          <div class="google-dropdown" style="top: 100%; left: 16px; right: 16px;">
-            <ion-list lines="none" class="ion-no-padding">
-              @for(product of productSuggestions; track $index; let i = $index) {
-              <ion-item button (click)="selectProduct(product)" class="google-item">
-                <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
-                <ion-label>
-                  <span class="user-name">{{ product.ProductName || product.name }}</span>
-                </ion-label>
-              </ion-item>
-              }
-            </ion-list>
-          </div>
+            <div class="google-dropdown" style="top: 100%; left: 16px; right: 16px;">
+              <ion-list lines="none" class="ion-no-padding">
+                @for(product of productSuggestions; track $index; let i = $index) {
+                  <ion-item button (click)="selectProduct(product)" class="google-item">
+                    <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
+                    <ion-label>
+                      <span class="user-name">{{ product.ProductName || product.name }}</span>
+                    </ion-label>
+                  </ion-item>
+                }
+              </ion-list>
+            </div>
           }
         </ion-col>
         <ion-col size="auto">
           <ion-buttons>
             @if(!isScanning) {
-            <ion-button (click)="scanBarcode()">
-              <ion-icon slot="icon-only" name="barcode-outline"></ion-icon>
-            </ion-button>
+              <ion-button (click)="scanBarcode()">
+                <ion-icon slot="icon-only" name="barcode-outline"></ion-icon>
+              </ion-button>
             }
           </ion-buttons>
         </ion-col>
@@ -70,48 +73,47 @@
   </div>
 </ion-header>
 @if(isScanning) {
-<div style="padding: 16px;">
-  <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto; background: white;"></div>
-  <ion-button style="margin-top: 16px;" (click)="stopScanner()" color="danger" expand="block">Cancel Scan</ion-button>
-</div>
+  <div style="padding: 16px;">
+    <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto; background: white;"></div>
+    <ion-button style="margin-top: 16px;" (click)="stopScanner()" color="danger" expand="block">Cancel Scan</ion-button>
+  </div>
 }
 @if(cartItems.length > 0) {
-<div style="padding: 16px;">
-  <ion-list>
-    <ion-item *ngFor="let item of cartItems; let i = index">
-      <ion-label>
-        <h2>{{ item.ProductName || item.name }}</h2>
-        <p>Price: ₹{{ item.SellingPrice }}</p>
-        @if(item.Barcode) {
-        <p>Barcode: {{ item.Barcode }}</p>
-        }
-      </ion-label>
-
-      <div slot="end" style="display: flex; align-items: center;">
-        <ion-button fill="clear" color="danger" (click)="decreaseQuantity(i)">
-          <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
-        </ion-button>
-        <span style="font-weight: bold; margin: 0 8px; font-size: 16px;">{{ item.Quantity }}</span>
-        <ion-button fill="clear" color="success" (click)="increaseQuantity(i)">
-          <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
-        </ion-button>
-
-        <span style="font-weight: bold; margin-left: 16px; color: var(--ion-color-primary);">
-          ₹{{ item.SellingPrice * item.Quantity }}
-        </span>
-
-        <ion-button fill="clear" (click)="removeItem(i)" style="margin-left: 8px; color: red;">
-          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-        </ion-button>
-      </div>
-    </ion-item>
-  </ion-list>
-</div>
+  <div style="padding: 16px;">
+    <ion-list>
+      @for (item of cartItems; track item; let i = $index) {
+        <ion-item>
+          <ion-label>
+            <h2>{{ item.ProductName || item.name }}</h2>
+            <p>Price: ₹{{ item.SellingPrice }}</p>
+            @if(item.Barcode) {
+              <p>Barcode: {{ item.Barcode }}</p>
+            }
+          </ion-label>
+          <div slot="end" style="display: flex; align-items: center;">
+            <ion-button fill="clear" color="danger" (click)="decreaseQuantity(i)">
+              <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+            </ion-button>
+            <span style="font-weight: bold; margin: 0 8px; font-size: 16px;">{{ item.Quantity }}</span>
+            <ion-button fill="clear" color="success" (click)="increaseQuantity(i)">
+              <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+            </ion-button>
+            <span style="font-weight: bold; margin-left: 16px; color: var(--ion-color-primary);">
+              ₹{{ item.SellingPrice * item.Quantity }}
+            </span>
+            <ion-button fill="clear" (click)="removeItem(i)" style="margin-left: 8px; color: red;">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
+      }
+    </ion-list>
+  </div>
 }
 @if(errorMessage) {
-<div style="padding: 16px; text-align: center; color: red;">
-  <p>{{ errorMessage }}</p>
-</div>
+  <div style="padding: 16px; text-align: center; color: red;">
+    <p>{{ errorMessage }}</p>
+  </div>
 }
 
 <ion-footer class="ion-no-border"
@@ -162,10 +164,10 @@
 <app-quote-price-billing [isOpen]="isProductModalOpen" (close)="isProductModalOpen = false">
 </app-quote-price-billing>
 @if(isBillModalOpen) {
-<app-generate-bill [cartItems]="cartItems" [totalPrice]="totalPrice" [searchQuery]="searchQuery.customerName"
-  [currentDate]="currentDate" [status]="billStatus" [amountPaid]="pendingAmountPaid"
-  [balanceAmount]="pendingBalanceAmount" (close)="isBillModalOpen = false">
-</app-generate-bill>
+  <app-generate-bill [cartItems]="cartItems" [totalPrice]="totalPrice" [searchQuery]="searchQuery.customerName"
+    [currentDate]="currentDate" [status]="billStatus" [amountPaid]="pendingAmountPaid"
+    [balanceAmount]="pendingBalanceAmount" (close)="isBillModalOpen = false">
+  </app-generate-bill>
 }
 <app-pending [isOpen]="isPendingModalOpen" [totalPrice]="totalPrice" [customerName]="searchQuery.customerName"
   (close)="isPendingModalOpen = false" (confirmPending)="handlePendingConfirm($event)">

@@ -18,4 +18,10 @@ export class Billingservice {
   SavePendingBill(request: any): Observable<any[]> {
     return this.http.post<any[]>(`${environment.LoginUrl}/api/Billing/SavePendingBill`, request);
   }
+  PayPendingBill(request: any): Observable<any> {
+    return this.http.post<any>(`${environment.LoginUrl}/api/Billing/PayPendingBill`, request);
+  }
+  PayCustomerDues(request: any): Observable<any> {
+    return this.http.post<any>(`${environment.LoginUrl}/api/Billing/PayCustomerDues`, request);
+  }
 }

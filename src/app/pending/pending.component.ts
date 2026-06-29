@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonInput, IonTextarea, IonIcon, IonNote, AnimationController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -10,7 +10,7 @@ import { cashOutline, walletOutline, calendarOutline, chatbubbleEllipsesOutline,
   templateUrl: './pending.component.html',
   styleUrls: ['./pending.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonInput, IonTextarea, IonIcon, IonNote],
+  imports: [FormsModule, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonInput, IonTextarea, IonIcon, IonNote],
 })
 export class PendingComponent implements OnInit, OnChanges {
 

@@ -1,0 +1,229 @@
+<!-- Dashboard Summary Cards -->
+<div class="dashboard-stats">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="4">
+        <div class="stat-card gradient-danger">
+          <div class="stat-icon-wrapper">
+            <ion-icon name="wallet-outline"></ion-icon>
+          </div>
+          <div class="stat-details">
+            <span class="stat-label">Total Outstanding Dues</span>
+            <h2 class="stat-value">₹{{ totalPendingDues | number:'1.2-2' }}</h2>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="12" size-md="4">
+        <div class="stat-card gradient-primary">
+          <div class="stat-icon-wrapper">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+          <div class="stat-details">
+            <span class="stat-label">Active Debtors</span>
+            <h2 class="stat-value">{{ activeDebtorsCount }}</h2>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="12" size-md="4">
+        <div class="stat-card gradient-success">
+          <div class="stat-icon-wrapper">
+            <ion-icon name="cash-outline"></ion-icon>
+          </div>
+          <div class="stat-details">
+            <span class="stat-label">Average Pending / Customer</span>
+            <h2 class="stat-value">₹{{ averageDueAmount | number:'1.2-2' }}</h2>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+<div class="controls-panel">
+  <ion-row class="ion-align-items-center">
+    <ion-col size="12" size-md="6">
+      <ion-searchbar placeholder="Search customer by name or phone..." [(ngModel)]="searchQuery"
+      (ionInput)="applyFilter()" class="custom-searchbar"></ion-searchbar>
+    </ion-col>
+    <ion-col size="12" size-md="6">
+      <ion-segment [(ngModel)]="filterType" (ionChange)="applyFilter()" class="custom-segment">
+        <ion-segment-button value="pending">
+          <ion-label>Pending Dues Only</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="all">
+          <ion-label>All Customers</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-col>
+  </ion-row>
+</div>
+
+<!-- Main Table Container -->
+<div class="table-container">
+  <!-- Empty State -->
+  @if (filteredCustomers.length === 0) {
+    <div class="empty-state">
+      <ion-icon name="alert-circle-outline" class="empty-icon"></ion-icon>
+      <h3>No Customers Found</h3>
+      <p>Try refining your search query or switching filters.</p>
+    </div>
+  }
+
+
+  @if (filteredCustomers.length > 0) {
+    <div class="custom-table-rows">
+      <div class="table-header-row ion-hide-down">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="3">Customer Name</ion-col>
+            <ion-col size="3">Phone Number</ion-col>
+            <ion-col size="2">Total Dues</ion-col>
+            <ion-col size="2">Last Transaction</ion-col>
+            <ion-col size="2" class="ion-text-center">Actions</ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      @for (customer of filteredCustomers; track customer) {
+        <div class="customer-row-card"
+          [class.expanded]="expandedCustomerId === customer._id">
+          <div class="customer-row-summary" (click)="toggleRow(customer._id)">
+            <div class="customer-summary-main">
+              <div class="customer-identity">
+                <div class="customer-avatar">
+                  {{ customer.CustomerName.charAt(0).toUpperCase() }}
+                </div>
+                <div class="customer-info">
+                  <span class="customer-name">{{ customer.CustomerName }}</span>
+                  <span class="customer-phone">
+                    <ion-icon name="call-outline" class="phone-icon"></ion-icon>
+                    {{ customer.MobileNumber }}
+                  </span>
+                </div>
+              </div>
+              <div class="customer-dues-info">
+                <span class="dues-label">Dues</span>
+                <ion-badge [color]="customer.totalDue > 0 ? 'danger' : 'success'" class="dues-badge">
+                  ₹{{ customer.totalDue | number:'1.2-2' }}
+                </ion-badge>
+              </div>
+            </div>
+            <div class="customer-row-actions">
+              <span class="last-tx-date">
+                <ion-icon name="calendar-outline" class="date-icon"></ion-icon>
+                Last Transaction: {{ customer.lastUpdatedFormatted }}
+              </span>
+              <div class="action-buttons-wrap">
+                @if (customer.totalDue > 0) {
+                  <div class="inline-pay-container" (click)="$event.stopPropagation()">
+                    <ion-input type="number" [(ngModel)]="customer.inputPayAmount" class="inline-pay-input" placeholder="Amount"></ion-input>
+                    <ion-button size="small" color="success" (click)="confirmCustomerGeneralPayment(customer)" class="inline-pay-btn">
+                      <ion-icon name="checkmark-outline"></ion-icon>
+                    </ion-button>
+                  </div>
+                }
+                <ion-button fill="clear" size="small" (click)="toggleRow(customer._id); $event.stopPropagation()"
+                  class="row-expand-btn">
+                  <ion-icon [name]="expandedCustomerId === customer._id ? 'chevron-up-outline' : 'chevron-down-outline'"
+                  class="expand-chevron"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+          @if (expandedCustomerId === customer._id) {
+            <div class="customer-row-details">
+              <div class="details-inner">
+                <h4 class="details-section-title">Billing & Transaction History</h4>
+                @if (!customer.billsExtended || customer.billsExtended.length === 0) {
+                  <div class="no-bills-state">
+                    <p>No billing records found for this customer.</p>
+                  </div>
+                }
+                @if (customer.billsExtended && customer.billsExtended.length > 0) {
+                  <div class="bills-list">
+                    @for (bill of customer.billsExtended; track bill) {
+                      <div class="bill-card"
+                        [class.paid-bill]="bill.balanceAmount === 0">
+                        <div class="bill-card-header">
+                          <div class="bill-info-meta">
+                            <span class="bill-date">
+                              <ion-icon name="calendar-outline"></ion-icon>
+                              {{ bill.date ? (bill.date | date:'dd MMM yyyy, hh:mm a') : 'N/A' }}
+                            </span>
+                            @if (bill.notes) {
+                              <span class="bill-notes">
+                                <strong>Notes:</strong> {{ bill.notes }}
+                              </span>
+                            }
+                          </div>
+                          <div class="bill-status-badge">
+                            <ion-badge [color]="bill.balanceAmount > 0 ? 'warning' : 'success'">
+                              {{ bill.balanceAmount > 0 ? 'Pending' : 'Settled' }}
+                            </ion-badge>
+                          </div>
+                        </div>
+                        <div class="bill-financial-grid">
+                          <ion-grid>
+                            <ion-row>
+                              <ion-col size="4">
+                                <span class="financial-label">Total Amount</span>
+                                <span class="financial-value">₹{{ bill.totalAmount | number:'1.2-2' }}</span>
+                              </ion-col>
+                              <ion-col size="4">
+                                <span class="financial-label">Amount Paid</span>
+                                <span class="financial-value text-success">₹{{ bill.amountPaid | number:'1.2-2' }}</span>
+                              </ion-col>
+                              <ion-col size="4">
+                                <span class="financial-label">Balance Due</span>
+                                <span class="financial-value text-danger">₹{{ bill.balanceAmount | number:'1.2-2' }}</span>
+                              </ion-col>
+                            </ion-row>
+                          </ion-grid>
+                        </div>
+                        <div class="bill-card-footer">
+                          <ion-button fill="clear" size="small" (click)="toggleBillItems(bill)" class="action-btn-items">
+                            <ion-icon slot="start" name="receipt-outline"></ion-icon>
+                            {{ bill.showItems ? 'Hide Items' : 'View Purchased Items (' + (bill.cartItems?.length || 0) + ')' }}
+                          </ion-button>
+                           @if (bill.balanceAmount > 0) {
+                            <div class="inline-pay-container">
+                              <ion-input type="number" [(ngModel)]="bill.inputPayAmount" class="inline-pay-input" placeholder="Amount"></ion-input>
+                              <ion-button size="small" color="success" (click)="confirmMarkAsPaid(customer, bill)" class="inline-pay-btn">
+                                <ion-icon name="checkmark-outline"></ion-icon>
+                              </ion-button>
+                            </div>
+                          }
+                        </div>
+                        @if (bill.showItems) {
+                          <div class="bill-items-drawer">
+                            <div class="items-table-header">
+                              <span class="col-name">Item Name</span>
+                              <span class="col-qty">Qty</span>
+                              <span class="col-price">Rate</span>
+                              <span class="col-total">Total</span>
+                            </div>
+                            <div class="items-table-body">
+                              @for (item of bill.cartItems; track item) {
+                                <div class="item-table-row">
+                                  <span class="col-name">{{ item.ProductName }}</span>
+                                  <span class="col-qty">{{ item.Quantity }}</span>
+                                  <span class="col-price">₹{{ item.SellingPrice }}</span>
+                                  <span class="col-total">₹{{ (item.Quantity ) * (item.SellingPrice )}}</span>
+                                </div>
+                              }
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

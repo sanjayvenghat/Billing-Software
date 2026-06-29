@@ -1,38 +1,40 @@
 <div class="colorful-sidebar">
-    <div class="sidebar-header">
-        <div class="logo-container">
-            <ion-icon name="basket" class="logo-icon"></ion-icon>
-        </div>
-        <div class="title-container">
-            <h2>Get Report</h2>
-            <p>Additional Settings</p>
-        </div>
+  <div class="sidebar-header">
+    <div class="logo-container">
+      <ion-icon name="basket" class="logo-icon"></ion-icon>
+    </div>
+    <div class="title-container">
+      <h2>Get Report</h2>
+      <p>Additional Settings</p>
+    </div>
+  </div>
+
+  <div class="sidebar-content">
+    <div class="menu-section">
+      <h3 class="section-title">Settings</h3>
+      <ion-list lines="none" class="transparent-list">
+        @for (p of SideBarMenu; track p) {
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerDirection="root" class="menu-item" detail="false">
+              <div class="icon-box" [ngClass]="p.ColorClass" slot="start">
+                <ion-icon [name]="p.Icon"></ion-icon>
+              </div>
+              <ion-label>{{ p.Title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        }
+      </ion-list>
     </div>
 
-    <div class="sidebar-content">
-        <div class="menu-section">
-            <h3 class="section-title">Settings</h3>
-            <ion-list lines="none" class="transparent-list">
-                <ion-menu-toggle auto-hide="false" *ngFor="let p of SideBarMenu">
-                    <ion-item routerDirection="root" class="menu-item" detail="false">
-                        <div class="icon-box" [ngClass]="p.ColorClass" slot="start">
-                            <ion-icon [name]="p.Icon"></ion-icon>
-                        </div>
-                        <ion-label>{{ p.Title }}</ion-label>
-                    </ion-item>
-                </ion-menu-toggle>
-            </ion-list>
-        </div>
-
-        <!-- Premium card at bottom -->
-        <div class="premium-card">
-            <div class="card-glow"></div>
-            <div class="card-content">
-                <ion-icon name="diamond" class="premium-icon"></ion-icon>
-                <h4>Upgrade Plan</h4>
-                <p>Get more features</p>
-                <ion-button expand="block" shape="round" class="premium-btn">Upgrade Now</ion-button>
-            </div>
-        </div>
+    <!-- Premium card at bottom -->
+    <div class="premium-card">
+      <div class="card-glow"></div>
+      <div class="card-content">
+        <ion-icon name="diamond" class="premium-icon"></ion-icon>
+        <h4>Upgrade Plan</h4>
+        <p>Get more features</p>
+        <ion-button expand="block" shape="round" class="premium-btn">Upgrade Now</ion-button>
+      </div>
     </div>
+  </div>
 </div>

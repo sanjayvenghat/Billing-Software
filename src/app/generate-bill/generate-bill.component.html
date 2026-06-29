@@ -20,10 +20,12 @@
         <span>Date:</span>
         <span>{{ currentDate | date:'short' }}</span>
       </div>
-      <div class="info-row" *ngIf="searchQuery">
-        <span>Customer:</span>
-        <span>{{ searchQuery }}</span>
-      </div>
+      @if (searchQuery) {
+        <div class="info-row">
+          <span>Customer:</span>
+          <span>{{ searchQuery }}</span>
+        </div>
+      }
     </div>
 
     <div class="receipt-divider border-dashed"></div>
@@ -34,11 +36,13 @@
         <span class="item-qty">Qty</span>
         <span class="item-price">Price</span>
       </div>
-      <div class="item-row" *ngFor="let item of cartItems">
-        <span class="item-name">{{ item.ProductName || item.name }}</span>
-        <span class="item-qty">x{{ item.Quantity }}</span>
-        <span class="item-price">₹{{ item.SellingPrice * item.Quantity }}</span>
-      </div>
+      @for (item of cartItems; track item) {
+        <div class="item-row">
+          <span class="item-name">{{ item.ProductName || item.name }}</span>
+          <span class="item-qty">x{{ item.Quantity }}</span>
+          <span class="item-price">₹{{ item.SellingPrice * item.Quantity }}</span>
+        </div>
+      }
     </div>
 
     <div class="receipt-divider border-dashed"></div>
@@ -48,16 +52,20 @@
         <span>Total Amount</span>
         <span class="total-amount">₹{{ totalPrice }}</span>
       </div>
-      <div class="total-row sub-row" *ngIf="status === 'PENDING'"
-        style="font-size: 14px; margin-top: 6px; color: #555;">
-        <span>Amount Paid:</span>
-        <span style="font-weight: 600;">₹{{ amountPaid }}</span>
-      </div>
-      <div class="total-row sub-row" *ngIf="status === 'PENDING'"
-        style="font-size: 14px; margin-top: 4px; color: #ea580c; font-weight: bold;">
-        <span>Balance Pending:</span>
-        <span>₹{{ balanceAmount }}</span>
-      </div>
+      @if (status === 'PENDING') {
+        <div class="total-row sub-row"
+          style="font-size: 14px; margin-top: 6px; color: #555;">
+          <span>Amount Paid:</span>
+          <span style="font-weight: 600;">₹{{ amountPaid }}</span>
+        </div>
+      }
+      @if (status === 'PENDING') {
+        <div class="total-row sub-row"
+          style="font-size: 14px; margin-top: 4px; color: #ea580c; font-weight: bold;">
+          <span>Balance Pending:</span>
+          <span>₹{{ balanceAmount }}</span>
+        </div>
+      }
     </div>
 
     <div class="barcode-container">

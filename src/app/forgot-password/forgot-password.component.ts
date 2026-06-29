@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ForgotPasswordService } from './ForgotPasswordService';
@@ -13,9 +13,8 @@ import { ToastService } from 'src/Service/ToasterService';
   standalone: true,
   imports: [
     IonicModule,
-    ReactiveFormsModule,
-    CommonModule
-  ]
+    ReactiveFormsModule
+]
 })
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
 

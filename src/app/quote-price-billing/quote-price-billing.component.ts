@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonAvatar, IonImg, IonLabel, AnimationController } from '@ionic/angular/standalone';
 
 @Component({
@@ -7,7 +7,7 @@ import { IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonCo
   templateUrl: './quote-price-billing.component.html',
   styleUrls: ['./quote-price-billing.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonAvatar, IonImg, IonLabel]
+  imports: [IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonAvatar, IonImg, IonLabel]
 })
 export class QuotePriceBillingComponent implements OnInit {
   @Input() isOpen: boolean = false;

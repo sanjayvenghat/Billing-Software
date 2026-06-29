@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { RegisterService } from './RegisterService';
@@ -12,9 +12,8 @@ import { ToastService } from 'src/Service/ToasterService';
   styleUrls: ['./register-your-login.component.scss'],
   imports: [
     IonicModule,
-    ReactiveFormsModule,
-    CommonModule
-  ]
+    ReactiveFormsModule
+]
 })
 export class RegisterYourLoginComponent implements OnInit, OnDestroy {
 

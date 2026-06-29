@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { LoginService } from './LoginService';
@@ -14,9 +14,8 @@ import { LoaderService } from 'src/Service/LoaderService';
   standalone: true,
   imports: [
     IonicModule,
-    ReactiveFormsModule,
-    CommonModule
-  ],
+    ReactiveFormsModule
+],
 })
 export class HomePage implements OnInit {
 

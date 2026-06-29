@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { IonModal, IonIcon, IonButton, AnimationController } from '@ionic/angular/standalone';
 
 @Component({
@@ -7,7 +7,7 @@ import { IonModal, IonIcon, IonButton, AnimationController } from '@ionic/angula
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonModal, IonIcon, IonButton]
+  imports: [IonModal, IonIcon, IonButton]
 })
 export class AddProductComponent implements OnInit {
   @Input() isOpen: boolean = false;
