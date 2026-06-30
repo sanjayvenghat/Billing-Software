@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IonGrid, IonRow, IonCol, IonInput, IonButton, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { personOutline, mailOutline, lockClosedOutline, callOutline, globeOutline, saveOutline } from 'ionicons/icons';
@@ -13,13 +13,20 @@ import { KEYSSTORAGE } from 'src/Service/LocalStorage';
   imports: [IonGrid, IonRow, IonCol, IonInput, IonButton, IonIcon, FormsModule]
 })
 export class CreateUserComponent implements OnInit {
-  customerName: String = ""
-  phoneNumber: String = ""
+  @Input() customerName: String = ""
+  @Input() phoneNumber: String = ""
+  @Output() customerAdded = new EventEmitter<any>();
+
   constructor(private newUserService: NewUser, private toastr: ToastService, private keysStorage: KEYSSTORAGE) {
     addIcons({ personOutline, mailOutline, lockClosedOutline, callOutline, globeOutline, saveOutline });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    if (this.customerName && /^\d+$/.test(this.customerName.toString())) {
+      this.phoneNumber = this.customerName;
+      this.customerName = "";
+    }
+  }
   AddCustomer() {
     if (!this.customerName) {
       this.toastr.showWarning("Please enter customer name");
@@ -38,6 +45,7 @@ export class CreateUserComponent implements OnInit {
       next: (response: any) => {
 
         this.toastr.showSuccess(response.message || "Customer added successfully");
+        this.customerAdded.emit(response);
         this.customerName = ""
         this.phoneNumber = ""
       },

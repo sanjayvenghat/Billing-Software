@@ -26,7 +26,7 @@
 
         </ion-col>
         <ion-col size="auto">
-          <ion-button color="success" shape="round" class="add-user-btn">
+          <ion-button color="success" shape="round" class="add-user-btn" (click)="isCreateUserModalOpen = true">
             <ion-icon slot="start" name="person-add-outline"></ion-icon>
             <span class="ion-hide-sm-down">Add User</span>
             <span class="ion-hide-md-up">Add</span>
@@ -175,3 +175,24 @@
 <app-add-product [isOpen]="isCustomDialogOpen" (close)="isCustomDialogOpen = false"
   (confirm)="OpenProductModelFromDialog()">
 </app-add-product>
+<app-add-user [isOpen]="isAddUserModalOpen" (close)="isAddUserModalOpen = false"
+  (confirm)="OpenUserModalFromDialog($event)">
+</app-add-user>
+<ion-modal [isOpen]="isCreateUserModalOpen" (didDismiss)="isCreateUserModalOpen = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Create Customer</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isCreateUserModalOpen = false">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <app-create-user [customerName]="searchQuery.customerName"
+        (customerAdded)="handleCustomerAdded($event)"></app-create-user>
+    </ion-content>
+  </ng-template>
+</ion-modal>

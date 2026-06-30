@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover, IonModal } from '@ionic/angular/standalone';
+import { IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover, IonModal, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { barcodeOutline, addOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline, closeCircle, cartOutline, downloadOutline, personCircle, alertCircleOutline } from 'ionicons/icons';
+import { barcodeOutline, addOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline, closeCircle, cartOutline, downloadOutline, personCircle, alertCircleOutline, close } from 'ionicons/icons';
 import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -17,11 +17,13 @@ import { GenerateBillComponent } from '../generate-bill/generate-bill.component'
 import { AddProductComponent } from '../add-product/add-product.component';
 import { QuotePriceBillingComponent } from '../quote-price-billing/quote-price-billing.component';
 import { PendingComponent } from '../pending/pending.component';
+import { AddUserComponent } from '../add-user/add-user.component';
+import { CreateUserComponent } from '../create-user/create-user.component';
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  imports: [HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, AddProductComponent, QuotePriceBillingComponent, PendingComponent]
+  imports: [HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, AddProductComponent, QuotePriceBillingComponent, PendingComponent, AddUserComponent, CreateUserComponent, IonToolbar, IonTitle, IonContent, IonModal]
 })
 export class BillingComponent implements OnInit, OnDestroy {
   private scanner: Html5QrcodeScanner | null = null;
@@ -35,6 +37,8 @@ export class BillingComponent implements OnInit, OnDestroy {
   searchQuery: any = {}
   totalPrice: Number = 0;
   isPendingModalOpen: boolean = false;
+  isAddUserModalOpen: any = false;
+  isCreateUserModalOpen: boolean = false;
   pendingAmountPaid: number = 0;
   pendingBalanceAmount: number = 0;
   constructor(private http: HttpClient, private toasterService: ToastService, private BillingService: Billingservice, private keysStorage: KEYSSTORAGE, private LoaderService: LoaderService) {
@@ -46,7 +50,8 @@ export class BillingComponent implements OnInit, OnDestroy {
       'cart-outline': cartOutline,
       'download-outline': downloadOutline,
       'person-circle': personCircle,
-      'alert-circle-outline': alertCircleOutline
+      'alert-circle-outline': alertCircleOutline,
+      close
     });
   }
   SearchProduct: string = "";
@@ -155,8 +160,14 @@ export class BillingComponent implements OnInit, OnDestroy {
 
     this.BillingService.searchUsers(query).subscribe({
       next: (response: any) => {
-        this.userSuggestions = response.userdata;
-        this.errorMessage = '';
+        if (response?.userdata?.length === 0) {
+          this.errorMessage = '';
+          this.isAddUserModalOpen = true;
+        }
+        else {
+          this.userSuggestions = response.userdata;
+          this.errorMessage = '';
+        }
       },
       error: (err) => {
         console.error('Error fetching user details from barcode id:', err);
@@ -290,5 +301,21 @@ export class BillingComponent implements OnInit, OnDestroy {
     this.billStatus = 'PAID';
     this.currentDate = new Date();
     this.isBillModalOpen = true;
+  }
+  OpenUserModalFromDialog(event: any) {
+    this.isAddUserModalOpen = false;
+    this.isCreateUserModalOpen = true;
+  }
+  handleCustomerAdded(response: any) {
+    this.isCreateUserModalOpen = false;
+    if (response) {
+      const user = response.userdata || response.data || response.user || response;
+      const name = user.CustomerName || user.customerName;
+      const id = user._id || user.id;
+      if (name) {
+        this.searchQuery = { customerName: name, customerId: id };
+        this.toasterService.showSuccess(`Selected customer: ${name}`);
+      }
+    }
   }
 }

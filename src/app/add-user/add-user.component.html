@@ -1,0 +1,21 @@
+<ion-modal id="custom-dialog-modal" [isOpen]="isOpen" (didDismiss)="close.emit()" [enterAnimation]="enterAnimation"
+  [leaveAnimation]="leaveAnimation">
+  <ng-template>
+    <div class="wrapper ion-padding custom-dialog-content">
+      <div class="dialog-icon-container">
+        <ion-icon name="alert-circle-outline" color="warning"></ion-icon>
+      </div>
+      <h2>Customer Not Found</h2>
+      <p>There Is No Such Customer Exist, Would You Like To Add This Customer?</p>
+
+      <div class="dialog-actions">
+        <ion-button fill="clear" color="medium" (click)="close.emit()">
+          Cancel
+        </ion-button>
+        <ion-button color="success" shape="round" (click)="confirm.emit()">
+          Yes, Add Customer
+        </ion-button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
