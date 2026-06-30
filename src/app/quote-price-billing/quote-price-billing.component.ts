@@ -1,19 +1,23 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonAvatar, IonImg, IonLabel, AnimationController } from '@ionic/angular/standalone';
-
+import { IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, AnimationController } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { close } from 'ionicons/icons';
+import { QuotePriceComponent } from '../quote-price/quote-price.component';
 @Component({
   selector: 'app-quote-price-billing',
   templateUrl: './quote-price-billing.component.html',
   styleUrls: ['./quote-price-billing.component.scss'],
   standalone: true,
-  imports: [IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonList, IonItem, IonAvatar, IonImg, IonLabel]
+  imports: [IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, QuotePriceComponent]
 })
 export class QuotePriceBillingComponent implements OnInit {
   @Input() isOpen: boolean = false;
   @Output() close = new EventEmitter<void>();
 
-  constructor(private animationCtrl: AnimationController) { }
+  constructor(private animationCtrl: AnimationController) {
+    addIcons({ close });
+  }
 
   enterAnimation = (baseEl: HTMLElement) => {
     const root = baseEl.shadowRoot;

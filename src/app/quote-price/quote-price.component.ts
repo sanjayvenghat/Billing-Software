@@ -19,7 +19,7 @@ import { LoaderService } from 'src/Service/LoaderService';
 export class QuotePriceComponent implements OnInit {
 
   ProductName: string = '';
-  BuyingPrice: string = '';
+  BuyingPrice: string = ''
   SellingPrice: string = '';
   companyId: string = '';
   generateQrCode: boolean = false;
