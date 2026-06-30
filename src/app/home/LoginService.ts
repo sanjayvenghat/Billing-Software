@@ -35,6 +35,7 @@ export class LoginService {
         return this.http.post(`${this.apiUrl}/Register/login`, payload).pipe(
             map((response: any) => {
                 this.keysStorage.setItem("CompanyId", response?.CompanyId);
+                this.keysStorage.setItem("Token", response?.token);
                 return response;
             }),
             catchError((error) => {

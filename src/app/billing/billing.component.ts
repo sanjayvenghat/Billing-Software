@@ -234,7 +234,9 @@ export class BillingComponent implements OnInit, OnDestroy {
 
   fetchProductDetails(id: string) {
     const url = `${environment.LoginUrl}/api/grocery/getProductDetails?id=${id}`;
-    this.http.get(url).subscribe({
+    const token = this.keysStorage.getItem("Token");
+    const headers = { 'Authorization': `Bearer ${token}` };
+    this.http.get(url, { headers }).subscribe({
       next: (response: any) => {
         this.addToCart(response.data || response);
         this.errorMessage = '';
