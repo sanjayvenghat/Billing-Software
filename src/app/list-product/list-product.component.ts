@@ -18,6 +18,7 @@ export class ListProductComponent implements OnInit {
   Grocery_List: any = [];
   Filtered_Grocery_List: any = [];
   isAscending: boolean = true;
+  searchQuery: string = '';
 
   constructor(
     private keysStorage: KEYSSTORAGE,
@@ -143,4 +144,9 @@ export class ListProductComponent implements OnInit {
     });
   }
 
+  clearListState() {
+    this.searchQuery = '';
+    this.Filtered_Grocery_List = [...this.Grocery_List];
+    this.sortList();
+  }
 }

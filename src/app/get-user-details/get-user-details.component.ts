@@ -26,6 +26,9 @@ import { IonTableComponent } from '../ion-table/ion-table.component';
 })
 export class GetUserDetailsComponent {
 
+  @ViewChild(BillingComponent) billingComponent!: BillingComponent;
+  @ViewChild(QuotePriceComponent) quotePriceComponent!: QuotePriceComponent;
+  @ViewChild(CreateUserComponent) createUserComponent!: CreateUserComponent;
   @ViewChild(ListProductComponent) listProductComponent!: ListProductComponent;
   @ViewChild(IonTableComponent) ionTableComponent!: IonTableComponent;
 
@@ -36,13 +39,27 @@ export class GetUserDetailsComponent {
   ngOnInit() { }
 
   onTabChange(event: any) {
-    if (event.tab === 'library') {
+    if (event.tab === 'home') {
+      if (this.billingComponent) {
+        this.billingComponent.clearBillingState();
+      }
+    } else if (event.tab === 'radio') {
+      if (this.quotePriceComponent) {
+        this.quotePriceComponent.clearQuoteState();
+      }
+    } else if (event.tab === 'library') {
       if (this.listProductComponent) {
+        this.listProductComponent.clearListState();
         this.listProductComponent.GetProductList();
       }
     } else if (event.tab === 'Accounts and pending') {
       if (this.ionTableComponent) {
+        this.ionTableComponent.clearTableState();
         this.ionTableComponent.loadCustomers();
+      }
+    } else if (event.tab === 'Add User') {
+      if (this.createUserComponent) {
+        this.createUserComponent.clearCreateUserState();
       }
     }
   }

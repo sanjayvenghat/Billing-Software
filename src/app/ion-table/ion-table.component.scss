@@ -479,6 +479,21 @@
 .col-name {
   flex: 2;
   text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.item-share-btn {
+  font-size: 14px;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    color: #2a5298;
+    transform: scale(1.15);
+  }
 }
 
 .col-qty {

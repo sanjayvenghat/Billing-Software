@@ -86,4 +86,12 @@ export class QuotePriceComponent implements OnInit {
       a.click();
     }
   }
+
+  clearQuoteState() {
+    this.ProductName = '';
+    this.BuyingPrice = '';
+    this.SellingPrice = '';
+    this.generateQrCode = false;
+    this.savedItemUrl = '';
+  }
 }

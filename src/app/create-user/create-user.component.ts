@@ -70,4 +70,9 @@ export class CreateUserComponent implements OnInit {
     // Update the Angular model
     this.phoneNumber = numericValue;
   }
+
+  clearCreateUserState() {
+    this.customerName = "";
+    this.phoneNumber = "";
+  }
 }

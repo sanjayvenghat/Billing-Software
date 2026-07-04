@@ -152,6 +152,12 @@ export class BillingComponent implements OnInit, OnDestroy {
 
   onUserSearchInput(event: any) {
     const rawQuery = event.detail.value || '';
+    if (!rawQuery.trim()) {
+      this.userSuggestions = [];
+      this.errorMessage = '';
+      this.isAddUserModalOpen = false;
+      return;
+    }
     const searchValue = rawQuery.toLowerCase().replace(/\s+/g, '');
     let query = {
       searchValue: searchValue,
@@ -319,5 +325,13 @@ export class BillingComponent implements OnInit, OnDestroy {
         this.toasterService.showSuccess(`Selected customer: ${name}`);
       }
     }
+  }
+
+  clearBillingState() {
+    this.SearchProduct = "";
+    this.searchQuery = {};
+    this.productSuggestions = [];
+    this.userSuggestions = [];
+    this.errorMessage = '';
   }
 }

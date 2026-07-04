@@ -32,7 +32,8 @@ import {
   cartOutline,
   alertCircleOutline,
   receiptOutline,
-  checkmarkOutline
+  checkmarkOutline,
+  shareSocialOutline
 } from 'ionicons/icons';
 import { Billingservice } from '../billing/billingservice';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
@@ -97,7 +98,8 @@ export class IonTableComponent implements OnInit {
       cartOutline,
       alertCircleOutline,
       receiptOutline,
-      checkmarkOutline
+      checkmarkOutline,
+      'share-social-outline': shareSocialOutline
     });
   }
 
@@ -302,5 +304,11 @@ export class IonTableComponent implements OnInit {
         this.loaderService.hideLoader();
       }
     });
+  }
+
+  clearTableState() {
+    this.searchQuery = '';
+    this.filterType = 'pending';
+    this.applyFilter();
   }
 }

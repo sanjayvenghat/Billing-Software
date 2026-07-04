@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
   @if (Grocery_List && Grocery_List.length > 0) {
   <ion-toolbar>
-    <ion-searchbar (ionInput)="onSearch($event)" placeholder="Search products..." animated="true"
+    <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="onSearch($event)" placeholder="Search products..." animated="true"
       class="custom-searchbar"></ion-searchbar>
   </ion-toolbar>
   <ion-toolbar>
