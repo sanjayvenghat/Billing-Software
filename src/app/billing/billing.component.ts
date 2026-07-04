@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 
-import { IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover, IonModal, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover, IonModal, IonToolbar, IonTitle, IonContent, IonInput, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { barcodeOutline, addOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline, closeCircle, cartOutline, downloadOutline, personCircle, alertCircleOutline, close } from 'ionicons/icons';
 import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
@@ -23,7 +24,7 @@ import { CreateUserComponent } from '../create-user/create-user.component';
   selector: 'app-billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  imports: [HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, AddProductComponent, QuotePriceBillingComponent, PendingComponent, AddUserComponent, CreateUserComponent, IonToolbar, IonTitle, IonContent, IonModal]
+  imports: [HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, AddProductComponent, QuotePriceBillingComponent, PendingComponent, AddUserComponent, CreateUserComponent, IonToolbar, IonTitle, IonContent, IonModal, IonInput, IonSelect, IonSelectOption, DecimalPipe]
 })
 export class BillingComponent implements OnInit, OnDestroy {
   private scanner: Html5QrcodeScanner | null = null;
@@ -111,12 +112,38 @@ export class BillingComponent implements OnInit, OnDestroy {
     }
   }
 
+  getItemTotal(item: any): number {
+    const qty = parseFloat(item.Quantity);
+    const validQty = (!isNaN(qty) && qty > 0) ? qty : 0;
+    const price = item.SellingPrice || 0;
+    if (item.unit === 'Weight' && item.selectedSubUnit === 'g') {
+      return price * (validQty / 1000);
+    }
+    return price * validQty;
+  }
+
   calculateTotal() {
-    this.totalPrice = this.cartItems.reduce((acc, item) => acc + ((item.SellingPrice || 0) * (item.Quantity || 1)), 0);
+    this.totalPrice = this.cartItems.reduce((acc, item) => {
+      return acc + this.getItemTotal(item);
+    }, 0);
+  }
+
+  onQuantityChange(item: any) {
+    let qty = parseFloat(item.Quantity);
+    if (isNaN(qty) || qty <= 0) {
+      item.Quantity = 1;
+    }
+    this.calculateTotal();
   }
 
   addToCart(product: any) {
     if (!product) return;
+    
+    // Normalize unit if empty or unknown
+    if (!product.unit || (product.unit !== 'Weight' && product.unit !== 'Piece')) {
+      product.unit = 'Piece';
+    }
+    
     const existingItem = this.cartItems.find(item =>
       (item.Barcode && item.Barcode === product.Barcode) ||
       (item._id && item._id === product._id)
@@ -125,6 +152,9 @@ export class BillingComponent implements OnInit, OnDestroy {
       existingItem.Quantity = (existingItem.Quantity || 1) + 1;
     } else {
       product.Quantity = 1;
+      if (product.unit === 'Weight') {
+        product.selectedSubUnit = 'kg';
+      }
       this.cartItems.push(product);
     }
     this.scannedProduct = product; // keep it if needed

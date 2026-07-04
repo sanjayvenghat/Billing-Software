@@ -43,7 +43,7 @@
             <label>Amount Paid Now (₹)</label>
           </div>
           <ion-input type="number" class="custom-input amount-paid-input" placeholder="Enter payment amount"
-            [(ngModel)]="amountPaid" (ionInput)="updateBalance()" min="0" [max]="totalPrice">
+            [(ngModel)]="amountPaid" (ngModelChange)="updateBalance()" min="0" [max]="totalPrice">
           </ion-input>
           <ion-note class="input-helper">How much the customer is paying right now.</ion-note>
         </div>

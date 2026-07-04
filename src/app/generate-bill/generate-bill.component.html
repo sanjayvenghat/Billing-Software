@@ -21,10 +21,10 @@
         <span>{{ currentDate | date:'short' }}</span>
       </div>
       @if (searchQuery) {
-        <div class="info-row">
-          <span>Customer:</span>
-          <span>{{ searchQuery }}</span>
-        </div>
+      <div class="info-row">
+        <span>Customer:</span>
+        <span>{{ searchQuery }}</span>
+      </div>
       }
     </div>
 
@@ -37,11 +37,12 @@
         <span class="item-price">Price</span>
       </div>
       @for (item of cartItems; track item) {
-        <div class="item-row">
-          <span class="item-name">{{ item.ProductName || item.name }}</span>
-          <span class="item-qty">x{{ item.Quantity }}</span>
-          <span class="item-price">₹{{ item.SellingPrice * item.Quantity }}</span>
-        </div>
+      <div class="item-row">
+        <span class="item-name">{{ item.ProductName || item.name }}</span>
+        <span class="item-qty">x{{ item.Quantity }} {{ item.unit === 'Weight' ? (item.selectedSubUnit || 'kg') : 'Pcs'
+          }}</span>
+        <span class="item-price">₹{{ getItemTotal(item) | number:'1.2-2' }}</span>
+      </div>
       }
     </div>
 
@@ -53,18 +54,16 @@
         <span class="total-amount">₹{{ totalPrice }}</span>
       </div>
       @if (status === 'PENDING') {
-        <div class="total-row sub-row"
-          style="font-size: 14px; margin-top: 6px; color: #555;">
-          <span>Amount Paid:</span>
-          <span style="font-weight: 600;">₹{{ amountPaid }}</span>
-        </div>
+      <div class="total-row sub-row" style="font-size: 14px; margin-top: 6px; color: #555;">
+        <span>Amount Paid:</span>
+        <span style="font-weight: 600;">₹{{ amountPaid }}</span>
+      </div>
       }
       @if (status === 'PENDING') {
-        <div class="total-row sub-row"
-          style="font-size: 14px; margin-top: 4px; color: #ea580c; font-weight: bold;">
-          <span>Balance Pending:</span>
-          <span>₹{{ balanceAmount }}</span>
-        </div>
+      <div class="total-row sub-row" style="font-size: 14px; margin-top: 4px; color: #ea580c; font-weight: bold;">
+        <span>Balance Pending:</span>
+        <span>₹{{ balanceAmount }}</span>
+      </div>
       }
     </div>
 

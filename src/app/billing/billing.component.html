@@ -85,21 +85,26 @@
     <ion-item>
       <ion-label>
         <h2>{{ item.ProductName || item.name }}</h2>
-        <p>Price: ₹{{ item.SellingPrice }}</p>
+        <p>Price: ₹{{ item.SellingPrice }} / {{ item.unit || 'Piece' }}</p>
         @if(item.Barcode) {
         <p>Barcode: {{ item.Barcode }}</p>
         }
       </ion-label>
       <div slot="end" style="display: flex; align-items: center;">
-        <ion-button fill="clear" color="danger" (click)="decreaseQuantity(i)">
-          <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
-        </ion-button>
-        <span style="font-weight: bold; margin: 0 8px; font-size: 16px;">{{ item.Quantity }}</span>
-        <ion-button fill="clear" color="success" (click)="increaseQuantity(i)">
-          <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
-        </ion-button>
+        @if (item.unit === 'Weight') {
+        <ion-select [(ngModel)]="item.selectedSubUnit" (ngModelChange)="calculateTotal()" interface="popover"
+          style="font-size: 14px; font-weight: bold; margin-right: 4px; border: 1px solid #d1d5db; border-radius: 6px; height: 38px; --padding-start: 8px; --padding-end: 8px; background: #f9fafb;">
+          <ion-select-option value="kg">kg</ion-select-option>
+          <ion-select-option value="g">g</ion-select-option>
+        </ion-select>
+        }
+        <ion-input type="number" [(ngModel)]="item.Quantity" (ngModelChange)="calculateTotal()"
+          (change)="onQuantityChange(item)"
+          style="width: 80px; font-weight: bold; border: 1px solid #d1d5db; border-radius: 6px; text-align: center; --padding-start: 8px; --padding-end: 8px; margin: 0 8px;"
+          min="0.001">
+        </ion-input>
         <span style="font-weight: bold; margin-left: 16px; color: var(--ion-color-primary);">
-          ₹{{ item.SellingPrice * item.Quantity }}
+          ₹{{ getItemTotal(item) | number:'1.2-2' }}
         </span>
         <ion-button fill="clear" (click)="removeItem(i)" style="margin-left: 8px; color: red;">
           <ion-icon slot="icon-only" name="trash-outline"></ion-icon>

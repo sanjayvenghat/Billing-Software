@@ -13,7 +13,12 @@
       [(ngModel)]="SellingPrice" (ngModelChange)="savedItemUrl = ''" placeholder="Enter selling price"
       style="flex: 1 1 200px;">
     </ion-input>
-
+    <ion-item>
+      <ion-select [(ngModel)]="unit" interface="popover" placeholder="Select unit">
+        <ion-select-option value="Weight">Weight</ion-select-option>
+        <ion-select-option value="Piece">Piece</ion-select-option>
+      </ion-select>
+    </ion-item>
     <ion-button shape="round" style="height: 56px; margin: 0; flex: 1 1 100px;" color="success"
       (click)="AddGroceryData()">
       Save

@@ -306,6 +306,16 @@ export class IonTableComponent implements OnInit {
     });
   }
 
+  getItemTotal(item: any): number {
+    const qty = parseFloat(item.Quantity);
+    const validQty = (!isNaN(qty) && qty > 0) ? qty : 0;
+    const price = item.SellingPrice || 0;
+    if (item.unit === 'Weight' && item.selectedSubUnit === 'g') {
+      return price * (validQty / 1000);
+    }
+    return price * validQty;
+  }
+
   clearTableState() {
     this.searchQuery = '';
     this.filterType = 'pending';

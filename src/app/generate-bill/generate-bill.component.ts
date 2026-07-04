@@ -27,6 +27,16 @@ export class GenerateBillComponent implements OnInit, AfterViewInit {
   ngOnInit() {
   }
 
+  getItemTotal(item: any): number {
+    const qty = parseFloat(item.Quantity);
+    const validQty = (!isNaN(qty) && qty > 0) ? qty : 0;
+    const price = item.SellingPrice || 0;
+    if (item.unit === 'Weight' && item.selectedSubUnit === 'g') {
+      return price * (validQty / 1000);
+    }
+    return price * validQty;
+  }
+
   ngAfterViewInit() {
     this.loaderservice.showLoader("Generating Bill...")
     // Need a slight delay to ensure the DOM is completely ready and CSS is applied

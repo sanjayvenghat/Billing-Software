@@ -10,17 +10,20 @@ import { addIcons } from 'ionicons';
 import { download } from 'ionicons/icons';
 import { environment } from 'src/environments/environment';
 import { LoaderService } from 'src/Service/LoaderService';
+import { IonSelect, IonSelectOption, } from '@ionic/angular/standalone';
+
 @Component({
   selector: 'app-quote-price',
   templateUrl: './quote-price.component.html',
   styleUrls: ['./quote-price.component.scss'],
-  imports: [FormsModule, IonContent, IonInput, IonButton, IonCheckbox, IonItem, QRCodeComponent, IonIcon]
+  imports: [FormsModule, IonContent, IonSelect, IonSelectOption, IonInput, IonButton, IonCheckbox, IonItem, QRCodeComponent, IonIcon]
 })
 export class QuotePriceComponent implements OnInit {
 
   ProductName: string = '';
   BuyingPrice: string = ''
   SellingPrice: string = '';
+  unit: string = '';
   companyId: string = '';
   generateQrCode: boolean = false;
   savedItemUrl: string = '';
@@ -36,8 +39,8 @@ export class QuotePriceComponent implements OnInit {
     this.companyId = this.keysStorage.getItem("CompanyId")
   }
   AddGroceryData() {
-    if (!this.ProductName || !this.BuyingPrice || !this.SellingPrice) {
-      this.toaster.showWarning('Please enter product name, buying price and selling price');
+    if (!this.ProductName || !this.BuyingPrice || !this.SellingPrice || !this.unit) {
+      this.toaster.showWarning('Please enter product name, buying price, selling price and select unit');
       return;
     }
     this.LoaderService.showLoader("Please wait while adding product")
@@ -45,6 +48,7 @@ export class QuotePriceComponent implements OnInit {
       "ProductName": this.ProductName,
       "BuyingPrice": this.BuyingPrice,
       "SellingPrice": this.SellingPrice,
+      "Unit": this.unit,
       "CompanyId": this.companyId
     }
     this.quoteService.AddgroceryData(payload).subscribe({
@@ -60,6 +64,7 @@ export class QuotePriceComponent implements OnInit {
           this.ProductName = "";
           this.BuyingPrice = "";
           this.SellingPrice = "";
+          this.unit = "";
           this.toaster.showSuccess(val.message);
         }
         else {
@@ -91,6 +96,7 @@ export class QuotePriceComponent implements OnInit {
     this.ProductName = '';
     this.BuyingPrice = '';
     this.SellingPrice = '';
+    this.unit = '';
     this.generateQrCode = false;
     this.savedItemUrl = '';
   }
