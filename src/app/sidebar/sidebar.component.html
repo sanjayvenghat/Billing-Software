@@ -14,14 +14,14 @@
       <h3 class="section-title">Settings</h3>
       <ion-list lines="none" class="transparent-list">
         @for (p of SideBarMenu; track p) {
-          <ion-menu-toggle auto-hide="false">
-            <ion-item routerDirection="root" class="menu-item" detail="false">
-              <div class="icon-box" [ngClass]="p.ColorClass" slot="start">
-                <ion-icon [name]="p.Icon"></ion-icon>
-              </div>
-              <ion-label>{{ p.Title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
+        <ion-menu-toggle auto-hide="false">
+          <ion-item routerDirection="root" class="menu-item" detail="false">
+            <div class="icon-box" [ngClass]="p.ColorClass" slot="start">
+              <ion-icon [name]="p.Icon"></ion-icon>
+            </div>
+            <ion-label (click)="chooseOption(p)">{{ p.Title }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
         }
       </ion-list>
     </div>

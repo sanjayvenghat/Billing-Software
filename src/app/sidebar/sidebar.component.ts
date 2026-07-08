@@ -4,7 +4,8 @@ import { RouterModule } from '@angular/router';
 import { IonIcon, IonList, IonMenuToggle, IonItem, IonLabel, IonButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { basket, documentText, documents, trendingUp, statsChart, logOut, diamond } from 'ionicons/icons';
-
+import { Router } from '@angular/router';
+import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -18,7 +19,7 @@ import { basket, documentText, documents, trendingUp, statsChart, logOut, diamon
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() {
+  constructor(private router: Router, private keysStorage: KEYSSTORAGE) {
     addIcons({ basket, 'document-text': documentText, documents, 'trending-up': trendingUp, 'stats-chart': statsChart, 'log-out': logOut, diamond });
   }
   SideBarMenu = [
@@ -54,5 +55,13 @@ export class SidebarComponent implements OnInit {
     },
   ];
   ngOnInit() { }
+  chooseOption(item: any) {
+    if (item.Title == "Log Out") {
+      this.keysStorage.clear();
+      this.router.navigate(['/home']);
+    }
+  }
+
+
 
 }
