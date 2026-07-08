@@ -18,6 +18,7 @@ import {
   IonContent
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
+
 import {
   searchOutline,
   personOutline,
@@ -70,6 +71,11 @@ export class IonTableComponent implements OnInit {
   customers: any[] = [];
   filteredCustomers: any[] = [];
   expandedCustomerId: string | null = null;
+  isHeaderVisible: boolean = true;
+
+  toggleHeader() {
+    this.isHeaderVisible = !this.isHeaderVisible;
+  }
 
   // No modal states needed for direct alert confirmations
 
@@ -90,8 +96,8 @@ export class IonTableComponent implements OnInit {
       personOutline,
       walletOutline,
       cashOutline,
-      chevronDownOutline,
-      chevronUpOutline,
+      'chevron-down-outline': chevronDownOutline,
+      'chevron-up-outline': chevronUpOutline,
       eyeOutline,
       closeCircleOutline,
       checkmarkCircleOutline,
