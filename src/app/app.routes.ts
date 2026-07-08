@@ -20,6 +20,39 @@ export const routes: Routes = [
   },
   {
     path: 'GetUserDetails',
-    loadComponent: () => import('./get-user-details/get-user-details.component').then((m) => m.GetUserDetailsComponent)
-  }
+    loadComponent: () => import('./get-user-details/get-user-details.component').then((m) => m.GetUserDetailsComponent),
+    children: [
+      {
+        path: 'billing',
+        loadComponent: () => import('./billing/billing.component').then((m) => m.BillingComponent)
+      },
+      {
+        path: 'quote-price',
+        loadComponent: () => import('./quote-price/quote-price.component').then((m) => m.QuotePriceComponent)
+      },
+      {
+        path: 'product-list',
+        loadComponent: () => import('./list-product/list-product.component').then((m) => m.ListProductComponent),
+      },
+      {
+        path: 'add-user',
+        loadComponent: () => import('./create-user/create-user.component').then((m) => m.CreateUserComponent),
+
+      },
+      {
+        path: 'pending',
+        loadComponent: () => import('./ion-table/ion-table.component').then((m) => m.IonTableComponent)
+      },
+      {
+        path: '',
+        redirectTo: 'billing',
+        pathMatch: 'full'
+      },
+      {
+        path: '**',
+        redirectTo: '/not-found'
+      }
+    ]
+  },
+
 ];

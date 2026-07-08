@@ -15,14 +15,14 @@ import { addIcons } from 'ionicons';
 import { library, playCircle, radio, search, cashOutline, pricetags, personAdd, wallet } from 'ionicons/icons';
 import { QuotePriceComponent } from '../quote-price/quote-price.component';
 import { ListProductComponent } from '../list-product/list-product.component';
-
+import { RouterLink } from '@angular/router';
 import { CreateUserComponent } from '../create-user/create-user.component';
 import { IonTableComponent } from '../ion-table/ion-table.component';
 @Component({
   selector: 'app-get-user-details',
   templateUrl: './get-user-details.component.html',
   styleUrls: ['./get-user-details.component.scss'],
-  imports: [IonTableComponent, IonContent, IonHeader, IonIcon, IonTab, IonTabBar, IonTabButton, IonTabs, IonToolbar, HeaderComponentComponent, BillingComponent, QuotePriceComponent, ListProductComponent, CreateUserComponent],
+  imports: [IonTableComponent, RouterLink, IonContent, IonHeader, IonIcon, IonTab, IonTabBar, IonTabButton, IonTabs, IonToolbar, HeaderComponentComponent, BillingComponent, QuotePriceComponent, ListProductComponent, CreateUserComponent],
 })
 export class GetUserDetailsComponent {
 
