@@ -2,6 +2,11 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: #f8fafc;
+}
+
+ion-content {
+  --background: #f8fafc;
 }
 
 /* Dashboard Stats Cards */
@@ -70,6 +75,7 @@
 
   ion-icon {
     font-size: 28px;
+    color: #ffffff;
   }
 }
 
@@ -85,6 +91,7 @@
   opacity: 0.85;
   font-weight: 500;
   margin-bottom: 4px;
+  color: #ffffff;
 }
 
 .stat-value {
@@ -92,6 +99,7 @@
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.5px;
+  color: #ffffff;
 }
 
 /* Controls Panel */
