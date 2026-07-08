@@ -1,5 +1,5 @@
 <!-- Dashboard Summary Cards -->
-<div class="dashboard-stats">
+<div class="dashboard-stats ion-padding-horizontal ion-padding-top">
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-md="4">
@@ -41,7 +41,7 @@
   </ion-grid>
 </div>
 
-<div class="controls-panel">
+<div class="controls-panel ion-margin-horizontal">
   <ion-row class="ion-align-items-center">
     <ion-col size="12" size-md="6">
       <ion-searchbar placeholder="Search customer by name or phone..." [(ngModel)]="searchQuery"
@@ -60,8 +60,9 @@
   </ion-row>
 </div>
 
-<!-- Main Table Container -->
-<div class="table-container">
+<ion-content class="ion-padding-horizontal">
+  <!-- Main Table Container -->
+  <div class="table-container">
   <!-- Empty State -->
   @if (filteredCustomers.length === 0) {
   <div class="empty-state">
@@ -209,7 +210,8 @@
                   @for (item of bill.cartItems; track item) {
                   <div class="item-table-row">
                     <span class="col-name">{{ item.ProductName }}</span>
-                    <span class="col-qty">{{ item.Quantity }} {{ item.selectedSubUnit || (item.unit === 'Weight' ? 'kg' : 'Pcs') }}</span>
+                    <span class="col-qty">{{ item.Quantity }} {{ item.selectedSubUnit || (item.unit === 'Weight' ? 'kg'
+                      : 'Pcs') }}</span>
                     <span class="col-price">₹{{ item.SellingPrice }}</span>
                     <span class="col-total">₹{{ getItemTotal(item) | number:'1.2-2' }}</span>
                   </div>
@@ -229,3 +231,4 @@
   </div>
   }
 </div>
+</ion-content>

@@ -48,10 +48,6 @@ export const routes: Routes = [
         redirectTo: 'billing',
         pathMatch: 'full'
       },
-      {
-        path: '**',
-        redirectTo: '/not-found'
-      }
     ]
   },
 

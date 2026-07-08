@@ -14,7 +14,8 @@ import {
   IonSegment,
   IonSegmentButton,
   AlertController,
-  IonInput
+  IonInput,
+  IonContent
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -59,7 +60,8 @@ import { ToastService } from 'src/Service/ToasterService';
     IonLabel,
     IonSegment,
     IonSegmentButton,
-    IonInput
+    IonInput,
+    IonContent
   ]
 })
 export class IonTableComponent implements OnInit {
