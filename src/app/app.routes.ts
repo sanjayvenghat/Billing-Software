@@ -48,7 +48,19 @@ export const routes: Routes = [
         redirectTo: 'billing',
         pathMatch: 'full'
       },
+      {
+        path: '**',
+        redirectTo: 'not-found'
+      }
     ]
   },
 
+  {
+    path: 'not-found',
+    loadComponent: () => import('./no-result-found/no-result-found.component').then((m) => m.NoResultFoundComponent)
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found'
+  }
 ];

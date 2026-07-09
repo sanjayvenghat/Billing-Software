@@ -1,0 +1,51 @@
+<ion-content [fullscreen]="true" class="not-found-content">
+  <div class="error-container">
+    <div class="brand-header">
+      <ion-icon name="calculator-outline" class="brand-icon"></ion-icon>
+      <h1 class="brand-name">Handy Bill</h1>
+      <p class="brand-tagline">Smart billing & daily accounts</p>
+    </div>
+
+    <div class="error-card">
+      <div class="browser-mockup">
+        <div class="mockup-header">
+          <div class="mockup-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="mockup-address">Handy Bill.com/not-found</div>
+        </div>
+        <div class="mockup-body">
+          @if (isLoading) {
+          <div class="spinner-container">
+            <ion-spinner name="crescent"></ion-spinner>
+          </div>
+          } @else {
+          <img [src]="image" alt="404 Error Status" class="error-img">
+          }
+        </div>
+      </div>
+
+      <h2 class="error-title">Page Not Found</h2>
+      <p class="error-description">
+        We searched everywhere but couldn't find the page you're looking for. It might have been moved, deleted, or the
+        URL may be incorrect.
+      </p>
+
+      <div class="btn-group">
+        <ion-button class="primary-btn" (click)="goHome()" expand="block">
+          RETURN TO HOME
+        </ion-button>
+
+        <ion-button class="secondary-btn" (click)="goBack()" fill="clear" expand="block">
+          GO BACK
+        </ion-button>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <p>Need help? <a href="handyBill@handybill.com" class="support-link">Contact Support</a></p>
+    </div>
+  </div>
+</ion-content>
