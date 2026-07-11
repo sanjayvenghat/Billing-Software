@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { IonIcon, IonList, IonMenuToggle, IonItem, IonLabel, IonButton } from '@ionic/angular/standalone';
+import { IonIcon, IonList, IonMenuToggle, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { basket, documentText, documents, trendingUp, statsChart, logOut, diamond } from 'ionicons/icons';
+import { basket, documentText, documents, trendingUp, statsChart, logOut, diamond, cart, speedometer } from 'ionicons/icons';
 import { Router } from '@angular/router';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
+import { settings } from 'ionicons/icons';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -14,42 +15,42 @@ import { KEYSSTORAGE } from 'src/Service/LocalStorage';
   imports: [
     CommonModule,
     RouterModule,
-    IonIcon, IonList, IonMenuToggle, IonItem, IonLabel, IonButton
+    IonIcon, IonList, IonMenuToggle, IonItem, IonLabel,
   ]
 })
 export class SidebarComponent implements OnInit {
 
   constructor(private router: Router, private keysStorage: KEYSSTORAGE) {
-    addIcons({ basket, 'document-text': documentText, documents, 'trending-up': trendingUp, 'stats-chart': statsChart, 'log-out': logOut, diamond });
+    addIcons({ basket, 'document-text': documentText, documents, 'trending-up': trendingUp, 'stats-chart': statsChart, 'log-out': logOut, diamond, settings, cart, speedometer });
   }
   SideBarMenu = [
     {
-      Title: 'Generate Pending Bills Report for A week',
-      Url: '/get-user-details',
-      Icon: 'document-text',
+      Title: 'Settings',
+      Url: '/settings',
+      Icon: 'settings',
       ColorClass: 'week-bills-box'
     },
     {
-      Title: 'Generate Pending Bills Report for A Month',
-      Url: '/billing',
-      Icon: 'documents',
+      Title: 'Go To Your E-Commerce Dashboard',
+      Url: '/EcommerceDashboard',
+      Icon: 'cart',
       ColorClass: 'month-bills-box'
     },
     {
       Title: 'Get Profit Report for A week',
-      Url: '/quote-price',
+      Url: '/GetUserDetails/quote-price',
       Icon: 'trending-up',
       ColorClass: 'week-profit-box'
     },
     {
       Title: 'Get Profit Report for A Month',
-      Url: '/quote-price',
+      Url: '/GetUserDetails/quote-price',
       Icon: 'stats-chart',
       ColorClass: 'month-profit-box'
     },
     {
       Title: 'Log Out',
-      Url: '/list-product',
+      Url: '/home',
       Icon: 'log-out',
       ColorClass: 'logout-box'
     },
@@ -59,6 +60,8 @@ export class SidebarComponent implements OnInit {
     if (item.Title == "Log Out") {
       this.keysStorage.clear();
       this.router.navigate(['/home']);
+    } else {
+      this.router.navigate([item.Url]);
     }
   }
 

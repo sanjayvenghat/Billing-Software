@@ -1,6 +1,11 @@
 <ion-toolbar color="dark">
   <ion-title>{{ HeaderTitle }}</ion-title>
   <ion-buttons slot="end">
-    <ion-menu-button></ion-menu-button>
+    <ion-chip (click)="openMenu()">
+      <ion-avatar>
+        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+      <ion-label class="setchip">Sakthistores</ion-label>
+    </ion-chip>
   </ion-buttons>
 </ion-toolbar>

@@ -19,6 +19,10 @@ export const routes: Routes = [
     loadComponent: () => import('./forgot-password/forgot-password.component').then((m) => m.ForgotPasswordComponent)
   },
   {
+    path: 'settings',
+    loadComponent: () => import('./settings/settings.component').then((m) => m.SettingsComponent)
+  },
+  {
     path: 'GetUserDetails',
     loadComponent: () => import('./get-user-details/get-user-details.component').then((m) => m.GetUserDetailsComponent),
     children: [

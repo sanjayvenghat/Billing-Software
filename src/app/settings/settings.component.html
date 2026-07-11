@@ -1,0 +1,150 @@
+<ion-content class="settings-content-wrapper">
+  <div class="settings-container-card">
+    <div class="settings-detail-pane">
+      <div class="content-header">
+        <div class="header-left">
+          <button class="app-back-btn" (click)="goBackToApp()" title="Back to App">
+            <ion-icon name="arrow-undo"></ion-icon>
+          </button>
+          <h1>Settings</h1>
+        </div>
+        <div class="header-right">
+          <div class="action-icons">
+            <ion-icon name="help-circle" class="action-icon" (click)="goBackToApp()"></ion-icon>
+            <div class="avatar" (click)="goBackToApp()">
+              <span class="avatar-letter">S</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content-body">
+        <div class="tab-pane">
+          <div class="pane-title-group">
+            <h2>General Options</h2>
+            <p>Customize the basic behavior and appearance of your system.</p>
+          </div>
+          <div class="options-section">
+            <span class="section-label">OPTIONS</span>
+            <div class="options-group-card">
+              <div class="option-row">
+                <div class="option-info">
+                  <div class="option-icon-box sync-icon">
+                    <ion-icon name="refresh-circle"></ion-icon>
+                  </div>
+                  <div class="option-text">
+                    <h4>Gst Billing</h4>
+                    <p>Enable Gst Billing Across Whole Application</p>
+                  </div>
+                </div>
+                <div class="option-control">
+                  <ion-toggle [(ngModel)]="gstBilling" aria-label="Gst Billing Toggle"></ion-toggle>
+                </div>
+              </div>
+              <div class="option-row">
+                <div class="option-info">
+                  <div class="option-icon-box profit-icon">
+                    <ion-icon name="trending-up"></ion-icon>
+                  </div>
+                  <div class="option-text">
+                    <h4>Show Profit Of Every Product</h4>
+                    <p>Show Profit Of Every Product in the time of billing</p>
+                  </div>
+                </div>
+                <div class="option-control">
+                  <ion-toggle [(ngModel)]="showProfitOfEveryProduct"
+                    aria-label="Show Profit Of Every Product Toggle"></ion-toggle>
+                </div>
+              </div>
+              <div class="option-row button-row">
+                <div class="option-info">
+                  <div class="option-icon-box lang-icon">
+                    <ion-icon name="globe"></ion-icon>
+                  </div>
+                  <div class="option-text">
+                    <h4>System Language</h4>
+                    <p>Configure default display language</p>
+                  </div>
+                </div>
+                <div class="option-control select-control">
+                  <span class="selected-val">{{ systemLanguage }}</span>
+                  <ion-icon name="chevron-forward" class="arrow-icon"></ion-icon>
+                  <ion-select [(ngModel)]="systemLanguage" class="hidden-select" interface="popover">
+                    <ion-select-option value="English">English</ion-select-option>
+                    <ion-select-option value="தமிழ்">தமிழ்</ion-select-option>
+                  </ion-select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="options-section">
+            <span class="section-label">OTHER OPTIONS</span>
+            <div class="options-group-card">
+              <div class="option-row">
+                <div class="option-info">
+                  <div class="option-icon-box dark-mode-icon">
+                    <ion-icon name="moon"></ion-icon>
+                  </div>
+                  <div class="option-text">
+                    <h4>Dark Mode</h4>
+                    <p>Switch between light and dark interface themes</p>
+                  </div>
+                </div>
+                <div class="option-control">
+                  <ion-toggle [(ngModel)]="darkMode" aria-label="Dark Mode Toggle"></ion-toggle>
+                </div>
+              </div>
+              <div class="option-row button-row">
+                <div class="option-info">
+                  <div class="option-icon-box preference-icon">
+                    <ion-icon name="color-palette"></ion-icon>
+                  </div>
+                  <div class="option-text">
+                    <h4>Set Store Icon</h4>
+                    <p>Select Store Icon from below</p>
+                  </div>
+                </div>
+                <div class="option-control select-control">
+                  <span class="selected-val">{{ colorAccent }}</span>
+                  <ion-icon name="chevron-forward" class="arrow-icon"></ion-icon>
+                  <ion-select [(ngModel)]="colorAccent" class="hidden-select" interface="popover">
+                    <ion-select-option value="Standard Black">Standard Black</ion-select-option>
+                    <ion-select-option value="Emerald Blue">Emerald Blue</ion-select-option>
+                  </ion-select>
+                </div>
+              </div>
+              <div class="option-row">
+                <div class="option-info">
+                  <div class="option-icon-box save-icon-box">
+                    <ion-icon name="checkmark"></ion-icon>
+                  </div>
+                  <div class="option-text">
+                    <h4>Save Settings</h4>
+                    <p>Apply and persist your current configuration</p>
+                  </div>
+                </div>
+                <div class="option-control">
+                  <button class="save-btn" color="success" (click)="saveSettings()">Save</button>
+                </div>
+              </div>
+              <div class="option-row">
+                <div class="option-info">
+                  <div class="option-icon-box reset-icon">
+                    <ion-icon name="arrow-undo"></ion-icon>
+                  </div>
+                  <div class="option-text">
+                    <h4>Reset to Defaults</h4>
+                    <p>Revert all general options to factory state</p>
+                  </div>
+                </div>
+                <div class="option-control">
+                  <button class="reset-btn" (click)="resetToDefaults()">Reset</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
