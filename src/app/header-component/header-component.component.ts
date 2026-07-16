@@ -18,6 +18,7 @@ import { Input } from '@angular/core';
 })
 export class HeaderComponentComponent implements OnInit {
   @Input() HeaderTitle: string = '';
+  avatarUrl: string = 'assets/icon/store.png';
   constructor(private menuController: MenuController) { }
 
   ngOnInit() { }

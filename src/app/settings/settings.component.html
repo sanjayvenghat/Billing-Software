@@ -105,11 +105,13 @@
                   </div>
                 </div>
                 <div class="option-control select-control">
+                  <img [src]="getSelectedIconUrl()" class="selected-icon-preview" alt="Icon Preview" />
                   <span class="selected-val">{{ colorAccent }}</span>
                   <ion-icon name="chevron-forward" class="arrow-icon"></ion-icon>
                   <ion-select [(ngModel)]="colorAccent" class="hidden-select" interface="popover">
-                    <ion-select-option value="Standard Black">Standard Black</ion-select-option>
-                    <ion-select-option value="Emerald Blue">Emerald Blue</ion-select-option>
+                    @for(item of iconsList; track $index) {
+                    <ion-select-option [value]="item.Icontype">{{item.Icontype}}</ion-select-option>
+                    }
                   </ion-select>
                 </div>
               </div>

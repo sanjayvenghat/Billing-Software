@@ -326,9 +326,17 @@
     .select-control {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         position: relative;
         cursor: pointer;
+
+        .selected-icon-preview {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid #e2e8f0;
+        }
 
         .selected-val {
             font-size: 13px;

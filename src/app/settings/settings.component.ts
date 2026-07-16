@@ -26,7 +26,8 @@ import {
 } from 'ionicons/icons';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { ToastService } from 'src/Service/ToasterService';
-
+import { LoaderService } from 'src/Service/LoaderService';
+import { SettingService } from './setting-service';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -53,11 +54,36 @@ export class SettingsComponent implements OnInit {
   colorAccent: string = 'Standard Black';
   autoSync: boolean = false;
   systemLanguage: string = 'English';
+  iconsList = [
+    {
+      Icontype: 'FirstIcon',
+      url: 'assets/icon/store.png'
+    },
+    {
+      Icontype: 'SecondIcon',
+      url: 'assets/icon/store (2).png'
+    },
+    {
+      Icontype: 'ThirdIcon',
+      url: 'assets/icon/store (3).png'
+    },
+    {
+      Icontype: 'DefaultIcon',
+      url: 'assets/icon/default.png'
+    }
+  ];
+
+  getSelectedIconUrl(): string {
+    const selected = this.iconsList.find(item => item.Icontype === this.colorAccent);
+    return selected ? selected.url : 'assets/icon/store.png';
+  }
 
   constructor(
     private router: Router,
     private keysStorage: KEYSSTORAGE,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private loaderService: LoaderService,
+    private SettingService: SettingService
   ) {
     addIcons({
       'help-circle': helpCircle,
@@ -102,8 +128,21 @@ export class SettingsComponent implements OnInit {
       autoSync: this.autoSync,
       systemLanguage: this.systemLanguage
     };
-    this.keysStorage.setItem('APP_SETTINGS', settingsObj);
-    this.toastService.showSuccess('Settings saved successfully!');
+    this.loaderService.showLoader();
+    this.SettingService.UpdateSetting(settingsObj).subscribe({
+      next: (val: any) => {
+        this.loaderService.hideLoader();
+        if (val?.message == 'Setting updated successfully') {
+          this.toastService.showSuccess('Settings saved successfully!');
+        } else {
+          this.toastService.showError(val?.message || 'Failed to save settings.');
+        }
+      },
+      error: (err: any) => {
+        this.loaderService.hideLoader();
+        this.toastService.showError(err?.error?.message || 'Failed to save settings.');
+      }
+    })
   }
 
   resetToDefaults() {
