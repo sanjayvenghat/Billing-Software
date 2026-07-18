@@ -228,5 +228,13 @@ export const TAMIL_DICTIONARY: { [key: string]: string } = {
   'New Password': 'புதிய கடவுச்சொல்',
   'Retype Password': 'கடவுச்சொல்லை மீண்டும் உள்ளிடவும்',
   'RESET PASSWORD': 'கடவுச்சொல்லை மீட்டமை',
-  'Remember your password?': 'கடவுச்சொல் நினைவிருக்கிறதா?'
+  'Remember your password?': 'கடவுச்சொல் நினைவிருக்கிறதா?',
+
+  // 404 Page / Not Found Page
+  'Page Not Found': 'பக்கம் காணப்படவில்லை',
+  'We searched everywhere but couldn\'t find the page you\'re looking for. It might have been moved, deleted, or the URL may be incorrect.': 'நாங்கள் எல்லா இடங்களிலும் தேடினோம், ஆனால் நீங்கள் தேடும் பக்கத்தைக் கண்டறிய முடியவில்லை. அது நகர்த்தப்பட்டிருக்கலாம், நீக்கப்பட்டிருக்கலாம் அல்லது இணைய முகவரி (URL) தவறாக இருக்கலாம்.',
+  'RETURN TO HOME': 'முகப்புக்குத் திரும்பு',
+  'GO BACK': 'பின்னே செல்லவும்',
+  'Need help?': 'உதவி தேவையா?',
+  'Contact Support': 'ஆதரவைத் தொடர்பு கொள்ளவும்'
 };

@@ -3,7 +3,7 @@
     <div class="brand-header">
       <ion-icon name="calculator-outline" class="brand-icon"></ion-icon>
       <h1 class="brand-name">Handy Bill</h1>
-      <p class="brand-tagline">Smart billing & daily accounts</p>
+      <p class="brand-tagline">{{ 'Smart billing & daily accounts' | translate }}</p>
     </div>
 
     <div class="error-card">
@@ -27,25 +27,27 @@
         </div>
       </div>
 
-      <h2 class="error-title">Page Not Found</h2>
+      <h2 class="error-title">{{ 'Page Not Found' | translate }}</h2>
       <p class="error-description">
-        We searched everywhere but couldn't find the page you're looking for. It might have been moved, deleted, or the
-        URL may be incorrect.
+        {{ "We searched everywhere but couldn't find the page you're looking for. It might have been moved, deleted, or the URL may be incorrect." | translate }}
       </p>
 
       <div class="btn-group">
         <ion-button class="primary-btn" (click)="goHome()" expand="block">
-          RETURN TO HOME
+          {{ 'RETURN TO HOME' | translate }}
         </ion-button>
 
         <ion-button class="secondary-btn" (click)="goBack()" fill="clear" expand="block">
-          GO BACK
+          {{ 'GO BACK' | translate }}
         </ion-button>
       </div>
     </div>
 
     <div class="footer-section">
-      <p>Need help? <a href="handyBill@handybill.com" class="support-link">Contact Support</a></p>
+      <p>
+        {{ 'Need help?' | translate }}
+        <a href="handyBill@handybill.com" class="support-link">{{ 'Contact Support' | translate }}</a>
+      </p>
     </div>
   </div>
 </ion-content>

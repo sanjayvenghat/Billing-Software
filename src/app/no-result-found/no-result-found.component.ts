@@ -3,13 +3,14 @@ import { CommonModule, Location } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { NoResultsFound } from './no-results-found';
+import { TranslatePipe } from '../../Service/TranslatePipe';
 
 @Component({
   selector: 'app-no-result-found',
   templateUrl: './no-result-found.component.html',
   styleUrls: ['./no-result-found.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule]
+  imports: [IonicModule, CommonModule, TranslatePipe]
 })
 export class NoResultFoundComponent implements OnInit, OnDestroy {
   image: string = '';
