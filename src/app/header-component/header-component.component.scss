@@ -1,3 +1,23 @@
 .setchip {
     color: white;
 }
+
+/* Dark Mode Overrides */
+::ng-deep html.ion-palette-dark,
+::ng-deep html.dark,
+::ng-deep body.ion-palette-dark,
+::ng-deep body.dark {
+
+    ion-toolbar,
+    ion-toolbar.ion-color-dark,
+    ion-toolbar[color="dark"] {
+        --background: #121212 !important;
+        --color: #ffffff !important;
+    }
+
+    ion-chip {
+        --background: #000000 !important;
+        --color: #ffffff !important;
+        border: 1px solid #2d2d30 !important;
+    }
+}

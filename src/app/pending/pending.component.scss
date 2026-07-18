@@ -207,3 +207,140 @@ ion-modal.pending-modal {
         --color: #1e1e1e;
     }
 }
+
+.modal-title {
+    font-weight: 700;
+    color: #1e1e1e;
+}
+
+.modal-close-btn {
+    --color: #1e1e1e;
+    color: #1e1e1e;
+    font-weight: 600;
+}
+
+/* Dark Mode Overrides */
+::ng-deep html.ion-palette-dark,
+::ng-deep html.dark,
+::ng-deep body.ion-palette-dark,
+::ng-deep body.dark {
+    ion-modal.pending-modal {
+        --background: #121212 !important;
+    }
+
+    ion-content {
+        --background: #121212 !important;
+    }
+
+    ion-toolbar {
+        --background: #1a1a1e !important;
+        --color: #ffffff !important;
+    }
+
+    .modal-title {
+        color: #ffffff !important;
+    }
+
+    .modal-close-btn {
+        --color: #ffffff !important;
+        color: #ffffff !important;
+    }
+
+    .transaction-summary-card {
+        background: linear-gradient(135deg, #221d0f 0%, #17140b 100%) !important;
+        border: 1px solid #4a3e20 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+
+        .summary-section {
+            .summary-label {
+                color: #a89f8c !important;
+            }
+
+            .summary-value {
+                color: #ffd043 !important;
+            }
+        }
+
+        .customer-info-section {
+            border-top: 1px dashed #4a3e20 !important;
+
+            .customer-chip {
+                background: #181818 !important;
+                border: 1px solid #4a3e20 !important;
+                color: #e2e8f0 !important;
+
+                ion-icon {
+                    color: #ffd043 !important;
+                }
+            }
+        }
+    }
+
+    .payment-form {
+        .input-group {
+            .input-header {
+                color: #cbd5e1 !important;
+
+                ion-icon {
+                    color: #94a3b8 !important;
+                }
+            }
+
+            .input-helper {
+                color: #94a3b8 !important;
+            }
+        }
+    }
+
+    .custom-input {
+        --background: #1a1a1e !important;
+        --color: #f8fafc !important;
+        --placeholder-color: #64748b !important;
+        border-color: #334155 !important;
+        background: #1a1a1e !important;
+
+        &:focus-within {
+            border-color: #fbbc05 !important;
+            background: #1e1e24 !important;
+        }
+    }
+
+    .balance-display-box {
+        background: #1a1a1e !important;
+        border-color: #334155 !important;
+
+        .balance-currency {
+            color: #94a3b8 !important;
+        }
+
+        .balance-value {
+            color: #f8fafc !important;
+        }
+
+        &.has-balance {
+            background: #2d1f10 !important;
+            border-color: #4e3518 !important;
+
+            .balance-currency {
+                color: #fb923c !important;
+            }
+
+            .balance-value {
+                color: #fb923c !important;
+            }
+        }
+    }
+
+    .actions-container {
+        border-top-color: #334155 !important;
+
+        .cancel-btn {
+            --border-color: #475569 !important;
+            --color: #cbd5e1 !important;
+        }
+
+        .confirm-btn {
+            --color: #1e1e1e !important;
+        }
+    }
+}

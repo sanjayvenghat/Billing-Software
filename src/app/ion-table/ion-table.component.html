@@ -42,19 +42,19 @@
   </ion-grid>
 </div>
 }
-<div class="controls-panel ion-margin-horizontal">
+<div class="controls-panel ion-margin-horizontal mt-2">
   <ion-row class="ion-align-items-center">
     <ion-col size="12" size-md="6">
-      <ion-searchbar placeholder="Search customer by name or phone..." [(ngModel)]="searchQuery"
-        (ionInput)="applyFilter()" class="custom-searchbar"></ion-searchbar>
+      <ion-searchbar placeholder="Search customer by Name" [(ngModel)]="searchQuery" (ionInput)="applyFilter()"
+        class="custom-searchbar"></ion-searchbar>
     </ion-col>
     <ion-col size="12" size-md="6">
       <ion-segment [(ngModel)]="filterType" (ionChange)="applyFilter()" class="custom-segment">
         <ion-segment-button value="pending">
-          <ion-label>Pending Dues Only</ion-label>
+          <ion-label>Pending</ion-label>
         </ion-segment-button>
         <ion-segment-button value="all">
-          <ion-label>All Customers</ion-label>
+          <ion-label>Customers</ion-label>
         </ion-segment-button>
       </ion-segment>
     </ion-col>

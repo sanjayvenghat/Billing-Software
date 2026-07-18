@@ -15,7 +15,7 @@ import { LoaderService } from 'src/Service/LoaderService';
   imports: [
     IonicModule,
     ReactiveFormsModule
-],
+  ],
 })
 export class HomePage implements OnInit {
 
@@ -42,7 +42,37 @@ export class HomePage implements OnInit {
   }
 
 
-
+  getSettingsForLogin() {
+    this.loginService.getSettings().subscribe({
+      next: (val: any) => {
+        this.loaderService.hideLoader()
+        this.isLoading = false;
+        this.loaderService.hideLoader()
+        if (val?.message === 'User Settings Get Successfully') {
+          this.toastService.showSuccess(val.message);
+          this.loginForm.reset();
+          if (val.userSettings && val.userSettings.darkMode) {
+            document.documentElement.classList.add('ion-palette-dark');
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('ion-palette-dark');
+            document.documentElement.classList.remove('dark');
+          }
+          setTimeout(() => {
+            this.router.navigate(['/GetUserDetails']);
+          }, 1000);
+        } else {
+          this.toastService.showWarning(val?.message || 'Invalid store name or password.');
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.loaderService.hideLoader()
+        console.error('Login error:', err);
+        this.toastService.showError('Something went wrong. Please try again.');
+      }
+    })
+  }
   // ─── Login ────────────────────────────────────────────────────────────
   onLogin() {
     if (this.loginForm.valid) {
@@ -58,13 +88,9 @@ export class HomePage implements OnInit {
       this.loginService.Login(payload).subscribe({
         next: (val: any) => {
           this.isLoading = false;
-          this.loaderService.hideLoader()
           if (val?.message === 'Login SuccessFul') {
             this.toastService.showSuccess(val.message);
-            this.loginForm.reset();
-            setTimeout(() => {
-              this.router.navigate(['/GetUserDetails']);
-            }, 1000);
+            this.getSettingsForLogin();
           } else {
             this.toastService.showWarning(val?.message || 'Invalid store name or password.');
           }

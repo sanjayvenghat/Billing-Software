@@ -148,6 +148,13 @@
             color: #475569;
             font-size: 14px;
             border: 1px solid #cbd5e1;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
         }
     }
 }
@@ -474,5 +481,116 @@
 
     to {
         transform: rotate(360deg);
+    }
+}
+
+/* Dark Mode Overrides */
+::ng-deep html.ion-palette-dark,
+::ng-deep html.dark,
+::ng-deep body.ion-palette-dark,
+::ng-deep body.dark {
+    .settings-content-wrapper {
+        --background: #121212 !important;
+        background: #121212 !important;
+    }
+
+    .settings-container-card {
+        background: #121212 !important;
+    }
+
+    .settings-detail-pane {
+        background: #121212 !important;
+    }
+
+    .content-header {
+        border-bottom: 1px solid #222 !important;
+
+        .header-left {
+            h1 {
+                color: #e2e8f0 !important;
+            }
+
+            .app-back-btn {
+                background: #1f1f23 !important;
+                color: #cbd5e1 !important;
+
+                ion-icon {
+                    color: #cbd5e1 !important;
+                }
+
+                &:hover {
+                    background: #2d2d30 !important;
+                }
+            }
+        }
+
+        .action-icons {
+            .action-icon {
+                color: #94a3b8 !important;
+
+                &:hover {
+                    color: #f8fafc !important;
+                }
+            }
+
+            .avatar {
+                background: #1f1f23 !important;
+                border-color: #334155 !important;
+            }
+        }
+    }
+
+    .pane-title-group {
+        h2 {
+            color: #f8fafc !important;
+        }
+
+        p {
+            color: #94a3b8 !important;
+        }
+    }
+
+    .options-group-card {
+        background: #1a1a1e !important;
+        border: 1px solid #334155 !important;
+    }
+
+    .option-row {
+        border-bottom: 1px solid #2d2d30 !important;
+
+        &.button-row:hover {
+            background: #242428 !important;
+        }
+
+        .option-text {
+            h4 {
+                color: #f8fafc !important;
+            }
+
+            p {
+                color: #94a3b8 !important;
+            }
+        }
+
+        .select-control {
+            .selected-val {
+                color: #cbd5e1 !important;
+            }
+
+            .selected-icon-preview {
+                border-color: #334155 !important;
+            }
+        }
+
+        .reset-btn {
+            background: #1a1a1e !important;
+            border-color: #334155 !important;
+            color: #cbd5e1 !important;
+
+            &:hover {
+                background: #242428 !important;
+                color: #f8fafc !important;
+            }
+        }
     }
 }

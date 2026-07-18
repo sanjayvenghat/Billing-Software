@@ -12,7 +12,7 @@
           <div class="action-icons">
             <ion-icon name="help-circle" class="action-icon" (click)="goBackToApp()"></ion-icon>
             <div class="avatar" (click)="goBackToApp()">
-              <span class="avatar-letter">S</span>
+              <img [src]="getSelectedIconUrl()" alt="Store Icon" />
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@
                   </div>
                 </div>
                 <div class="option-control">
-                  <ion-toggle [(ngModel)]="darkMode" aria-label="Dark Mode Toggle"></ion-toggle>
+                  <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()" aria-label="Dark Mode Toggle"></ion-toggle>
                 </div>
               </div>
               <div class="option-row button-row">
@@ -106,9 +106,9 @@
                 </div>
                 <div class="option-control select-control">
                   <img [src]="getSelectedIconUrl()" class="selected-icon-preview" alt="Icon Preview" />
-                  <span class="selected-val">{{ colorAccent }}</span>
+                  <span class="selected-val">{{ IconType }}</span>
                   <ion-icon name="chevron-forward" class="arrow-icon"></ion-icon>
-                  <ion-select [(ngModel)]="colorAccent" class="hidden-select" interface="popover">
+                  <ion-select [(ngModel)]="IconType" class="hidden-select" interface="popover">
                     @for(item of iconsList; track $index) {
                     <ion-select-option [value]="item.Icontype">{{item.Icontype}}</ion-select-option>
                     }

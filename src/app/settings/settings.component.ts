@@ -50,8 +50,7 @@ export class SettingsComponent implements OnInit {
   darkMode: boolean = false;
   gstBilling: boolean = false;
   showProfitOfEveryProduct: boolean = true;
-  enableTactileFeedback: boolean = true;
-  colorAccent: string = 'Standard Black';
+  IconType: string = 'Standard Black';
   autoSync: boolean = false;
   systemLanguage: string = 'English';
   iconsList = [
@@ -74,7 +73,7 @@ export class SettingsComponent implements OnInit {
   ];
 
   getSelectedIconUrl(): string {
-    const selected = this.iconsList.find(item => item.Icontype === this.colorAccent);
+    const selected = this.iconsList.find(item => item.Icontype === this.IconType);
     return selected ? selected.url : 'assets/icon/store.png';
   }
 
@@ -106,15 +105,29 @@ export class SettingsComponent implements OnInit {
   }
 
   loadSettings() {
-    const saved = this.keysStorage.getItem('APP_SETTINGS');
+    let saved = this.keysStorage.getItem('APP_SETTINGS')
     if (saved) {
       this.darkMode = saved.darkMode ?? false;
       this.gstBilling = saved.gstBilling ?? false;
       this.showProfitOfEveryProduct = saved.showProfitOfEveryProduct ?? true;
-      this.enableTactileFeedback = saved.enableTactileFeedback ?? true;
-      this.colorAccent = saved.colorAccent ?? 'Standard Black';
+      this.IconType = saved.IconType;
       this.autoSync = saved.autoSync ?? false;
       this.systemLanguage = saved.systemLanguage ?? 'English';
+    }
+    this.applyDarkMode(this.darkMode);
+  }
+
+  toggleDarkMode() {
+    this.applyDarkMode(this.darkMode);
+  }
+
+  applyDarkMode(isDark: boolean) {
+    if (isDark) {
+      document.documentElement.classList.add('ion-palette-dark');
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('ion-palette-dark');
+      document.documentElement.classList.remove('dark');
     }
   }
 
@@ -123,17 +136,24 @@ export class SettingsComponent implements OnInit {
       darkMode: this.darkMode,
       gstBilling: this.gstBilling,
       showProfitOfEveryProduct: this.showProfitOfEveryProduct,
-      enableTactileFeedback: this.enableTactileFeedback,
-      colorAccent: this.colorAccent,
-      autoSync: this.autoSync,
+      IconType: this.IconType,
       systemLanguage: this.systemLanguage
     };
     this.loaderService.showLoader();
     this.SettingService.UpdateSetting(settingsObj).subscribe({
       next: (val: any) => {
         this.loaderService.hideLoader();
-        if (val?.message == 'Setting updated successfully') {
+        let messages = [
+          "User Setting Updated Successfully",
+          "Error in creating the user setting Please Contact The Admin",
+          "User Setting Created Successfully",
+          "Error in updating the user setting Please Contact The Admin"
+        ];
+        if (messages.includes(val?.message)) {
+          this.keysStorage.setItem('IconType', this.IconType);
+          this.keysStorage.setItem('APP_SETTINGS', settingsObj);
           this.toastService.showSuccess('Settings saved successfully!');
+          this.applyDarkMode(this.darkMode);
         } else {
           this.toastService.showError(val?.message || 'Failed to save settings.');
         }
@@ -149,12 +169,10 @@ export class SettingsComponent implements OnInit {
     this.darkMode = false;
     this.gstBilling = false;
     this.showProfitOfEveryProduct = true;
-    this.enableTactileFeedback = true;
-    this.colorAccent = 'Standard Black';
-    this.autoSync = false;
+    this.IconType = 'Standard Black';
     this.systemLanguage = 'English';
     console.log('Settings reset to defaults');
-    this.toastService.showToast('Settings reset to default values.', 'warning');
+    this.saveSettings();
   }
 
   backupData() {
@@ -164,6 +182,7 @@ export class SettingsComponent implements OnInit {
 
   signOut() {
     this.keysStorage.clear();
+    this.applyDarkMode(false);
     this.router.navigate(['/home']);
   }
 

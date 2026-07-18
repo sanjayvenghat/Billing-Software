@@ -56,7 +56,7 @@ export class LoginService {
                     let token = val?.token;
 
                     if (token) {
-                        localStorage.setItem("Token", token);
+                        this.keysStorage.setItem("Token", token);
                     } else {
                         console.error("Token not found in response");
                     }
@@ -65,12 +65,12 @@ export class LoginService {
         );
     }
     logout(): void {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        this.keysStorage.removeItem('Token');
+        this.keysStorage.removeItem('CompanyId');
     }
 
     getToken(): string | null {
-        return localStorage.getItem('token');
+        return this.keysStorage.getItem('Token');
     }
 
     isLoggedIn(): boolean {
@@ -87,5 +87,20 @@ export class LoginService {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${this.getToken()}`
         });
+    }
+    getSettings() {
+        let companyId = this.keysStorage.getItem("CompanyId")
+        return this.http.get(`${this.apiUrl}/Register/getSettings/${companyId}`, {
+            headers: this.getAuthHeaders()
+        }).pipe(map((response: any) => {
+            console.log(response);
+            this.keysStorage.setItem('IconType', response?.userSettings?.IconType)
+            this.keysStorage.setItem('StoreName', response?.userSettings?.StoreName)
+            this.keysStorage.setItem('APP_SETTINGS', response?.userSettings)
+            return response;
+        }), catchError(err => {
+            console.error('Login error:', err);
+            return throwError(() => err.error?.message || 'Login failed');
+        }))
     }
 }

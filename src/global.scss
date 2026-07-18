@@ -33,5 +33,15 @@
  */
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import "@ionic/angular/css/palettes/dark.class.css";
 // @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* Global Dark Mode Text Color Fixes */
+html.ion-palette-dark,
+html.dark,
+body.ion-palette-dark,
+body.dark {
+  ion-content {
+    --color: #f8fafc !important;
+  }
+}

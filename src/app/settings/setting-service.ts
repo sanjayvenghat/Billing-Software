@@ -36,8 +36,19 @@ export class SettingService {
   }
   UpdateSetting(data: any): Observable<any> {
     const url = `${this.apiUrl}/updateuserSetting`;
+    data.CompanyId = this.keysStorage.getItem("CompanyId");
     return this.HttpClient.post<any>(url, data, { headers: this.getHeaders() }).pipe(
       map((val) => {
+        const updateSetting = val?.UpdateSetting;
+        const settingObj = Array.isArray(updateSetting) ? updateSetting[0] : updateSetting;
+        if (settingObj) {
+          if (settingObj.IconType) {
+            this.keysStorage.setItem('IconType', settingObj.IconType);
+          }
+          if (settingObj.StoreName) {
+            this.keysStorage.setItem('StoreName', settingObj.StoreName);
+          }
+        }
         return val;
       }),
       catchError((err: any) => {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck, Input } from '@angular/core';
 import {
   IonButtons,
   IonTitle,
@@ -8,7 +8,7 @@ import {
   IonLabel,
   MenuController
 } from '@ionic/angular/standalone';
-import { Input } from '@angular/core';
+import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 
 @Component({
   selector: 'app-header-component',
@@ -16,12 +16,55 @@ import { Input } from '@angular/core';
   styleUrls: ['./header-component.component.scss'],
   imports: [IonTitle, IonToolbar, IonButtons, IonAvatar, IonChip, IonLabel],
 })
-export class HeaderComponentComponent implements OnInit {
+export class HeaderComponentComponent implements OnInit, DoCheck {
   @Input() HeaderTitle: string = '';
   avatarUrl: string = 'assets/icon/store.png';
-  constructor(private menuController: MenuController) { }
+  storeName: string = 'Sakthistores';
 
-  ngOnInit() { }
+  private lastIconType: string | null = null;
+  private lastStoreName: string | null = null;
+
+  constructor(
+    private menuController: MenuController,
+    private keysStorage: KEYSSTORAGE
+  ) { }
+
+  ngOnInit() {
+    this.loadStoreSettings();
+  }
+
+  ngDoCheck() {
+    const iconType = this.keysStorage.getItem('IconType');
+    const savedStoreName = this.keysStorage.getItem('StoreName');
+
+    if (iconType !== this.lastIconType || savedStoreName !== this.lastStoreName) {
+      this.lastIconType = iconType;
+      this.lastStoreName = savedStoreName;
+      this.loadStoreSettings();
+    }
+  }
+
+  loadStoreSettings() {
+    const iconType = this.keysStorage.getItem('IconType');
+    const savedStoreName = this.keysStorage.getItem('StoreName');
+
+    if (savedStoreName) {
+      this.storeName = savedStoreName;
+    }
+
+    const iconsMap: { [key: string]: string } = {
+      'FirstIcon': 'assets/icon/store.png',
+      'SecondIcon': 'assets/icon/store (2).png',
+      'ThirdIcon': 'assets/icon/store (3).png',
+      'DefaultIcon': 'assets/icon/default.png'
+    };
+
+    if (iconType && iconsMap[iconType]) {
+      this.avatarUrl = iconsMap[iconType];
+    } else {
+      this.avatarUrl = 'assets/icon/store.png';
+    }
+  }
 
   openMenu() {
     this.menuController.toggle();

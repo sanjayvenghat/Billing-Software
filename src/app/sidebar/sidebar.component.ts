@@ -37,18 +37,6 @@ export class SidebarComponent implements OnInit {
       ColorClass: 'month-bills-box'
     },
     {
-      Title: 'Get Profit Report for A week',
-      Url: '/GetUserDetails/quote-price',
-      Icon: 'trending-up',
-      ColorClass: 'week-profit-box'
-    },
-    {
-      Title: 'Get Profit Report for A Month',
-      Url: '/GetUserDetails/quote-price',
-      Icon: 'stats-chart',
-      ColorClass: 'month-profit-box'
-    },
-    {
       Title: 'Log Out',
       Url: '/home',
       Icon: 'log-out',
