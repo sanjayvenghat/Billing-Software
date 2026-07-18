@@ -21,9 +21,16 @@
   background-color: #b3b3b3;
 }
 
-/* Target input focus rings */
+/* Target input focus rings and override validation highlights */
 .input-with-icon ion-input {
-  --highlight-color-focused: transparent !important;
+  --highlight-height: 0px !important;
+  --color: #1e293b !important;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  font-size: 15px;
+  --placeholder-color: #94a3b8;
 }
 
 /* --- Ionic Grid & Layout --- */
@@ -134,17 +141,9 @@ ion-input {
   border-radius: 12px;
   padding: 0 16px;
   margin-bottom: 8px;
-  transition: all 0.3s ease;
-
-  &:focus-within {
-    border-color: #3b82f6;
-    background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-  }
 }
 
 .input-icon {
-  color: #94a3b8;
   font-size: 20px;
   margin-right: 12px;
 }
@@ -156,15 +155,14 @@ ion-input {
   --padding-bottom: 14px;
   font-size: 15px;
   --placeholder-color: #94a3b8;
-  --color: #1e293b !important;
+
 }
 
 /* Gradient Button */
 .gradient-button {
-  --background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  --background-hover: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+
   --border-radius: 12px;
-  --box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+
   margin-top: 16px;
   height: 48px;
   font-size: 16px;

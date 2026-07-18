@@ -13,8 +13,8 @@
         <ion-col size="12" class="custom-col">
           <div class="input-with-icon">
             <ion-icon name="person-outline" class="input-icon"></ion-icon>
-            <ion-input [placeholder]="'Enter the customer Name' | translate" class="custom-input"
-              [(ngModel)]="customerName"></ion-input>
+            <ion-input [placeholder]="'Enter the customer Name' | translate" [(ngModel)]="customerName"
+              spellcheck="false" autocorrect="off"></ion-input>
           </div>
         </ion-col>
       </ion-row>
@@ -22,9 +22,9 @@
         <ion-col size="12" class="custom-col">
           <div class="input-with-icon">
             <ion-icon name="call-outline" class="input-icon"></ion-icon>
-            <ion-input [placeholder]="'Enter the customer PhoneNumber' | translate"
-              type="tel" inputmode="numeric" maxlength="10"
-              class="custom-input" [(ngModel)]="phoneNumber" (ionInput)="validateNumber($event)">
+            <ion-input [placeholder]="'Enter the customer PhoneNumber' | translate" type="tel" inputmode="numeric"
+              maxlength="10" [(ngModel)]="phoneNumber" (ionInput)="validateNumber($event)" spellcheck="false"
+              autocorrect="off">
             </ion-input>
           </div>
         </ion-col>
