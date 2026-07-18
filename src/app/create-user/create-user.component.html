@@ -4,8 +4,8 @@
       <div class="header-icon-container">
         <ion-icon name="person-outline" class="header-icon"></ion-icon>
       </div>
-      <h2 class="ion-text-center form-title" color="primary">New Customer</h2>
-      <p class="ion-text-center text-muted ">Fill in the details below to add a new customer.</p>
+      <h2 class="ion-text-center form-title" color="primary">{{ 'New Customer' | translate }}</h2>
+      <p class="ion-text-center text-muted ">{{ 'Fill in the details below to add a new customer.' | translate }}</p>
     </div>
 
     <ion-grid>
@@ -13,7 +13,7 @@
         <ion-col size="12" class="custom-col">
           <div class="input-with-icon">
             <ion-icon name="person-outline" class="input-icon"></ion-icon>
-            <ion-input placeholder="Enter the customer Name" class="custom-input"
+            <ion-input [placeholder]="'Enter the customer Name' | translate" class="custom-input"
               [(ngModel)]="customerName"></ion-input>
           </div>
         </ion-col>
@@ -22,7 +22,8 @@
         <ion-col size="12" class="custom-col">
           <div class="input-with-icon">
             <ion-icon name="call-outline" class="input-icon"></ion-icon>
-            <ion-input type="tel" inputmode="numeric" maxlength="10" placeholder="Enter the customer PhoneNumber"
+            <ion-input [placeholder]="'Enter the customer PhoneNumber' | translate"
+              type="tel" inputmode="numeric" maxlength="10"
               class="custom-input" [(ngModel)]="phoneNumber" (ionInput)="validateNumber($event)">
             </ion-input>
           </div>
@@ -32,7 +33,7 @@
         <ion-col size="12" class="custom-col">
           <ion-button expand="block" class="custom-button gradient-button" (click)="AddCustomer()">
             <ion-icon slot="start" name="save-outline"></ion-icon>
-            Add Customer
+            {{ 'Add Customer' | translate }}
           </ion-button>
         </ion-col>
       </ion-row>

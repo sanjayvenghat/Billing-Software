@@ -6,18 +6,26 @@ import { FormsModule } from '@angular/forms';
 import { NewUser } from './new-user';
 import { ToastService } from 'src/Service/ToasterService';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+import { TranslateService } from '../../Service/TranslateService';
+
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.scss'],
-  imports: [IonGrid, IonRow, IonCol, IonInput, IonButton, IonIcon, FormsModule]
+  imports: [IonGrid, IonRow, IonCol, IonInput, IonButton, IonIcon, FormsModule, TranslatePipe]
 })
 export class CreateUserComponent implements OnInit {
   @Input() customerName: String = ""
   @Input() phoneNumber: String = ""
   @Output() customerAdded = new EventEmitter<any>();
 
-  constructor(private newUserService: NewUser, private toastr: ToastService, private keysStorage: KEYSSTORAGE) {
+  constructor(
+    private newUserService: NewUser,
+    private toastr: ToastService,
+    private keysStorage: KEYSSTORAGE,
+    private translateService: TranslateService
+  ) {
     addIcons({ personOutline, mailOutline, lockClosedOutline, callOutline, globeOutline, saveOutline });
   }
 
@@ -29,11 +37,11 @@ export class CreateUserComponent implements OnInit {
   }
   AddCustomer() {
     if (!this.customerName) {
-      this.toastr.showWarning("Please enter customer name");
+      this.toastr.showWarning(this.translateService.translate("Please enter customer name"));
       return;
     }
     if (!this.phoneNumber) {
-      this.toastr.showWarning("Please enter Valid Mobile Number Before Saving The data");
+      this.toastr.showWarning(this.translateService.translate("Please enter Valid Mobile Number Before Saving The data"));
       return;
     }
     let customerDetails = {
@@ -44,14 +52,14 @@ export class CreateUserComponent implements OnInit {
     this.newUserService.AddCustomer(customerDetails).subscribe({
       next: (response: any) => {
 
-        this.toastr.showSuccess(response.message || "Customer added successfully");
+        this.toastr.showSuccess(this.translateService.translate(response.message || "Customer added successfully"));
         this.customerAdded.emit(response);
         this.customerName = ""
         this.phoneNumber = ""
       },
       error: (err: any) => {
         console.error("Error adding customer:", err);
-        this.toastr.showWarning(err || "Failed to add customer");
+        this.toastr.showWarning(this.translateService.translate(err || "Failed to add customer"));
       }
     });
 

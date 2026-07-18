@@ -41,6 +41,8 @@ import { Billingservice } from '../billing/billingservice';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { LoaderService } from 'src/Service/LoaderService';
 import { ToastService } from 'src/Service/ToasterService';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+import { TranslateService } from '../../Service/TranslateService';
 
 @Component({
   selector: 'app-ion-table',
@@ -62,7 +64,8 @@ import { ToastService } from 'src/Service/ToasterService';
     IonSegment,
     IonSegmentButton,
     IonInput,
-    IonContent
+    IonContent,
+    TranslatePipe
   ]
 })
 export class IonTableComponent implements OnInit {
@@ -89,7 +92,8 @@ export class IonTableComponent implements OnInit {
     private keysStorage: KEYSSTORAGE,
     private loaderService: LoaderService,
     private toastService: ToastService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private translateService: TranslateService
   ) {
     addIcons({
       searchOutline,
@@ -118,10 +122,10 @@ export class IonTableComponent implements OnInit {
   loadCustomers() {
     const companyId = this.keysStorage.getItem('CompanyId');
     if (!companyId) {
-      this.toastService.showError('Company ID not found. Please log in.');
+      this.toastService.showError(this.translateService.translate('Company ID not found. Please log in.'));
       return;
     }
-    this.loaderService.showLoader('Loading pending accounts...');
+    this.loaderService.showLoader(this.translateService.translate('Loading pending accounts...'));
 
     // An empty searchValue gets all customers
     this.billingService.searchUsers({ searchValue: '', companyId }).subscribe({
@@ -133,7 +137,7 @@ export class IonTableComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('Error loading customers:', err);
-        this.toastService.showError('Failed to load customer accounts.');
+        this.toastService.showError(this.translateService.translate('Failed to load customer accounts.'));
         this.loaderService.hideLoader();
       }
     });
@@ -214,24 +218,24 @@ export class IonTableComponent implements OnInit {
   async confirmMarkAsPaid(customer: any, bill: any) {
     const amount = Number(bill.inputPayAmount);
     if (isNaN(amount) || amount <= 0) {
-      this.toastService.showWarning('Please enter a valid payment amount.');
+      this.toastService.showWarning(this.translateService.translate('Please enter a valid payment amount.'));
       return;
     }
     if (amount > bill.balanceAmount) {
-      this.toastService.showWarning(`Payment amount cannot exceed bill outstanding balance of ₹${bill.balanceAmount}.`);
+      this.toastService.showWarning(this.translateService.translate('Payment amount cannot exceed bill outstanding balance of') + ` ₹${bill.balanceAmount}.`);
       return;
     }
 
     const alert = await this.alertController.create({
-      header: 'Confirm Payment',
-      message: `Are you sure you want to record a payment of ₹${amount} for this item?`,
+      header: this.translateService.translate('Confirm Payment'),
+      message: this.translateService.translate('Record payment of') + ` ₹${amount} ` + this.translateService.translate('for bill date') + ` ${bill.date ? (new Date(bill.date).toLocaleDateString()) : ''}?`,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translateService.translate('Cancel'),
           role: 'cancel'
         },
         {
-          text: 'Yes',
+          text: this.translateService.translate('Yes'),
           handler: () => {
             this.executeMarkAsPaid(customer, bill, amount);
           }
@@ -249,15 +253,15 @@ export class IonTableComponent implements OnInit {
       payAmount: amount
     };
 
-    this.loaderService.showLoader('Processing payment...');
+    this.loaderService.showLoader(this.translateService.translate('Processing payment...'));
     this.billingService.PayPendingBill(payload).subscribe({
       next: (res: any) => {
-        this.toastService.showSuccess('Payment recorded successfully!');
+        this.toastService.showSuccess(this.translateService.translate('Payment recorded successfully!'));
         this.loadCustomers();
       },
       error: (err: any) => {
         console.error('Error recording payment:', err);
-        this.toastService.showError('Failed to record payment.');
+        this.toastService.showError(this.translateService.translate('Failed to record payment.'));
         this.loaderService.hideLoader();
       }
     });
@@ -266,24 +270,24 @@ export class IonTableComponent implements OnInit {
   async confirmCustomerGeneralPayment(customer: any) {
     const amount = Number(customer.inputPayAmount);
     if (isNaN(amount) || amount <= 0) {
-      this.toastService.showWarning('Please enter a valid payment amount.');
+      this.toastService.showWarning(this.translateService.translate('Please enter a valid payment amount.'));
       return;
     }
     if (amount > customer.totalDue) {
-      this.toastService.showWarning(`Payment amount cannot exceed total outstanding dues of ₹${customer.totalDue}.`);
+      this.toastService.showWarning(this.translateService.translate('Payment amount cannot exceed total outstanding dues of') + ` ₹${customer.totalDue}.`);
       return;
     }
 
     const alert = await this.alertController.create({
-      header: 'Confirm Payment',
-      message: `Are you sure you want to record a payment of ₹${amount} for this item?`,
+      header: this.translateService.translate('Confirm Payment'),
+      message: this.translateService.translate('Record general payment of') + ` ₹${amount} ` + this.translateService.translate('for') + ` ${customer.CustomerName}?`,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translateService.translate('Cancel'),
           role: 'cancel'
         },
         {
-          text: 'Yes',
+          text: this.translateService.translate('Yes'),
           handler: () => {
             this.executeCustomerGeneralPayment(customer, amount);
           }
@@ -300,15 +304,15 @@ export class IonTableComponent implements OnInit {
       payAmount: amount
     };
 
-    this.loaderService.showLoader('Processing payment...');
+    this.loaderService.showLoader(this.translateService.translate('Processing payment...'));
     this.billingService.PayCustomerDues(payload).subscribe({
       next: (res: any) => {
-        this.toastService.showSuccess('Payment recorded successfully!');
+        this.toastService.showSuccess(this.translateService.translate('Payment recorded successfully!'));
         this.loadCustomers();
       },
       error: (err: any) => {
         console.error('Error recording customer payment:', err);
-        this.toastService.showError('Please Contact Customer Care');
+        this.toastService.showError(this.translateService.translate('Please Contact Customer Care'));
         this.loaderService.hideLoader();
       }
     });

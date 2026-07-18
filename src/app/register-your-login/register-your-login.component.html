@@ -3,8 +3,8 @@
 
     <div class="brand-header">
       <ion-icon name="wallet-outline" class="brand-icon"></ion-icon>
-      <h1 class="brand-name">New Account</h1>
-      <p class="brand-tagline">Setup your digital cashbox in seconds</p>
+      <h1 class="brand-name">{{ 'New Account' | translate }}</h1>
+      <p class="brand-tagline">{{ 'Setup your digital cashbox in seconds' | translate }}</p>
     </div>
 
     <div class="login-card">
@@ -12,24 +12,24 @@
 
         <!-- Name Field -->
         <div class="input-group">
-          <ion-label class="input-label">Your Name or Shop Name</ion-label>
+          <ion-label class="input-label">{{ 'Your Name or Shop Name' | translate }}</ion-label>
           <ion-item lines="none" class="custom-input">
-            <ion-input type="text" formControlName="name" placeholder="e.g., Manoj Tea Stall">
+            <ion-input type="text" formControlName="name" [placeholder]="'e.g., Manoj Tea Stall' | translate">
             </ion-input>
           </ion-item>
           @if (registerForm.get('name')?.touched && registerForm.get('name')?.invalid) {
             <div class="error-msg">
-              Please enter a name.
+              {{ 'Please enter a name.' | translate }}
             </div>
           }
         </div>
 
         <!-- Email Field -->
         <div class="input-group">
-          <ion-label class="input-label">Email Address</ion-label>
+          <ion-label class="input-label">{{ 'Email Address' | translate }}</ion-label>
           <ion-item lines="none" class="custom-input">
             <ion-icon name="mail-outline" slot="start" style="margin-right: 8px; color: #888;"></ion-icon>
-            <ion-input type="email" formControlName="email" placeholder="e.g., you@example.com"
+            <ion-input type="email" formControlName="email" [placeholder]="'e.g., you@example.com' | translate"
               [readonly]="isOtpVerified">
             </ion-input>
             <ion-button fill="clear" slot="end" class="verify-btn" (click)="sendOtp()" [disabled]="isOtpSent">
@@ -39,13 +39,13 @@
                 </span>
               }
               @if(!IsloadingOtp){
-                {{ isOtpSent ? 'Sent ✓' : 'Send OTP' }}
+                {{ (isOtpSent ? 'Sent ✓' : 'Send OTP') | translate }}
               }
             </ion-button>
           </ion-item>
           @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
             <div class="error-msg">
-              Please enter a valid email address.
+              {{ 'Please enter a valid email address.' | translate }}
             </div>
           }
         </div>
@@ -53,8 +53,8 @@
         <!-- OTP Section -->
         @if(isOtpVisible) {
           <div class="otp-container">
-            <ion-label class="input-label">Enter OTP</ion-label>
-            <p class="otp-hint">A 6-digit code was sent to <strong>{{ registerForm.get('email')?.value }}</strong></p>
+            <ion-label class="input-label">{{ 'Enter OTP' | translate }}</ion-label>
+            <p class="otp-hint">{{ 'A 6-digit code was sent to' | translate }} <strong>{{ registerForm.get('email')?.value }}</strong></p>
 
             <ion-grid class="ion-no-padding ion-margin-top">
               <ion-row class="ion-align-items-center ion-justify-content-center">
@@ -67,7 +67,7 @@
 
                 <ion-col size="auto" class="ion-no-padding">
                   <ion-button color="primary" class="ion-margin-start" (click)="verifyOtp()" [disabled]="isOtpVerified">
-                    {{ isOtpVerified ? 'Verified ✓' : 'Verify' }}
+                    {{ (isOtpVerified ? 'Verified ✓' : 'Verify') | translate }}
                   </ion-button>
                 </ion-col>
 
@@ -76,9 +76,9 @@
                 <ion-row>
                   <ion-col class="ion-text-center ion-padding-top">
                     <p class="resend-text">
-                      Didn't receive the code?
+                      {{ "Didn't receive the code?" | translate }}
                       <a (click)="resendOtp()" [class.disabled-link]="resendCooldown > 0" style="cursor: pointer;">
-                        {{ resendCooldown > 0 ? 'Resend in ' + resendCooldown + 's' : 'Resend OTP' }}
+                        {{ resendCooldown > 0 ? ('Resend in' | translate) + ' ' + resendCooldown + 's' : ('Resend OTP' | translate) }}
                       </a>
                     </p>
                   </ion-col>
@@ -91,9 +91,9 @@
 
         <!-- Password Field -->
         <div class="input-group">
-          <ion-label class="input-label">Create a Password</ion-label>
+          <ion-label class="input-label">{{ 'Create a Password' | translate }}</ion-label>
           <ion-item lines="none" class="custom-input">
-            <ion-input type="password" formControlName="password" placeholder="Enter your password"
+            <ion-input type="password" formControlName="password" [placeholder]="'Enter your password' | translate"
               (ionInput)="checkPasswordStrength($event)">
               <ion-input-password-toggle slot="end"></ion-input-password-toggle>
             </ion-input>
@@ -104,20 +104,20 @@
               style="margin-top: 15px; padding: 0 5px;">
               <ion-progress-bar [value]="strengthValue" [color]="strengthColor"></ion-progress-bar>
               <ion-text [color]="strengthColor">
-                <p class="strength-text" style="font-size: 12px; margin-top: 5px; font-weight: 500;">Password Strength: {{
+                <p class="strength-text" style="font-size: 12px; margin-top: 5px; font-weight: 500;">{{ 'Password Strength' | translate }}: {{
                 strengthLabel }}</p>
               </ion-text>
             </div>
           }
           @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
             <div class="error-msg">
-              Password must be at least 6 characters.
+              {{ 'Password must be at least 6 characters.' | translate }}
             </div>
           }
         </div>
 
         <ion-button expand="block" type="submit" class="submit-btn" [disabled]="registerForm.invalid || !isOtpVerified">
-          CREATE ACCOUNT
+          {{ 'CREATE ACCOUNT' | translate }}
         </ion-button>
 
       </form>
@@ -125,7 +125,7 @@
 
 
     <div class="register-section">
-      <p>Already have an account? <a class="register-link" (click)="goToLogin()" style="cursor: pointer;">Log In</a></p>
+      <p>{{ 'Already have an account?' | translate }} <a class="register-link" (click)="goToLogin()" style="cursor: pointer;">{{ 'Log In' | translate }}</a></p>
     </div>
 
   </div>

@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { LoginService } from './LoginService';
 import { ToastService } from 'src/Service/ToasterService';
 import { LoaderService } from 'src/Service/LoaderService';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+import { TranslateService } from '../../Service/TranslateService';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +16,8 @@ import { LoaderService } from 'src/Service/LoaderService';
   standalone: true,
   imports: [
     IonicModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslatePipe
   ],
 })
 export class HomePage implements OnInit {
@@ -27,7 +30,8 @@ export class HomePage implements OnInit {
     private router: Router,
     private loginService: LoginService,
     private toastService: ToastService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
@@ -49,7 +53,7 @@ export class HomePage implements OnInit {
         this.isLoading = false;
         this.loaderService.hideLoader()
         if (val?.message === 'User Settings Get Successfully') {
-          this.toastService.showSuccess(val.message);
+          this.toastService.showSuccess(this.translateService.translate(val.message));
           this.loginForm.reset();
           if (val.userSettings && val.userSettings.darkMode) {
             document.documentElement.classList.add('ion-palette-dark');
@@ -62,14 +66,14 @@ export class HomePage implements OnInit {
             this.router.navigate(['/GetUserDetails']);
           }, 1000);
         } else {
-          this.toastService.showWarning(val?.message || 'Invalid store name or password.');
+          this.toastService.showWarning(this.translateService.translate(val?.message || 'Invalid store name or password.'));
         }
       },
       error: (err) => {
         this.isLoading = false;
         this.loaderService.hideLoader()
         console.error('Login error:', err);
-        this.toastService.showError('Something went wrong. Please try again.');
+        this.toastService.showError(this.translateService.translate('Something went wrong. Please try again.'));
       }
     })
   }
@@ -77,38 +81,36 @@ export class HomePage implements OnInit {
   onLogin() {
     if (this.loginForm.valid) {
       this.isLoading = true;
-
       const payload = {
         storename: this.loginForm.value.storename,
         password: this.loginForm.value.password
       };
 
-
-      this.loaderService.showLoader("please wait...")
+      this.loaderService.showLoader(this.translateService.translate("please wait..."))
       this.loginService.Login(payload).subscribe({
         next: (val: any) => {
           this.isLoading = false;
           if (val?.message === 'Login SuccessFul') {
-            this.toastService.showSuccess(val.message);
+            this.toastService.showSuccess(this.translateService.translate(val.message));
             this.getSettingsForLogin();
           } else {
-            this.toastService.showWarning(val?.message || 'Invalid store name or password.');
+            this.toastService.showWarning(this.translateService.translate(val?.message || 'Invalid store name or password.'));
           }
         },
         error: (err) => {
           this.isLoading = false;
           this.loaderService.hideLoader()
           console.error('Login error:', err);
-          this.toastService.showError('Something went wrong. Please try again.');
+          this.toastService.showError(this.translateService.translate('Something went wrong. Please try again.'));
         }
       });
 
     } else {
       this.loginForm.markAllAsTouched();
       if (this.loginForm.get('storename')?.invalid) {
-        this.toastService.showToast('please enter valid Store Name', 'warning');
+        this.toastService.showToast(this.translateService.translate('please enter valid Store Name'), 'warning');
       } else {
-        this.toastService.showError('Please fill all fields correctly.');
+        this.toastService.showError(this.translateService.translate('Please fill all fields correctly.'));
       }
     }
   }

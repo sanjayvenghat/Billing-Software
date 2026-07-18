@@ -5,15 +5,15 @@
       <div class="dialog-icon-container">
         <ion-icon name="alert-circle-outline" color="warning"></ion-icon>
       </div>
-      <h2>Customer Not Found</h2>
-      <p>There Is No Such Customer Exist, Would You Like To Add This Customer?</p>
+      <h2>{{ 'Customer Not Found' | translate }}</h2>
+      <p>{{ 'There Is No Such Customer Exist, Would You Like To Add This Customer?' | translate }}</p>
 
       <div class="dialog-actions">
         <ion-button fill="clear" color="medium" (click)="close.emit()">
-          Cancel
+          {{ 'Cancel' | translate }}
         </ion-button>
         <ion-button color="success" shape="round" (click)="confirm.emit()">
-          Yes, Add Customer
+          {{ 'Yes, Add Customer' | translate }}
         </ion-button>
       </div>
     </div>

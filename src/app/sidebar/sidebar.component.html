@@ -4,14 +4,14 @@
       <ion-icon name="speedometer" class="logo-icon"></ion-icon>
     </div>
     <div class="title-container">
-      <h2>Dashboard Details</h2>
-      <p>Get Your Dashboard Details</p>
+      <h2>{{ 'Dashboard Details' | translate }}</h2>
+      <p>{{ 'Get Your Dashboard Details' | translate }}</p>
     </div>
   </div>
 
   <div class="sidebar-content">
     <div class="menu-section">
-      <h3 class="section-title">Settings</h3>
+      <h3 class="section-title">{{ 'Settings' | translate }}</h3>
       <ion-list lines="none" class="transparent-list">
         @for (p of SideBarMenu; track p) {
         <ion-menu-toggle auto-hide="false">
@@ -19,7 +19,7 @@
             <div class="icon-box" [ngClass]="p.ColorClass" slot="start">
               <ion-icon [name]="p.Icon"></ion-icon>
             </div>
-            <ion-label>{{ p.Title }}</ion-label>
+            <ion-label>{{ p.Title | translate }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
         }

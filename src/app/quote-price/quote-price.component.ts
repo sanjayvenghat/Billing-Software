@@ -12,11 +12,14 @@ import { environment } from 'src/environments/environment';
 import { LoaderService } from 'src/Service/LoaderService';
 import { IonSelect, IonSelectOption, } from '@ionic/angular/standalone';
 
+import { TranslatePipe } from '../../Service/TranslatePipe';
+import { TranslateService } from '../../Service/TranslateService';
+
 @Component({
   selector: 'app-quote-price',
   templateUrl: './quote-price.component.html',
   styleUrls: ['./quote-price.component.scss'],
-  imports: [FormsModule, IonContent, IonSelect, IonSelectOption, IonInput, IonButton, IonCheckbox, IonItem, QRCodeComponent, IonIcon]
+  imports: [FormsModule, IonContent, IonSelect, IonSelectOption, IonInput, IonButton, IonCheckbox, IonItem, QRCodeComponent, IonIcon, TranslatePipe]
 })
 export class QuotePriceComponent implements OnInit {
 
@@ -28,7 +31,13 @@ export class QuotePriceComponent implements OnInit {
   generateQrCode: boolean = false;
   savedItemUrl: string = '';
 
-  constructor(private quoteService: QuoteService, private toaster: ToastService, private keysStorage: KEYSSTORAGE, private LoaderService: LoaderService) {
+  constructor(
+    private quoteService: QuoteService,
+    private toaster: ToastService,
+    private keysStorage: KEYSSTORAGE,
+    private LoaderService: LoaderService,
+    private translateService: TranslateService
+  ) {
     addIcons({ download });
   }
 
@@ -40,10 +49,10 @@ export class QuotePriceComponent implements OnInit {
   }
   AddGroceryData() {
     if (!this.ProductName || !this.BuyingPrice || !this.SellingPrice || !this.unit) {
-      this.toaster.showWarning('Please enter product name, buying price, selling price and select unit');
+      this.toaster.showWarning(this.translateService.translate('Please enter product name, buying price, selling price and select unit'));
       return;
     }
-    this.LoaderService.showLoader("Please wait while adding product")
+    this.LoaderService.showLoader(this.translateService.translate("Please wait while adding product"))
     let payload = {
       "ProductName": this.ProductName,
       "BuyingPrice": this.BuyingPrice,
@@ -65,11 +74,11 @@ export class QuotePriceComponent implements OnInit {
           this.BuyingPrice = "";
           this.SellingPrice = "";
           this.unit = "";
-          this.toaster.showSuccess(val.message);
+          this.toaster.showSuccess(this.translateService.translate(val.message));
         }
         else {
           this.LoaderService.hideLoader();
-          this.toaster.showWarning(val.message)
+          this.toaster.showWarning(this.translateService.translate(val.message))
         }
       },
       error: (err: any) => {

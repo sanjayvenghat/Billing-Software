@@ -8,13 +8,14 @@ import {
   IonLabel,
   MenuController
 } from '@ionic/angular/standalone';
+import { TranslatePipe } from '../../Service/TranslatePipe';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 
 @Component({
   selector: 'app-header-component',
   templateUrl: './header-component.component.html',
   styleUrls: ['./header-component.component.scss'],
-  imports: [IonTitle, IonToolbar, IonButtons, IonAvatar, IonChip, IonLabel],
+  imports: [IonTitle, IonToolbar, IonButtons, IonAvatar, IonChip, IonLabel, TranslatePipe],
 })
 export class HeaderComponentComponent implements OnInit, DoCheck {
   @Input() HeaderTitle: string = '';

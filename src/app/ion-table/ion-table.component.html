@@ -9,7 +9,7 @@
             <ion-icon name="wallet-outline"></ion-icon>
           </div>
           <div class="stat-details">
-            <span class="stat-label">Total Outstanding Dues</span>
+            <span class="stat-label">{{ 'Total Outstanding Dues' | translate }}</span>
             <h2 class="stat-value">₹{{ totalPendingDues | number:'1.2-2' }}</h2>
           </div>
         </div>
@@ -21,7 +21,7 @@
             <ion-icon name="person-outline"></ion-icon>
           </div>
           <div class="stat-details">
-            <span class="stat-label">Active Debtors</span>
+            <span class="stat-label">{{ 'Active Debtors' | translate }}</span>
             <h2 class="stat-value">{{ activeDebtorsCount }}</h2>
           </div>
         </div>
@@ -33,7 +33,7 @@
             <ion-icon name="cash-outline"></ion-icon>
           </div>
           <div class="stat-details">
-            <span class="stat-label">Average Pending / Customer</span>
+            <span class="stat-label">{{ 'Average Pending / Customer' | translate }}</span>
             <h2 class="stat-value">₹{{ averageDueAmount | number:'1.2-2' }}</h2>
           </div>
         </div>
@@ -45,16 +45,16 @@
 <div class="controls-panel ion-margin-horizontal mt-2">
   <ion-row class="ion-align-items-center">
     <ion-col size="12" size-md="6">
-      <ion-searchbar placeholder="Search customer by Name" [(ngModel)]="searchQuery" (ionInput)="applyFilter()"
+      <ion-searchbar [placeholder]="'Search customer by Name' | translate" [(ngModel)]="searchQuery" (ionInput)="applyFilter()"
         class="custom-searchbar"></ion-searchbar>
     </ion-col>
     <ion-col size="12" size-md="6">
       <ion-segment [(ngModel)]="filterType" (ionChange)="applyFilter()" class="custom-segment">
         <ion-segment-button value="pending">
-          <ion-label>Pending</ion-label>
+          <ion-label>{{ 'Pending' | translate }}</ion-label>
         </ion-segment-button>
         <ion-segment-button value="all">
-          <ion-label>Customers</ion-label>
+          <ion-label>{{ 'Customers' | translate }}</ion-label>
         </ion-segment-button>
       </ion-segment>
     </ion-col>
@@ -69,7 +69,7 @@
       style="margin: 0; --color: #1e3c72; font-weight: 600; font-size: 13px;">
       <ion-icon [name]="isHeaderVisible ? 'chevron-up-outline' : 'chevron-down-outline'" slot="start"
         style="margin-right: 4px;"></ion-icon>
-      {{ isHeaderVisible ? 'Hide Stats' : 'Show Stats ' }}
+      {{ (isHeaderVisible ? 'Hide Stats' : 'Show Stats ') | translate }}
     </ion-button>
   </div>
 
@@ -79,8 +79,8 @@
     @if (filteredCustomers.length === 0) {
     <div class="empty-state">
       <ion-icon name="alert-circle-outline" class="empty-icon"></ion-icon>
-      <h3>No Customers Found</h3>
-      <p>Try refining your search query or switching filters.</p>
+      <h3>{{ 'No Customers Found' | translate }}</h3>
+      <p>{{ 'Try refining your search query or switching filters.' | translate }}</p>
     </div>
     }
 
@@ -90,11 +90,11 @@
       <div class="table-header-row ion-hide-down">
         <ion-grid>
           <ion-row>
-            <ion-col size="3">Customer Name</ion-col>
-            <ion-col size="3">Phone Number</ion-col>
-            <ion-col size="2">Total Dues</ion-col>
-            <ion-col size="2">Last Transaction</ion-col>
-            <ion-col size="2" class="ion-text-center">Actions</ion-col>
+            <ion-col size="3">{{ 'Customer Name' | translate }}</ion-col>
+            <ion-col size="3">{{ 'Phone Number' | translate }}</ion-col>
+            <ion-col size="2">{{ 'Total Dues' | translate }}</ion-col>
+            <ion-col size="2">{{ 'Last Transaction' | translate }}</ion-col>
+            <ion-col size="2" class="ion-text-center">{{ 'Actions' | translate }}</ion-col>
           </ion-row>
         </ion-grid>
       </div>
@@ -115,7 +115,7 @@
               </div>
             </div>
             <div class="customer-dues-info">
-              <span class="dues-label">Dues</span>
+              <span class="dues-label">{{ 'Dues' | translate }}</span>
               <ion-badge [color]="customer.totalDue > 0 ? 'danger' : 'success'" class="dues-badge">
                 ₹{{ customer.totalDue | number:'1.2-2' }}
               </ion-badge>
@@ -124,13 +124,13 @@
           <div class="customer-row-actions">
             <span class="last-tx-date">
               <ion-icon name="calendar-outline" class="date-icon"></ion-icon>
-              Last Transaction: {{ customer.lastUpdatedFormatted }}
+              {{ 'Last Transaction' | translate }}: {{ customer.lastUpdatedFormatted }}
             </span>
             <div class="action-buttons-wrap">
               @if (customer.totalDue > 0) {
               <div class="inline-pay-container" (click)="$event.stopPropagation()">
                 <ion-input type="number" [(ngModel)]="customer.inputPayAmount" class="inline-pay-input"
-                  placeholder="Amount"></ion-input>
+                  [placeholder]="'Amount' | translate"></ion-input>
                 <ion-button size="small" color="success" (click)="confirmCustomerGeneralPayment(customer)"
                   class="inline-pay-btn">
                   <ion-icon name="checkmark-outline"></ion-icon>
@@ -148,10 +148,10 @@
         @if (expandedCustomerId === customer._id) {
         <div class="customer-row-details">
           <div class="details-inner">
-            <h4 class="details-section-title">Billing & Transaction History</h4>
+            <h4 class="details-section-title">{{ 'Billing & Transaction History' | translate }}</h4>
             @if (!customer.billsExtended || customer.billsExtended.length === 0) {
             <div class="no-bills-state">
-              <p>No billing records found for this customer.</p>
+              <p>{{ 'No billing records found for this customer.' | translate }}</p>
             </div>
             }
             @if (customer.billsExtended && customer.billsExtended.length > 0) {
@@ -172,7 +172,7 @@
                   </div>
                   <div class="bill-status-badge">
                     <ion-badge [color]="bill.balanceAmount > 0 ? 'warning' : 'success'">
-                      {{ bill.balanceAmount > 0 ? 'Pending' : 'Settled' }}
+                      {{ (bill.balanceAmount > 0 ? 'Pending' : 'Settled') | translate }}
                     </ion-badge>
                   </div>
                 </div>
@@ -180,15 +180,15 @@
                   <ion-grid>
                     <ion-row>
                       <ion-col size="4">
-                        <span class="financial-label">Total Amount</span>
+                        <span class="financial-label">{{ 'Total Amount' | translate }}</span>
                         <span class="financial-value">₹{{ bill.totalAmount | number:'1.2-2' }}</span>
                       </ion-col>
                       <ion-col size="4">
-                        <span class="financial-label">Amount Paid</span>
+                        <span class="financial-label">{{ 'Amount Paid' | translate }}</span>
                         <span class="financial-value text-success">₹{{ bill.amountPaid | number:'1.2-2' }}</span>
                       </ion-col>
                       <ion-col size="4">
-                        <span class="financial-label">Balance Due</span>
+                        <span class="financial-label">{{ 'Balance Due' | translate }}</span>
                         <span class="financial-value text-danger">₹{{ bill.balanceAmount | number:'1.2-2' }}</span>
                       </ion-col>
                     </ion-row>
@@ -197,12 +197,12 @@
                 <div class="bill-card-footer">
                   <ion-button fill="clear" size="small" (click)="toggleBillItems(bill)" class="action-btn-items">
                     <ion-icon slot="start" name="receipt-outline"></ion-icon>
-                    {{ bill.showItems ? 'Hide Items' : 'View Purchased Items (' + (bill.cartItems?.length || 0) + ')' }}
+                    {{ (bill.showItems ? 'Hide Items' : 'View Purchased Items') | translate }}{{ bill.showItems ? '' : ' (' + (bill.cartItems?.length || 0) + ')' }}
                   </ion-button>
                   @if (bill.balanceAmount > 0) {
                   <div class="inline-pay-container">
                     <ion-input type="number" [(ngModel)]="bill.inputPayAmount" class="inline-pay-input"
-                      placeholder="Amount"></ion-input>
+                      [placeholder]="'Amount' | translate"></ion-input>
                     <ion-button size="small" color="success" (click)="confirmMarkAsPaid(customer, bill)"
                       class="inline-pay-btn">
                       <ion-icon name="checkmark-outline"></ion-icon>
@@ -213,10 +213,10 @@
                 @if (bill.showItems) {
                 <div class="bill-items-drawer">
                   <div class="items-table-header">
-                    <span class="col-name">Item Name</span>
-                    <span class="col-qty">Qty</span>
-                    <span class="col-price">Rate</span>
-                    <span class="col-total">Total</span>
+                    <span class="col-name">{{ 'Item Name' | translate }}</span>
+                    <span class="col-qty">{{ 'Qty' | translate }}</span>
+                    <span class="col-price">{{ 'Rate' | translate }}</span>
+                    <span class="col-total">{{ 'Total' | translate }}</span>
                   </div>
                   <div class="items-table-body">
                     @for (item of bill.cartItems; track item) {

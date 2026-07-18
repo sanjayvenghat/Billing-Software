@@ -6,7 +6,7 @@
           <button class="app-back-btn" (click)="goBackToApp()" title="Back to App">
             <ion-icon name="arrow-undo"></ion-icon>
           </button>
-          <h1>Settings</h1>
+          <h1>{{ 'Settings' | translate }}</h1>
         </div>
         <div class="header-right">
           <div class="action-icons">
@@ -20,11 +20,11 @@
       <div class="content-body">
         <div class="tab-pane">
           <div class="pane-title-group">
-            <h2>General Options</h2>
-            <p>Customize the basic behavior and appearance of your system.</p>
+            <h2>{{ 'General Options' | translate }}</h2>
+            <p>{{ 'Customize the basic behavior and appearance of your system.' | translate }}</p>
           </div>
           <div class="options-section">
-            <span class="section-label">OPTIONS</span>
+            <span class="section-label">{{ 'OPTIONS' | translate }}</span>
             <div class="options-group-card">
               <div class="option-row">
                 <div class="option-info">
@@ -32,8 +32,8 @@
                     <ion-icon name="refresh-circle"></ion-icon>
                   </div>
                   <div class="option-text">
-                    <h4>Gst Billing</h4>
-                    <p>Enable Gst Billing Across Whole Application</p>
+                    <h4>{{ 'Gst Billing' | translate }}</h4>
+                    <p>{{ 'Enable Gst Billing Across Whole Application' | translate }}</p>
                   </div>
                 </div>
                 <div class="option-control">
@@ -46,8 +46,8 @@
                     <ion-icon name="trending-up"></ion-icon>
                   </div>
                   <div class="option-text">
-                    <h4>Show Profit Of Every Product</h4>
-                    <p>Show Profit Of Every Product in the time of billing</p>
+                    <h4>{{ 'Show Profit Of Every Product' | translate }}</h4>
+                    <p>{{ 'Show Profit Of Every Product in the time of billing' | translate }}</p>
                   </div>
                 </div>
                 <div class="option-control">
@@ -61,8 +61,8 @@
                     <ion-icon name="globe"></ion-icon>
                   </div>
                   <div class="option-text">
-                    <h4>System Language</h4>
-                    <p>Configure default display language</p>
+                    <h4>{{ 'System Language' | translate }}</h4>
+                    <p>{{ 'Configure default display language' | translate }}</p>
                   </div>
                 </div>
                 <div class="option-control select-control">
@@ -78,7 +78,7 @@
             </div>
           </div>
           <div class="options-section">
-            <span class="section-label">OTHER OPTIONS</span>
+            <span class="section-label">{{ 'OTHER OPTIONS' | translate }}</span>
             <div class="options-group-card">
               <div class="option-row">
                 <div class="option-info">
@@ -86,8 +86,8 @@
                     <ion-icon name="moon"></ion-icon>
                   </div>
                   <div class="option-text">
-                    <h4>Dark Mode</h4>
-                    <p>Switch between light and dark interface themes</p>
+                    <h4>{{ 'Dark Mode' | translate }}</h4>
+                    <p>{{ 'Switch between light and dark interface themes' | translate }}</p>
                   </div>
                 </div>
                 <div class="option-control">
@@ -100,8 +100,8 @@
                     <ion-icon name="color-palette"></ion-icon>
                   </div>
                   <div class="option-text">
-                    <h4>Set Store Icon</h4>
-                    <p>Select Store Icon from below</p>
+                    <h4>{{ 'Set Store Icon' | translate }}</h4>
+                    <p>{{ 'Select Store Icon from below' | translate }}</p>
                   </div>
                 </div>
                 <div class="option-control select-control">
@@ -121,12 +121,12 @@
                     <ion-icon name="checkmark"></ion-icon>
                   </div>
                   <div class="option-text">
-                    <h4>Save Settings</h4>
-                    <p>Apply and persist your current configuration</p>
+                    <h4>{{ 'Save Settings' | translate }}</h4>
+                    <p>{{ 'Apply and persist your current configuration' | translate }}</p>
                   </div>
                 </div>
                 <div class="option-control">
-                  <button class="save-btn" color="success" (click)="saveSettings()">Save</button>
+                  <button class="save-btn" color="success" (click)="saveSettings()">{{ 'Save' | translate }}</button>
                 </div>
               </div>
               <div class="option-row">
@@ -135,12 +135,12 @@
                     <ion-icon name="arrow-undo"></ion-icon>
                   </div>
                   <div class="option-text">
-                    <h4>Reset to Defaults</h4>
-                    <p>Revert all general options to factory state</p>
+                    <h4>{{ 'Reset to Defaults' | translate }}</h4>
+                    <p>{{ 'Revert all general options to factory state' | translate }}</p>
                   </div>
                 </div>
                 <div class="option-control">
-                  <button class="reset-btn" (click)="resetToDefaults()">Reset</button>
+                  <button class="reset-btn" (click)="resetToDefaults()">{{ 'Reset' | translate }}</button>
                 </div>
               </div>
             </div>

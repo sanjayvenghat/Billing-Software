@@ -1,12 +1,12 @@
 <ion-header class="ion-no-border">
   @if (Grocery_List && Grocery_List.length > 0) {
   <ion-toolbar>
-    <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="onSearch($event)" placeholder="Search products..." animated="true"
+    <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="onSearch($event)" [placeholder]="'Search products...' | translate" animated="true"
       class="custom-searchbar"></ion-searchbar>
   </ion-toolbar>
   <ion-toolbar>
     <ion-list-header class="list-header-custom" style="margin-bottom: 0; padding-bottom: 0; border-bottom: none;">
-      <ion-label>Grocery List</ion-label>
+      <ion-label>{{ 'Grocery List' | translate }}</ion-label>
     </ion-list-header>
     <ion-buttons slot="end" style="margin-right: 16px; margin-top: 5px;">
       <ion-button color="primary" (click)="toggleSort()">
@@ -28,20 +28,20 @@
       <ion-label>
         <h2 class="product-name">{{item.ProductName}}</h2>
         @if (!item.isEditing) {
-        <p class="buying-price">Cost: {{item.BuyingPrice | currency:'INR':'symbol':'1.0-2'}}</p>
+        <p class="buying-price">{{ 'Cost' | translate }}: {{item.BuyingPrice | currency:'INR':'symbol':'1.0-2'}}</p>
         @if ((item.SellingPrice - item.BuyingPrice) >= 0) {
         <p class="profit-margin">
-          Profit: {{(item.SellingPrice - item.BuyingPrice) | currency:'INR':'symbol':'1.0-2'}}
+          {{ 'Profit' | translate }}: {{(item.SellingPrice - item.BuyingPrice) | currency:'INR':'symbol':'1.0-2'}}
         </p>
         } @else {
         <p class="profit-margin negative-profit">
-          Loss: {{(item.BuyingPrice - item.SellingPrice) | currency:'INR':'symbol':'1.0-2'}}
+          {{ 'Loss' | translate }}: {{(item.BuyingPrice - item.SellingPrice) | currency:'INR':'symbol':'1.0-2'}}
         </p>
         }
         } @else {
         <div class="edit-buying-container" (click)="$event.stopPropagation()">
-          <span class="edit-label">Cost: </span>
-          <ion-input type="number" [(ngModel)]="item.editBuyingPrice" placeholder="Buy Price"></ion-input>
+          <span class="edit-label">{{ 'Cost' | translate }}: </span>
+          <ion-input type="number" [(ngModel)]="item.editBuyingPrice" [placeholder]="'Buy Price' | translate"></ion-input>
         </div>
         }
       </ion-label>
@@ -56,7 +56,7 @@
         </ion-button>
         } @else {
         <div class="edit-price-container" (click)="$event.stopPropagation()">
-          <ion-input type="number" [(ngModel)]="item.editSellingPrice" placeholder="Price"></ion-input>
+          <ion-input type="number" [(ngModel)]="item.editSellingPrice" [placeholder]="'Price' | translate"></ion-input>
           <ion-button fill="clear" color="success" size="small" (click)="savePrice(item)">
             <ion-icon name="checkmark-outline"></ion-icon>
           </ion-button>
@@ -70,15 +70,15 @@
     }
     @if (Filtered_Grocery_List.length === 0) {
     <div class="empty-search">
-      <p>No products match your search.</p>
+      <p>{{ 'No products match your search.' | translate }}</p>
     </div>
     }
   </ion-list>
   } @else {
   <div class="empty-state">
     <div class="empty-icon">🛍️</div>
-    <h3>No Products Found</h3>
-    <p>Your product library is currently empty. Add some products from the Quote Price tab.</p>
+    <h3>{{ 'No Products Found' | translate }}</h3>
+    <p>{{ 'Your product library is currently empty. Add some products from the Quote Price tab.' | translate }}</p>
   </div>
   }
 </ion-content>

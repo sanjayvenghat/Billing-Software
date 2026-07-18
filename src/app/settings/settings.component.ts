@@ -28,6 +28,9 @@ import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { ToastService } from 'src/Service/ToasterService';
 import { LoaderService } from 'src/Service/LoaderService';
 import { SettingService } from './setting-service';
+import { TranslateService } from '../../Service/TranslateService';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -40,7 +43,8 @@ import { SettingService } from './setting-service';
     IonIcon,
     IonToggle,
     IonSelect,
-    IonSelectOption
+    IonSelectOption,
+    TranslatePipe
   ]
 })
 export class SettingsComponent implements OnInit {
@@ -82,7 +86,8 @@ export class SettingsComponent implements OnInit {
     private keysStorage: KEYSSTORAGE,
     private toastService: ToastService,
     private loaderService: LoaderService,
-    private SettingService: SettingService
+    private SettingService: SettingService,
+    private translateService: TranslateService
   ) {
     addIcons({
       'help-circle': helpCircle,
@@ -152,15 +157,16 @@ export class SettingsComponent implements OnInit {
         if (messages.includes(val?.message)) {
           this.keysStorage.setItem('IconType', this.IconType);
           this.keysStorage.setItem('APP_SETTINGS', settingsObj);
-          this.toastService.showSuccess('Settings saved successfully!');
+          this.translateService.setLanguage(this.systemLanguage);
+          this.toastService.showSuccess(this.translateService.translate('Settings saved successfully!'));
           this.applyDarkMode(this.darkMode);
         } else {
-          this.toastService.showError(val?.message || 'Failed to save settings.');
+          this.toastService.showError(this.translateService.translate(val?.message || 'Failed to save settings.'));
         }
       },
       error: (err: any) => {
         this.loaderService.hideLoader();
-        this.toastService.showError(err?.error?.message || 'Failed to save settings.');
+        this.toastService.showError(this.translateService.translate(err?.error?.message || 'Failed to save settings.'));
       }
     })
   }
@@ -171,6 +177,7 @@ export class SettingsComponent implements OnInit {
     this.showProfitOfEveryProduct = true;
     this.IconType = 'Standard Black';
     this.systemLanguage = 'English';
+    this.translateService.setLanguage('English');
     console.log('Settings reset to defaults');
     this.saveSettings();
   }

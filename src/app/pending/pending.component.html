@@ -3,9 +3,9 @@
   <ng-template>
     <ion-header class="ion-no-border">
       <ion-toolbar color="primary">
-        <ion-title class="modal-title">Pending Checkout</ion-title>
+        <ion-title class="modal-title">{{ 'Pending Checkout' | translate }}</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="close.emit()" class="modal-close-btn">Close</ion-button>
+          <ion-button (click)="close.emit()" class="modal-close-btn">{{ 'Close' | translate }}</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -14,7 +14,7 @@
       <!-- Info Header Card -->
       <div class="transaction-summary-card">
         <div class="summary-section">
-          <span class="summary-label">Total Bill Amount</span>
+          <span class="summary-label">{{ 'Total Bill Amount' | translate }}</span>
           <h1 class="summary-value">₹{{ totalPrice }}</h1>
         </div>
 
@@ -22,13 +22,13 @@
           @if (customerName) {
             <div class="customer-chip">
               <ion-icon name="person-outline"></ion-icon>
-              <span>Customer: <strong>{{ customerName }}</strong></span>
+              <span>{{ 'Customers' | translate }}: <strong>{{ customerName }}</strong></span>
             </div>
           }
           @if (!customerName) {
             <div class="no-customer-warning">
               <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
-              <span>No customer selected. Credit billing requires an associated customer profile.</span>
+              <span>{{ 'No customer selected. Credit billing requires an associated customer profile.' | translate }}</span>
             </div>
           }
         </div>
@@ -40,46 +40,46 @@
         <div class="input-group">
           <div class="input-header">
             <ion-icon name="cash-outline"></ion-icon>
-            <label>Amount Paid Now (₹)</label>
+            <label>{{ 'Amount Paid Now (₹)' | translate }}</label>
           </div>
-          <ion-input type="number" class="custom-input amount-paid-input" placeholder="Enter payment amount"
+          <ion-input type="number" class="custom-input amount-paid-input" [placeholder]="'Enter payment amount' | translate"
             [(ngModel)]="amountPaid" (ngModelChange)="updateBalance()" min="0" [max]="totalPrice">
           </ion-input>
-          <ion-note class="input-helper">How much the customer is paying right now.</ion-note>
+          <ion-note class="input-helper">{{ 'How much the customer is paying right now.' | translate }}</ion-note>
         </div>
 
         <!-- Balance Due -->
         <div class="input-group">
           <div class="input-header">
             <ion-icon name="wallet-outline"></ion-icon>
-            <label>Balance Remaining (₹)</label>
+            <label>{{ 'Balance Remaining (₹)' | translate }}</label>
           </div>
           <div class="balance-display-box" [class.has-balance]="balanceAmount > 0">
             <span class="balance-currency">₹</span>
             <span class="balance-value">{{ balanceAmount }}</span>
           </div>
-          <ion-note class="input-helper">Calculated automatically as Total - Paid Amount.</ion-note>
+          <ion-note class="input-helper">{{ 'Calculated automatically as Total - Paid Amount.' | translate }}</ion-note>
         </div>
 
         <!-- Due Date -->
         <div class="input-group">
           <div class="input-header">
             <ion-icon name="calendar-outline"></ion-icon>
-            <label>Expected Balance Due Date</label>
+            <label>{{ 'Expected Balance Due Date' | translate }}</label>
           </div>
           <ion-input type="date" class="custom-input" [(ngModel)]="dueDate">
           </ion-input>
-          <ion-note class="input-helper">Target date for recovering the remaining balance.</ion-note>
+          <ion-note class="input-helper">{{ 'Target date for recovering the remaining balance.' | translate }}</ion-note>
         </div>
 
         <!-- Notes -->
         <div class="input-group">
           <div class="input-header">
             <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
-            <label>Payment Notes</label>
+            <label>{{ 'Payment Notes' | translate }}</label>
           </div>
           <ion-textarea class="custom-input" rows="3"
-            placeholder="Add comments or payment terms (e.g., will pay via UPI on Monday)" [(ngModel)]="notes">
+            [placeholder]="'Add comments or payment terms (e.g., will pay via UPI on Monday)' | translate" [(ngModel)]="notes">
           </ion-textarea>
         </div>
       </div>
@@ -87,11 +87,11 @@
       <!-- Action Buttons -->
       <div class="actions-container">
         <ion-button fill="outline" color="medium" shape="round" class="cancel-btn" (click)="close.emit()">
-          Cancel
+          {{ 'Cancel' | translate }}
         </ion-button>
         <ion-button color="success" shape="round" class="confirm-btn" [disabled]="!customerName"
           (click)="submitPending()">
-          Confirm Pending
+          {{ 'Confirm Pending' | translate }}
         </ion-button>
       </div>
 

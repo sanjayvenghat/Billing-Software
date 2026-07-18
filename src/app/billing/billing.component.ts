@@ -20,11 +20,13 @@ import { QuotePriceBillingComponent } from '../quote-price-billing/quote-price-b
 import { PendingComponent } from '../pending/pending.component';
 import { AddUserComponent } from '../add-user/add-user.component';
 import { CreateUserComponent } from '../create-user/create-user.component';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+import { TranslateService } from '../../Service/TranslateService';
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  imports: [HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, AddProductComponent, QuotePriceBillingComponent, PendingComponent, AddUserComponent, CreateUserComponent, IonToolbar, IonTitle, IonContent, IonModal, IonInput, IonSelect, IonSelectOption, DecimalPipe]
+  imports: [HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, AddProductComponent, QuotePriceBillingComponent, PendingComponent, AddUserComponent, CreateUserComponent, IonToolbar, IonTitle, IonContent, IonModal, IonInput, IonSelect, IonSelectOption, DecimalPipe, TranslatePipe]
 })
 export class BillingComponent implements OnInit, OnDestroy {
   private scanner: Html5QrcodeScanner | null = null;
@@ -42,7 +44,14 @@ export class BillingComponent implements OnInit, OnDestroy {
   isCreateUserModalOpen: boolean = false;
   pendingAmountPaid: number = 0;
   pendingBalanceAmount: number = 0;
-  constructor(private http: HttpClient, private toasterService: ToastService, private BillingService: Billingservice, private keysStorage: KEYSSTORAGE, private LoaderService: LoaderService) {
+  constructor(
+    private http: HttpClient,
+    private toasterService: ToastService,
+    private BillingService: Billingservice,
+    private keysStorage: KEYSSTORAGE,
+    private LoaderService: LoaderService,
+    private translateService: TranslateService
+  ) {
     addIcons({
       barcodeOutline, 'add-outline': addOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline, 'trash-outline': trashOutline, 'add-circle-outline': addCircleOutline, 'remove-circle-outline': removeCircleOutline, 'arrow-forward-outline': arrowForwardOutline,
       'document-text-outline': documentTextOutline,
@@ -62,7 +71,7 @@ export class BillingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     setTimeout(() => {
-      this.toasterService.showWarning("To Save In the Data Please Add User Else Billing Alone can be done");
+      this.toasterService.showWarning(this.translateService.translate("To Save In the Data Please Add User Else Billing Alone can be done"));
     }, 1000)
   }
 
@@ -293,7 +302,7 @@ export class BillingComponent implements OnInit, OnDestroy {
 
   onPendingCheckout() {
     if (this.cartItems.length === 0) {
-      this.toasterService.showWarning("Cannot Mark Payment As Cart is Empty");
+      this.toasterService.showWarning(this.translateService.translate("Cannot Mark Payment As Cart is Empty"));
       return;
     }
     this.isPendingModalOpen = true;
@@ -314,14 +323,14 @@ export class BillingComponent implements OnInit, OnDestroy {
       notes: event.notes,
       cartItems: this.cartItems
     }
-    this.LoaderService.showLoader(`Pending Bill for the customer ${this.searchQuery.customerName}`)
+    this.LoaderService.showLoader(this.translateService.translate("Pending Bill for the customer") + " " + this.searchQuery.customerName)
     this.BillingService.SavePendingBill(request).subscribe({
       next: (response: any) => {
-        this.toasterService.showSuccess(`Pending Bill Saved Successfully for the customer ${this.searchQuery.customerName}`);
+        this.toasterService.showSuccess(this.translateService.translate("Pending Bill Saved Successfully for the customer") + " " + this.searchQuery.customerName);
       },
       error: (err) => {
         console.error('Error fetching product details from barcode id:', err);
-        this.toasterService.showError("Error Saving Pending Bill");
+        this.toasterService.showError(this.translateService.translate("Error Saving Pending Bill"));
         this.LoaderService.hideLoader();
       }
     })
@@ -333,7 +342,7 @@ export class BillingComponent implements OnInit, OnDestroy {
 
   DownloadPDF() {
     if (this.cartItems.length === 0) {
-      this.toasterService.showWarning("Cart is empty. Cannot generate bill.");
+      this.toasterService.showWarning(this.translateService.translate("Cart is empty. Cannot generate bill."));
       return;
     }
     this.billStatus = 'PAID';
@@ -352,7 +361,7 @@ export class BillingComponent implements OnInit, OnDestroy {
       const id = user._id || user.id;
       if (name) {
         this.searchQuery = { customerName: name, customerId: id };
-        this.toasterService.showSuccess(`Selected customer: ${name}`);
+        this.toasterService.showSuccess(this.translateService.translate("Selected customer:") + " " + name);
       }
     }
   }

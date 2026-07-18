@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ForgotPasswordService } from './ForgotPasswordService';
 import { ToastService } from 'src/Service/ToasterService';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+import { TranslateService } from '../../Service/TranslateService';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,8 +15,9 @@ import { ToastService } from 'src/Service/ToasterService';
   standalone: true,
   imports: [
     IonicModule,
-    ReactiveFormsModule
-]
+    ReactiveFormsModule,
+    TranslatePipe
+  ]
 })
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
@@ -36,7 +39,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     private forgotPasswordService: ForgotPasswordService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
@@ -76,7 +80,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     const emailControl = this.forgotForm.get('email');
     if (!emailControl || emailControl.invalid) {
       this.forgotForm.markAllAsTouched();
-      this.toastService.showToast('please enter valid Email', 'warning');
+      this.toastService.showToast(this.translateService.translate('please enter valid Email'), 'warning');
       return;
     }
     
@@ -92,16 +96,16 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
         if (val?.success || val?.message) {
           this.isOtpVisible = true;
           this.isOtpSent = true;
-          this.toastService.showSuccess('OTP sent to ' + emailControl.value);
+          this.toastService.showSuccess(this.translateService.translate('OTP sent to') + ' ' + emailControl.value);
           this.startResendCooldown();
         } else {
-          this.toastService.showError('Failed to send OTP. Please try again.');
+          this.toastService.showError(this.translateService.translate('Failed to send OTP. Please try again.'));
         }
       },
       error: (err) => {
         console.error('OTP send error:', err);
         this.IsloadingOtp = false;
-        this.toastService.showError(err?.error?.message || 'Something went wrong. Please try again.');
+        this.toastService.showError(this.translateService.translate(err?.error?.message || 'Something went wrong. Please try again.'));
       }
     });
   }
@@ -112,7 +116,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     const email = this.forgotForm.get('email')?.value;
 
     if (!otp || String(otp).length !== 6) {
-      this.toastService.showError('Please enter the 6-digit OTP.');
+      this.toastService.showError(this.translateService.translate('Please enter the 6-digit OTP.'));
       return;
     }
 
@@ -120,15 +124,15 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
       next: (val: any) => {
         if (val?.message == 'OTP verified successfully') {
           this.isOtpVerified = true;
-          this.toastService.showSuccess('Email verified successfully! You can now set your new password.');
+          this.toastService.showSuccess(this.translateService.translate('Email verified successfully! You can now set your new password.'));
         } else {
           this.isOtpVerified = false;
-          this.toastService.showError(val?.message || 'Invalid OTP. Please try again.');
+          this.toastService.showError(this.translateService.translate(val?.message || 'Invalid OTP. Please try again.'));
         }
       },
       error: (err: any) => {
         console.error('OTP verify error:', err);
-        this.toastService.showError('Verification failed. Please try again.');
+        this.toastService.showError(this.translateService.translate('Verification failed. Please try again.'));
       }
     });
   }
@@ -201,7 +205,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   // ─── Reset Password ──────────────────────────────────────────────────
   onResetPassword() {
     if (!this.isOtpVerified) {
-      this.toastService.showError('Please verify your email before resetting your password.');
+      this.toastService.showError(this.translateService.translate('Please verify your email before resetting your password.'));
       return;
     }
 
@@ -213,20 +217,20 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
       
       this.forgotPasswordService.resetPassword(payload).subscribe({
         next: (val: any) => {
-          this.toastService.showSuccess(val?.message || 'Password reset successfully!');
+          this.toastService.showSuccess(this.translateService.translate(val?.message || 'Password reset successfully!'));
           setTimeout(() => {
             this.goToLogin();
           }, 2000);
         },
         error: (err) => {
           console.error('Reset Password error:', err);
-          this.toastService.showError('Something went wrong resetting your password. Please try again.');
+          this.toastService.showError(this.translateService.translate('Something went wrong resetting your password. Please try again.'));
         }
       });
 
     } else {
       this.forgotForm.markAllAsTouched();
-      this.toastService.showError('Please fill all required fields correctly.');
+      this.toastService.showError(this.translateService.translate('Please fill all required fields correctly.'));
     }
   }
 

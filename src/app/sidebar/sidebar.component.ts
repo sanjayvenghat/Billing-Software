@@ -7,6 +7,8 @@ import { basket, documentText, documents, trendingUp, statsChart, logOut, diamon
 import { Router } from '@angular/router';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { settings } from 'ionicons/icons';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -16,6 +18,7 @@ import { settings } from 'ionicons/icons';
     CommonModule,
     RouterModule,
     IonIcon, IonList, IonMenuToggle, IonItem, IonLabel,
+    TranslatePipe
   ]
 })
 export class SidebarComponent implements OnInit {

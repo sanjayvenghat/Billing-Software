@@ -5,12 +5,15 @@ import { IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonCo
 import { addIcons } from 'ionicons';
 import { cashOutline, walletOutline, calendarOutline, chatbubbleEllipsesOutline, personOutline, alertCircleOutline } from 'ionicons/icons';
 
+import { TranslatePipe } from '../../Service/TranslatePipe';
+import { TranslateService } from '../../Service/TranslateService';
+
 @Component({
   selector: 'app-pending',
   templateUrl: './pending.component.html',
   styleUrls: ['./pending.component.scss'],
   standalone: true,
-  imports: [FormsModule, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonInput, IonTextarea, IonIcon, IonNote],
+  imports: [FormsModule, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent, IonInput, IonTextarea, IonIcon, IonNote, TranslatePipe],
 })
 export class PendingComponent implements OnInit, OnChanges {
 
@@ -25,7 +28,10 @@ export class PendingComponent implements OnInit, OnChanges {
   dueDate: string = '';
   notes: string = '';
 
-  constructor(private animationCtrl: AnimationController) {
+  constructor(
+    private animationCtrl: AnimationController,
+    private translateService: TranslateService
+  ) {
     addIcons({
       'cash-outline': cashOutline,
       'wallet-outline': walletOutline,

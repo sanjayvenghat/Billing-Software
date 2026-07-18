@@ -1,12 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { IonModal, IonIcon, IonButton, AnimationController } from '@ionic/angular/standalone';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.scss'],
   standalone: true,
-  imports: [IonModal, IonIcon, IonButton]
+  imports: [IonModal, IonIcon, IonButton, TranslatePipe]
 })
 export class AddProductComponent implements OnInit {
   @Input() isOpen: boolean = false;

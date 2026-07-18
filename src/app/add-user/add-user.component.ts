@@ -2,11 +2,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { IonModal, IonIcon, IonButton, AnimationController } from '@ionic/angular/standalone';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.scss'],
-  imports: [IonModal, IonIcon, IonButton]
+  imports: [IonModal, IonIcon, IonButton, TranslatePipe]
 })
 export class AddUserComponent implements OnInit {
 

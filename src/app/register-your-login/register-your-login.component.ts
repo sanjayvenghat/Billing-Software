@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { RegisterService } from './RegisterService';
 import { ToastService } from 'src/Service/ToasterService';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+import { TranslateService } from '../../Service/TranslateService';
 
 @Component({
   selector: 'app-register-your-login',
@@ -12,8 +14,9 @@ import { ToastService } from 'src/Service/ToasterService';
   styleUrls: ['./register-your-login.component.scss'],
   imports: [
     IonicModule,
-    ReactiveFormsModule
-]
+    ReactiveFormsModule,
+    TranslatePipe
+  ]
 })
 export class RegisterYourLoginComponent implements OnInit, OnDestroy {
 
@@ -36,7 +39,8 @@ export class RegisterYourLoginComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     private registerService: RegisterService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
@@ -63,7 +67,7 @@ export class RegisterYourLoginComponent implements OnInit, OnDestroy {
     const email = this.registerForm.get('email')?.value;
 
     if (!email || this.registerForm.get('email')?.invalid) {
-      this.toastService.showError('Please enter a valid email address.');
+      this.toastService.showError(this.translateService.translate('Please enter a valid email address.'));
       return;
     }
     this.IsloadingOtp = true;
@@ -77,16 +81,16 @@ export class RegisterYourLoginComponent implements OnInit, OnDestroy {
         if (val?.success || val?.message) {
           this.isOtpVisible = true;
           this.isOtpSent = true;
-          this.toastService.showSuccess('OTP sent to ' + email);
+          this.toastService.showSuccess(this.translateService.translate('OTP sent to') + ' ' + email);
           this.startResendCooldown();
         } else {
-          this.toastService.showError('Failed to send OTP. Please try again.');
+          this.toastService.showError(this.translateService.translate('Failed to send OTP. Please try again.'));
         }
       },
       error: (err) => {
         console.error('OTP send error:', err);
         this.IsloadingOtp = false;
-        this.toastService.showError(err?.error?.message || 'Something went wrong. Please try again.');
+        this.toastService.showError(this.translateService.translate(err?.error?.message || 'Something went wrong. Please try again.'));
       }
     });
   }
@@ -96,7 +100,7 @@ export class RegisterYourLoginComponent implements OnInit, OnDestroy {
     const otp = this.registerForm.get('otp')?.value;
     const email = this.registerForm.get('email')?.value;
     if (!otp || String(otp).length !== 6) {
-      this.toastService.showError('Please enter the 6-digit OTP.');
+      this.toastService.showError(this.translateService.translate('Please enter the 6-digit OTP.'));
       return;
     }
 
@@ -104,15 +108,15 @@ export class RegisterYourLoginComponent implements OnInit, OnDestroy {
       next: (val: any) => {
         if (val?.message == 'OTP verified successfully') {
           this.isOtpVerified = true;
-          this.toastService.showSuccess('Email verified successfully!');
+          this.toastService.showSuccess(this.translateService.translate('Email verified successfully!'));
         } else {
           this.isOtpVerified = false;
-          this.toastService.showError(val?.message || 'Invalid OTP. Please try again.');
+          this.toastService.showError(this.translateService.translate(val?.message || 'Invalid OTP. Please try again.'));
         }
       },
       error: (err: any) => {
         console.error('OTP verify error:', err);
-        this.toastService.showError('Verification failed. Please try again.');
+        this.toastService.showError(this.translateService.translate('Verification failed. Please try again.'));
       }
     });
   }
@@ -185,7 +189,7 @@ export class RegisterYourLoginComponent implements OnInit, OnDestroy {
   // ─── Register ────────────────────────────────────────────────────────
   onRegister() {
     if (!this.isOtpVerified) {
-      this.toastService.showError('Please verify your email before creating an account.');
+      this.toastService.showError(this.translateService.translate('Please verify your email before creating an account.'));
       return;
     }
 
@@ -199,24 +203,24 @@ export class RegisterYourLoginComponent implements OnInit, OnDestroy {
       this.registerService.Register(payload).subscribe({
         next: (val: any) => {
           if (val?.message === 'User Created SuccessFully') {
-            this.toastService.showSuccess(val.message);
+            this.toastService.showSuccess(this.translateService.translate(val.message));
             this.registerForm.reset();
             setTimeout(() => {
               this.goToLogin();
             }, 3000);
           } else {
-            this.toastService.showError(val?.message || 'Registration failed.');
+            this.toastService.showError(this.translateService.translate(val?.message || 'Registration failed.'));
           }
         },
         error: (err) => {
           console.error('Registration error:', err);
-          this.toastService.showError('Something went wrong. Please try again.');
+          this.toastService.showError(this.translateService.translate('Something went wrong. Please try again.'));
         }
       });
 
     } else {
       this.registerForm.markAllAsTouched();
-      this.toastService.showError('Please fill all required fields correctly.');
+      this.toastService.showError(this.translateService.translate('Please fill all required fields correctly.'));
     }
   }
 

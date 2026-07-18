@@ -8,11 +8,13 @@ import { ToastService } from 'src/Service/ToasterService';
 import { addIcons } from 'ionicons';
 import { createOutline, checkmarkOutline, closeOutline, funnel, trashOutline } from 'ionicons/icons';
 import { LoaderService } from 'src/Service/LoaderService';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+import { TranslateService } from '../../Service/TranslateService';
 @Component({
   selector: 'app-list-product',
   templateUrl: './list-product.component.html',
   styleUrls: ['./list-product.component.scss'],
-  imports: [IonItem, IonLabel, IonList, IonNote, IonAvatar, CurrencyPipe, IonListHeader, IonInput, IonButton, IonIcon, IonSearchbar, IonHeader, IonToolbar, IonContent, IonButtons, FormsModule, CommonModule],
+  imports: [IonItem, IonLabel, IonList, IonNote, IonAvatar, CurrencyPipe, IonListHeader, IonInput, IonButton, IonIcon, IonSearchbar, IonHeader, IonToolbar, IonContent, IonButtons, FormsModule, CommonModule, TranslatePipe],
 })
 export class ListProductComponent implements OnInit {
   Grocery_List: any = [];
@@ -25,7 +27,8 @@ export class ListProductComponent implements OnInit {
     private productService: ProductService,
     private toastService: ToastService,
     private alertController: AlertController,
-    private LoaderService: LoaderService
+    private LoaderService: LoaderService,
+    private translateService: TranslateService
   ) {
     addIcons({ createOutline, checkmarkOutline, closeOutline, funnel, trashOutline });
   }
@@ -83,38 +86,38 @@ export class ListProductComponent implements OnInit {
 
   savePrice(item: any) {
     if (!item.editSellingPrice || isNaN(item.editSellingPrice) || !item.editBuyingPrice || isNaN(item.editBuyingPrice)) {
-      this.toastService.showWarning("Please enter valid prices");
+      this.toastService.showWarning(this.translateService.translate("Please enter valid prices"));
       return;
     }
-    this.LoaderService.showLoader("The product Price Is Updating")
+    this.LoaderService.showLoader(this.translateService.translate("The product Price Is Updating"))
     this.productService.UpdateProductPrice(item._id, item.editSellingPrice, item.editBuyingPrice).subscribe({
       next: (val: any) => {
         this.LoaderService.hideLoader()
         item.SellingPrice = item.editSellingPrice;
         item.BuyingPrice = item.editBuyingPrice;
         item.isEditing = false;
-        this.toastService.showSuccess("Prices updated successfully");
+        this.toastService.showSuccess(this.translateService.translate("Prices updated successfully"));
       },
       error: (err: any) => {
         this.LoaderService.hideLoader()
         console.error('Error updating price:', err);
-        this.toastService.showError("Failed to update prices. Make sure backend route exists.");
+        this.toastService.showError(this.translateService.translate("Failed to update prices. Make sure backend route exists."));
       }
     });
   }
 
   async deleteProduct(item: any) {
     const alert = await this.alertController.create({
-      header: 'Confirm Delete',
-      message: `Are you sure you want to delete "${item.ProductName}"?`,
+      header: this.translateService.translate('Confirm Delete'),
+      message: this.translateService.translate('Are you sure you want to delete') + ` "${item.ProductName}"?`,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.translateService.translate('Cancel'),
           role: 'cancel',
           cssClass: 'alert-button-cancel'
         },
         {
-          text: 'Delete',
+          text: this.translateService.translate('Delete'),
           role: 'destructive',
           cssClass: 'alert-button-confirm',
           handler: () => {
@@ -128,18 +131,18 @@ export class ListProductComponent implements OnInit {
   }
 
   private confirmDelete(item: any) {
-    this.LoaderService.showLoader("Product Is Deleting...")
+    this.LoaderService.showLoader(this.translateService.translate("Product Is Deleting..."))
     this.productService.DeleteProduct(item._id).subscribe({
       next: (val: any) => {
         this.LoaderService.hideLoader()
         this.Grocery_List = this.Grocery_List.filter((g: any) => g._id !== item._id);
         this.Filtered_Grocery_List = this.Filtered_Grocery_List.filter((g: any) => g._id !== item._id);
-        this.toastService.showSuccess("Product deleted successfully");
+        this.toastService.showSuccess(this.translateService.translate("Product deleted successfully"));
       },
       error: (err: any) => {
         this.LoaderService.hideLoader()
         console.error('Error deleting product:', err);
-        this.toastService.showError("Failed to delete product");
+        this.toastService.showError(this.translateService.translate("Failed to delete product"));
       }
     });
   }

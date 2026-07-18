@@ -1,32 +1,32 @@
 <ion-content class="ion-padding">
   <div style="display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 10px; flex-wrap: wrap;">
-    <ion-input fill="outline" shape="round" label="Item Name" labelPlacement="floating" [(ngModel)]="ProductName"
-      (ngModelChange)="savedItemUrl = ''" placeholder="Enter item name" style="flex: 1 1 200px;">
+    <ion-input fill="outline" shape="round" [label]="'Item Name' | translate" labelPlacement="floating" [(ngModel)]="ProductName"
+      (ngModelChange)="savedItemUrl = ''" [placeholder]="'Enter item name' | translate" style="flex: 1 1 200px;">
     </ion-input>
 
-    <ion-input fill="outline" shape="round" label="Buying Price" labelPlacement="floating" type="number"
-      [(ngModel)]="BuyingPrice" (ngModelChange)="savedItemUrl = ''" placeholder="Enter buying price"
+    <ion-input fill="outline" shape="round" [label]="'Buying Price' | translate" labelPlacement="floating" type="number"
+      [(ngModel)]="BuyingPrice" (ngModelChange)="savedItemUrl = ''" [placeholder]="'Enter buying price' | translate"
       style="flex: 1 1 200px;">
     </ion-input>
 
-    <ion-input fill="outline" shape="round" label="Selling Price" labelPlacement="floating" type="number"
-      [(ngModel)]="SellingPrice" (ngModelChange)="savedItemUrl = ''" placeholder="Enter selling price"
+    <ion-input fill="outline" shape="round" [label]="'Selling Price' | translate" labelPlacement="floating" type="number"
+      [(ngModel)]="SellingPrice" (ngModelChange)="savedItemUrl = ''" [placeholder]="'Enter selling price' | translate"
       style="flex: 1 1 200px;">
     </ion-input>
     <ion-item>
-      <ion-select [(ngModel)]="unit" interface="popover" placeholder="Select unit">
-        <ion-select-option value="Weight">Weight</ion-select-option>
-        <ion-select-option value="Piece">Piece</ion-select-option>
+      <ion-select [(ngModel)]="unit" interface="popover" [placeholder]="'Select unit' | translate">
+        <ion-select-option value="Weight">{{ 'Weight' | translate }}</ion-select-option>
+        <ion-select-option value="Piece">{{ 'Piece' | translate }}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-button shape="round" style="height: 56px; margin: 0; flex: 1 1 100px;" color="success"
       (click)="AddGroceryData()">
-      Save
+      {{ 'Save' | translate }}
     </ion-button>
   </div>
   <div style="margin-top: 10px;">
     <ion-item lines="none">
-      <ion-checkbox justify="space-between" [(ngModel)]="generateQrCode">Make QR Code For This Item</ion-checkbox>
+      <ion-checkbox justify="space-between" [(ngModel)]="generateQrCode">{{ 'Make QR Code For This Item' | translate }}</ion-checkbox>
     </ion-item>
   </div>
 
@@ -37,13 +37,13 @@
   </div>
   <p
     style="display: flex; justify-content: center; align-items: center; gap: 6px; color: gray; font-size: 14px; margin-top: 8px;">
-    Scan to view live item details
+    {{ 'Scan to view live item details' | translate }}
     <ion-icon name="download" title="Download QR Code"
       style="font-size: 18px; cursor: pointer; color: var(--ion-color-primary);" (click)="downloadQR()"></ion-icon>
   </p>
   } @else {
   <div style="margin-top: 20px; text-align: center; color: var(--ion-color-medium);">
-    <p>Please click <b>Save</b> to generate the QR Code for this item.</p>
+    <p>{{ 'Please click Save to generate the QR Code for this item.' | translate }}</p>
   </div>
   }
   }
