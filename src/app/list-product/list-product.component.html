@@ -29,14 +29,16 @@
         <h2 class="product-name">{{item.ProductName}}</h2>
         @if (!item.isEditing) {
         <p class="buying-price">{{ 'Cost' | translate }}: {{item.BuyingPrice | currency:'INR':'symbol':'1.0-2'}}</p>
-        @if ((item.SellingPrice - item.BuyingPrice) >= 0) {
-        <p class="profit-margin">
-          {{ 'Profit' | translate }}: {{(item.SellingPrice - item.BuyingPrice) | currency:'INR':'symbol':'1.0-2'}}
-        </p>
-        } @else {
-        <p class="profit-margin negative-profit">
-          {{ 'Loss' | translate }}: {{(item.BuyingPrice - item.SellingPrice) | currency:'INR':'symbol':'1.0-2'}}
-        </p>
+        @if (showProfitOfEveryProduct) {
+          @if ((item.SellingPrice - item.BuyingPrice) >= 0) {
+          <p class="profit-margin">
+            {{ 'Profit' | translate }}: {{(item.SellingPrice - item.BuyingPrice) | currency:'INR':'symbol':'1.0-2'}}
+          </p>
+          } @else {
+          <p class="profit-margin negative-profit">
+            {{ 'Loss' | translate }}: {{(item.BuyingPrice - item.SellingPrice) | currency:'INR':'symbol':'1.0-2'}}
+          </p>
+          }
         }
         } @else {
         <div class="edit-buying-container" (click)="$event.stopPropagation()">
@@ -47,7 +49,9 @@
       </ion-label>
       <ion-note slot="end" color="success" class="selling-price-container">
         @if (!item.isEditing) {
+        @if (showProfitOfEveryProduct) {
         <span class="selling-price">{{item.SellingPrice | currency:'INR':'symbol':'1.0-2'}}</span>
+        }
         <ion-button fill="clear" size="small" (click)="editPrice(item); $event.stopPropagation()">
           <ion-icon name="create-outline"></ion-icon>
         </ion-button>
@@ -56,7 +60,9 @@
         </ion-button>
         } @else {
         <div class="edit-price-container" (click)="$event.stopPropagation()">
+          @if (showProfitOfEveryProduct) {
           <ion-input type="number" [(ngModel)]="item.editSellingPrice" [placeholder]="'Price' | translate"></ion-input>
+          }
           <ion-button fill="clear" color="success" size="small" (click)="savePrice(item)">
             <ion-icon name="checkmark-outline"></ion-icon>
           </ion-button>

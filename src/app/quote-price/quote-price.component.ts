@@ -30,6 +30,7 @@ export class QuotePriceComponent implements OnInit {
   companyId: string = '';
   generateQrCode: boolean = false;
   savedItemUrl: string = '';
+  showProfitOfEveryProduct: boolean = true;
 
   constructor(
     private quoteService: QuoteService,
@@ -42,14 +43,29 @@ export class QuotePriceComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadSettings();
     this.getCredentials();
+  }
+  loadSettings() {
+    const saved = this.keysStorage.getItem('APP_SETTINGS');
+    if (saved) {
+      this.showProfitOfEveryProduct = saved.showProfitOfEveryProduct ?? true;
+    } else {
+      this.showProfitOfEveryProduct = true;
+    }
   }
   getCredentials() {
     this.companyId = this.keysStorage.getItem("CompanyId")
   }
   AddGroceryData() {
+    if (!this.showProfitOfEveryProduct) {
+      this.SellingPrice = this.BuyingPrice;
+    }
     if (!this.ProductName || !this.BuyingPrice || !this.SellingPrice || !this.unit) {
-      this.toaster.showWarning(this.translateService.translate('Please enter product name, buying price, selling price and select unit'));
+      const msg = this.showProfitOfEveryProduct
+        ? this.translateService.translate("Please enter product name, buying price, selling price and select unit")
+        : this.translateService.translate("Please enter product name, buying price and select unit");
+      this.toaster.showWarning(msg);
       return;
     }
     this.LoaderService.showLoader(this.translateService.translate("Please wait while adding product"))

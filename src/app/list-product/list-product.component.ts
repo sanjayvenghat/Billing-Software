@@ -21,6 +21,7 @@ export class ListProductComponent implements OnInit {
   Filtered_Grocery_List: any = [];
   isAscending: boolean = true;
   searchQuery: string = '';
+  showProfitOfEveryProduct: boolean = true;
 
   constructor(
     private keysStorage: KEYSSTORAGE,
@@ -34,7 +35,17 @@ export class ListProductComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadSettings();
     this.GetProductList();
+  }
+
+  loadSettings() {
+    const saved = this.keysStorage.getItem('APP_SETTINGS');
+    if (saved) {
+      this.showProfitOfEveryProduct = saved.showProfitOfEveryProduct ?? true;
+    } else {
+      this.showProfitOfEveryProduct = true;
+    }
   }
   GetProductList() {
     let companyId = this.keysStorage.getItem("CompanyId");

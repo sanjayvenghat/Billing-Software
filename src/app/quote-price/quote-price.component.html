@@ -1,7 +1,8 @@
 <ion-content class="ion-padding">
   <div style="display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 10px; flex-wrap: wrap;">
-    <ion-input fill="outline" shape="round" [label]="'Item Name' | translate" labelPlacement="floating" [(ngModel)]="ProductName"
-      (ngModelChange)="savedItemUrl = ''" [placeholder]="'Enter item name' | translate" style="flex: 1 1 200px;">
+    <ion-input fill="outline" shape="round" [label]="'Item Name' | translate" labelPlacement="floating"
+      [(ngModel)]="ProductName" (ngModelChange)="savedItemUrl = ''" [placeholder]="'Enter item name' | translate"
+      style="flex: 1 1 200px;">
     </ion-input>
 
     <ion-input fill="outline" shape="round" [label]="'Buying Price' | translate" labelPlacement="floating" type="number"
@@ -9,10 +10,12 @@
       style="flex: 1 1 200px;">
     </ion-input>
 
-    <ion-input fill="outline" shape="round" [label]="'Selling Price' | translate" labelPlacement="floating" type="number"
-      [(ngModel)]="SellingPrice" (ngModelChange)="savedItemUrl = ''" [placeholder]="'Enter selling price' | translate"
-      style="flex: 1 1 200px;">
+    @if (showProfitOfEveryProduct) {
+    <ion-input fill="outline" shape="round" [label]="'Selling Price' | translate" labelPlacement="floating"
+      type="number" [(ngModel)]="SellingPrice" (ngModelChange)="savedItemUrl = ''"
+      [placeholder]="'Enter selling price' | translate" style="flex: 1 1 200px;">
     </ion-input>
+    }
     <ion-item>
       <ion-select [(ngModel)]="unit" interface="popover" [placeholder]="'Select unit' | translate">
         <ion-select-option value="Weight">{{ 'Weight' | translate }}</ion-select-option>
@@ -26,7 +29,8 @@
   </div>
   <div style="margin-top: 10px;">
     <ion-item lines="none">
-      <ion-checkbox justify="space-between" [(ngModel)]="generateQrCode">{{ 'Make QR Code For This Item' | translate }}</ion-checkbox>
+      <ion-checkbox justify="space-between" [(ngModel)]="generateQrCode">{{ 'Make QR Code For This Item' | translate
+        }}</ion-checkbox>
     </ion-item>
   </div>
 

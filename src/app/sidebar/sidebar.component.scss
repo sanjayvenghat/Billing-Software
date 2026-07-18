@@ -1,12 +1,12 @@
 .colorful-sidebar {
   --background: #f4f6fa; // light clean background
   --ion-background-color: #f4f6fa;
-  
+
   .sidebar-header {
     display: flex;
     align-items: center;
     padding: 30px 20px 10px;
-    
+
     .logo-container {
       width: 50px;
       height: 50px;
@@ -17,13 +17,13 @@
       justify-content: center;
       box-shadow: 0 8px 16px rgba(255, 107, 107, 0.3);
       margin-right: 15px;
-      
+
       .logo-icon {
         color: white;
         font-size: 28px;
       }
     }
-    
+
     .title-container {
       h2 {
         margin: 0;
@@ -32,6 +32,7 @@
         color: #2d3436;
         letter-spacing: -0.5px;
       }
+
       p {
         margin: 4px 0 0;
         font-size: 13px;
@@ -60,7 +61,7 @@
 
     .transparent-list {
       background: transparent;
-      
+
       .menu-item {
         --background: transparent;
         --padding-start: 10px;
@@ -68,7 +69,7 @@
         margin-bottom: 8px;
         border-radius: 16px;
         transition: all 0.3s ease;
-        
+
         ion-label {
           font-weight: 600;
           color: #636e72;
@@ -85,7 +86,7 @@
           justify-content: center;
           margin-right: 15px;
           transition: all 0.3s ease;
-          
+
           ion-icon {
             font-size: 20px;
           }
@@ -96,37 +97,77 @@
           background: rgba(9, 132, 227, 0.1);
           color: #0984e3;
         }
+
         .month-bills-box {
           background: rgba(108, 92, 231, 0.1);
           color: #6c5ce7;
         }
+
         .week-profit-box {
           background: rgba(0, 184, 148, 0.1);
           color: #00b894;
         }
+
         .month-profit-box {
           background: rgba(253, 203, 110, 0.1);
           color: #fdcb6e;
         }
+
         .logout-box {
           background: rgba(214, 48, 49, 0.1);
           color: #d63031;
         }
 
+        .offer-box {
+          background: rgba(255, 107, 129, 0.1);
+          color: #ff6b81;
+        }
+
         /* Hover and Active State */
-        &:hover, &.active-item {
+        &:hover,
+        &.active-item {
           --background: white;
           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-          
+
           ion-label {
             color: #2d3436;
           }
-          
-          .week-bills-box { background: #0984e3; color: white; box-shadow: 0 4px 10px rgba(9, 132, 227, 0.3); }
-          .month-bills-box { background: #6c5ce7; color: white; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3); }
-          .week-profit-box { background: #00b894; color: white; box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3); }
-          .month-profit-box { background: #fdcb6e; color: white; box-shadow: 0 4px 10px rgba(253, 203, 110, 0.3); }
-          .logout-box { background: #d63031; color: white; box-shadow: 0 4px 10px rgba(214, 48, 49, 0.3); }
+
+          .week-bills-box {
+            background: #0984e3;
+            color: white;
+            box-shadow: 0 4px 10px rgba(9, 132, 227, 0.3);
+          }
+
+          .month-bills-box {
+            background: #6c5ce7;
+            color: white;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+          }
+
+          .week-profit-box {
+            background: #00b894;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
+          }
+
+          .month-profit-box {
+            background: #fdcb6e;
+            color: white;
+            box-shadow: 0 4px 10px rgba(253, 203, 110, 0.3);
+          }
+
+          .logout-box {
+            background: #d63031;
+            color: white;
+            box-shadow: 0 4px 10px rgba(214, 48, 49, 0.3);
+          }
+
+          .offer-box {
+            background: #ff6b81;
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+          }
         }
       }
     }
@@ -139,7 +180,7 @@
     position: relative;
     overflow: hidden;
     box-shadow: 0 10px 20px rgba(9, 132, 227, 0.3);
-    
+
     .card-glow {
       position: absolute;
       top: -20px;
@@ -150,32 +191,32 @@
       border-radius: 50%;
       filter: blur(20px);
     }
-    
+
     .card-content {
       padding: 25px 20px;
       position: relative;
       z-index: 1;
       text-align: center;
-      
+
       .premium-icon {
         font-size: 36px;
         color: white;
         margin-bottom: 10px;
       }
-      
+
       h4 {
         color: white;
         font-size: 18px;
         font-weight: 700;
         margin: 0 0 5px;
       }
-      
+
       p {
         color: rgba(255, 255, 255, 0.8);
         font-size: 13px;
         margin: 0 0 15px;
       }
-      
+
       .premium-btn {
         --background: white;
         --color: #0984e3;

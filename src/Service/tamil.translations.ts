@@ -236,5 +236,6 @@ export const TAMIL_DICTIONARY: { [key: string]: string } = {
   'RETURN TO HOME': 'முகப்புக்குத் திரும்பு',
   'GO BACK': 'பின்னே செல்லவும்',
   'Need help?': 'உதவி தேவையா?',
-  'Contact Support': 'ஆதரவைத் தொடர்பு கொள்ளவும்'
+  'Contact Support': 'ஆதரவைத் தொடர்பு கொள்ளவும்',
+  'Please enter product name, buying price and select unit': 'தயவுசெய்து பொருளின் பெயர், அடக்க விலை ஆகியவற்றை உள்ளிட்டு அலகைத் தேர்ந்தெடுக்கவும்'
 };

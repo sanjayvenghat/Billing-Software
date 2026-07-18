@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonIcon, IonList, IonMenuToggle, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { basket, documentText, documents, trendingUp, statsChart, logOut, diamond, cart, speedometer } from 'ionicons/icons';
+import { basket, documentText, documents, trendingUp, statsChart, logOut, diamond, cart, speedometer, pricetagOutline } from 'ionicons/icons';
 import { Router } from '@angular/router';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { settings } from 'ionicons/icons';
@@ -24,7 +24,7 @@ import { TranslatePipe } from '../../Service/TranslatePipe';
 export class SidebarComponent implements OnInit {
 
   constructor(private router: Router, private keysStorage: KEYSSTORAGE) {
-    addIcons({ basket, 'document-text': documentText, documents, 'trending-up': trendingUp, 'stats-chart': statsChart, 'log-out': logOut, diamond, settings, cart, speedometer });
+    addIcons({ basket, 'document-text': documentText, documents, 'trending-up': trendingUp, 'stats-chart': statsChart, 'log-out': logOut, diamond, settings, cart, speedometer, 'pricetag-outline': pricetagOutline });
   }
   SideBarMenu = [
     {
@@ -38,6 +38,12 @@ export class SidebarComponent implements OnInit {
       Url: '/EcommerceDashboard',
       Icon: 'cart',
       ColorClass: 'month-bills-box'
+    },
+    {
+      Title: 'Offer and Discount',
+      Url: '/offer-and-discount',
+      Icon: 'pricetag-outline',
+      ColorClass: 'offer-box'
     },
     {
       Title: 'Log Out',
