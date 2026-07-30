@@ -1,0 +1,516 @@
+<header [class.scrolled]="isScrolled" class="site-header">
+  <div class="header-inner">
+    <div class="logo">
+      <ion-icon name="calculator-outline"></ion-icon>
+      <span>Handy Bill</span>
+    </div>
+    <button class="menu-toggle" (click)="toggleMenu()" [class.open]="menuOpen">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-links">
+      <a (click)="navigateToAbout()">About Us</a>
+      <a (click)="scrollToSection('features')">Features</a>
+      <a (click)="scrollToSection('testimonials')">Testimonials</a>
+      <a (click)="scrollToSection('faq')">FAQ</a>
+      <a (click)="downloadPlayStore()">Download App</a>
+      <a (click)="navigateToLogin()" class="login-link">Login</a>
+      <ion-button class="nav-cta" (click)="navigateToBill()">Register Your Shop</ion-button>
+    </nav>
+    <div class="sidebar" [class.open]="menuOpen">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <ion-icon name="calculator-outline"></ion-icon>
+          <span>Handy Bill</span>
+        </div>
+        <button class="sidebar-close" (click)="closeMenu()">
+          <ion-icon name="close-circle"></ion-icon>
+        </button>
+      </div>
+      <nav class="sidebar-nav">
+        <a (click)="navigateToAbout(); closeMenu()">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          About Us
+        </a>
+        <a (click)="scrollToSection('features'); closeMenu()">
+          <ion-icon name="sparkles-outline"></ion-icon>
+          Features
+        </a>
+        <a (click)="scrollToSection('testimonials'); closeMenu()">
+          <ion-icon name="star-outline"></ion-icon>
+          Testimonials
+        </a>
+        <a (click)="scrollToSection('faq'); closeMenu()">
+          <ion-icon name="help-circle-outline"></ion-icon>
+          FAQ
+        </a>
+        <a (click)="downloadPlayStore(); closeMenu()">
+          <ion-icon name="logo-google-playstore"></ion-icon>
+          Download App
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <a (click)="navigateToLogin(); closeMenu()" class="sidebar-login">
+          <ion-icon name="log-in-outline"></ion-icon>
+          Log In
+        </a>
+        <ion-button class="sidebar-cta" (click)="navigateToBill(); closeMenu()">
+          Start Free Trial
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="menu-overlay" [class.open]="menuOpen" (click)="closeMenu()"></div>
+
+<ion-content class="landing-content" [scrollEvents]="true" (ionScroll)="onScroll($event)">
+  <div class="landing">
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <div class="pill-badge">
+            <span class="pill-dot"></span>
+            3 Months Free Trial &mdash; No Credit Card Needed
+          </div>
+          <h1><span class="typewriter-text">Run Your Handly Bill To <br>Remove the Paper BILLS</span></h1>
+          <p class="hero-subtitle">
+            Empower your workers with barcode price lookup, never miss a pending bill, and get real-time store insights
+            from anywhere. Trusted by <strong>{{ counters[0].target }}+ stores</strong> across India.
+          </p>
+          <div class="hero-actions">
+            <ion-button class="btn-primary" (click)="navigateToBill()">
+              <ion-icon name="sparkles-outline" slot="start"></ion-icon>
+              Start Free Trial &mdash; No CC Required
+            </ion-button>
+            <ion-button class="btn-outline" (click)="downloadPlayStore()">
+              <ion-icon name="logo-google-playstore" slot="start"></ion-icon>
+              Get on Play Store
+            </ion-button>
+          </div>
+          <div class="hero-trust">
+            <div class="trust-avatars">
+              <div class="trust-avatar" style="background:#6366f1">RK</div>
+              <div class="trust-avatar" style="background:#10b981">PS</div>
+              <div class="trust-avatar" style="background:#f59e0b">AP</div>
+              <div class="trust-avatar" style="background:#ef4444">SV</div>
+              <div class="trust-avatar plus">+</div>
+            </div>
+            <span>Join <strong>500+</strong> store owners growing with Handy Bill</span>
+          </div>
+          <div class="hero-badges">
+            <span><ion-icon name="shield-checkmark-outline"></ion-icon> Free for 3 months</span>
+            <span><ion-icon name="checkmark-circle"></ion-icon> No training needed</span>
+            <span><ion-icon name="checkmark-circle"></ion-icon> Cancel anytime</span>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-card">
+            <div class="hero-card-header">
+              <div class="card-dot red"></div>
+              <div class="card-dot yellow"></div>
+              <div class="card-dot green"></div>
+            </div>
+            <div class="hero-card-body">
+              <div class="card-row">
+                <ion-icon name="cart-outline"></ion-icon>
+                <span>Fresh Vegetables &mdash; 2 kg</span>
+                <span class="card-price">₹40</span>
+              </div>
+              <div class="card-row">
+                <ion-icon name="cart-outline"></ion-icon>
+                <span>Organic Apples &mdash; 1 kg</span>
+                <span class="card-price">₹120</span>
+              </div>
+              <div class="card-row">
+                <ion-icon name="cart-outline"></ion-icon>
+                <span>Dairy Milk &mdash; 1 Ltr</span>
+                <span class="card-price">₹65</span>
+              </div>
+              <div class="card-row">
+                <ion-icon name="cart-outline"></ion-icon>
+                <span>Wheat Flour &mdash; 5 kg</span>
+                <span class="card-price">₹175</span>
+              </div>
+              <div class="card-total">
+                <span>Total Bill</span>
+                <span class="total-amount">₹400</span>
+              </div>
+              <div class="card-barcode-row">
+                <ion-icon name="barcode-outline"></ion-icon>
+                <span>Scan barcode &rarr; Instant price</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-floating-card pending-card">
+            <ion-icon name="hourglass-outline"></ion-icon>
+            <div>
+              <div class="floating-label">Pending Bills Today</div>
+              <div class="floating-value">₹12,450</div>
+            </div>
+          </div>
+          <div class="hero-floating-card scan-card">
+            <ion-icon name="scan-outline"></ion-icon>
+            <div>
+              <div class="floating-label">Items Scanned Today</div>
+              <div class="floating-value">342</div>
+            </div>
+          </div>
+          <div class="hero-floating-card customers-card">
+            <ion-icon name="people-outline"></ion-icon>
+            <div>
+              <div class="floating-label">Active Customers</div>
+              <div class="floating-value">156</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="trust" class="trust-bar reveal">
+      <div class="container">
+        <p>Trusted by store owners across India</p>
+        <div class="trust-logos">
+          <span class="trust-logo">Fresh Mart</span>
+          <span class="trust-logo">Green Grocers</span>
+          <span class="trust-logo">Daily Fresh</span>
+          <span class="trust-logo">Organic Hub</span>
+          <span class="trust-logo">Veggie Kart</span>
+          <span class="trust-logo">Farm 2 Home</span>
+          <span class="trust-logo">Fresh &amp; Fast</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="problem" class="problem reveal">
+      <div class="container">
+        <div class="section-label">The Problem We Solve</div>
+        <h2>Running a store without Handy Bill is costing you money</h2>
+        <p class="section-sub">Every day without a proper billing system, you lose time, customers, and revenue.</p>
+        <div class="problem-grid">
+          <div class="problem-card">
+            <div class="problem-icon"><ion-icon name="close-circle"></ion-icon></div>
+            <h3>Workers cannot find prices</h3>
+            <p>When you are away, your staff wastes time searching for prices or calls you for every item. Customers
+              wait, get frustrated, and leave.</p>
+          </div>
+          <div class="problem-card">
+            <div class="problem-icon"><ion-icon name="close-circle"></ion-icon></div>
+            <h3>Forgotten pending bills</h3>
+            <p>You have no way to track who owes what. Regular customers delay payments and you end up writing off dues
+              because you lost track.</p>
+          </div>
+          <div class="problem-card">
+            <div class="problem-icon"><ion-icon name="close-circle"></ion-icon></div>
+            <h3>Manual billing is slow</h3>
+            <p>Writing bills by hand or using basic calculators leads to errors, long queues, and unhappy customers
+              during rush hours.</p>
+          </div>
+          <div class="problem-card">
+            <div class="problem-icon"><ion-icon name="close-circle"></ion-icon></div>
+            <h3>No insight into sales</h3>
+            <p>You have no idea which products sell most, which customers are most valuable, or how much pending money
+              you are owed at any given time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="features reveal">
+      <div class="container">
+        <div class="section-label">Features</div>
+        <h2>Everything your store needs to run like clockwork</h2>
+        <p class="section-sub">Powerful yet simple tools designed to solve real problems your store faces every single
+          day.</p>
+        <div class="features-grid">
+          <div class="feature-card featured">
+            <div class="feature-badge">Most Used</div>
+            <div class="feature-icon-wrap barcode">
+              <ion-icon name="barcode-outline"></ion-icon>
+            </div>
+            <h3>Barcode Price Lookup</h3>
+            <p>Your workers simply scan any product barcode and get the exact price instantly. No confusion, no calling
+              you, no customer frustration.</p>
+            <ul class="feature-list">
+              <li><ion-icon name="checkmark-circle"></ion-icon> One-tap scan from camera</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Works offline &mdash; no internet needed</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Add products with barcode in seconds</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Supports all standard barcode formats</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap pending">
+              <ion-icon name="hourglass-outline"></ion-icon>
+            </div>
+            <h3>Pending Bills Per Customer</h3>
+            <p>Every customer gets a profile with their complete billing history and outstanding dues. Know exactly who
+              owes what, every single day.</p>
+            <ul class="feature-list">
+              <li><ion-icon name="checkmark-circle"></ion-icon> Customer-wise pending tracker</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Automatic due date reminders</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> One-tap payment collection</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Complete payment history log</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap reports">
+              <ion-icon name="bar-chart-outline"></ion-icon>
+            </div>
+            <h3>Smart Sales Reports</h3>
+            <p>Know everything about your store performance. Daily sales, top-selling items, peak hours, pending
+              collections &mdash; all in one dashboard.</p>
+            <ul class="feature-list">
+              <li><ion-icon name="checkmark-circle"></ion-icon> Daily, weekly, monthly sales reports</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Best-selling products分析</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Collection &amp; pending tracking</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Export reports anytime</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap quick">
+              <ion-icon name="flash-outline"></ion-icon>
+            </div>
+            <h3>Lightning Fast Billing</h3>
+            <p>Generate bills in under 10 seconds. Add items, apply discounts, calculate totals, and print or share
+              bills with customers instantly.</p>
+            <ul class="feature-list">
+              <li><ion-icon name="checkmark-circle"></ion-icon> Bills in under 10 seconds</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Discount &amp; offer support</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Print or share via WhatsApp</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Automatic tax calculation</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap customers">
+              <ion-icon name="people-outline"></ion-icon>
+            </div>
+            <h3>Customer Management</h3>
+            <p>Build a database of your regular customers. Track their purchase history, contact details, and pending
+              dues &mdash; all in one place.</p>
+            <ul class="feature-list">
+              <li><ion-icon name="checkmark-circle"></ion-icon> Customer profiles with history</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Regular customer identification</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Quick customer search</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Loyal customer insights</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap secure">
+              <ion-icon name="shield-checkmark-outline"></ion-icon>
+            </div>
+            <h3>Secure &amp; Reliable</h3>
+            <p>Your data is encrypted and automatically backed up. Log in from any device. Your information is safe,
+              always accessible, and never lost.</p>
+            <ul class="feature-list">
+              <li><ion-icon name="checkmark-circle"></ion-icon> Encrypted data storage</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Automatic cloud backup</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Multi-device sync</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Secure login with password</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works reveal">
+      <div class="container">
+        <div class="section-label">How It Works</div>
+        <h2>Get started in 3 simple steps</h2>
+        <p class="section-sub">No technical skills required. You and your team will be up and running in under 5
+          minutes.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-number-wrap">
+              <div class="step-number">1</div>
+            </div>
+            <div class="step-icon"><ion-icon name="download-outline"></ion-icon></div>
+            <h3>Download the App</h3>
+            <p>Get Handy Bill from Google Play Store. It is free to download and works on any Android phone or tablet.
+              No registration needed to start.</p>
+          </div>
+          <div class="step-connector">
+            <div class="connector-dot"></div>
+          </div>
+          <div class="step">
+            <div class="step-number-wrap">
+              <div class="step-number">2</div>
+            </div>
+            <div class="step-icon"><ion-icon name="storefront-outline"></ion-icon></div>
+            <h3>Add Your Products</h3>
+            <p>Add your products with barcodes and prices. Use our quick-add feature, import from a spreadsheet, or add
+              items one by one as you bill.</p>
+          </div>
+          <div class="step-connector">
+            <div class="connector-dot"></div>
+          </div>
+          <div class="step">
+            <div class="step-number-wrap">
+              <div class="step-number">3</div>
+            </div>
+            <div class="step-icon"><ion-icon name="receipt-outline"></ion-icon></div>
+            <h3>Start Billing</h3>
+            <p>Begin billing instantly. Your workers can scan barcodes, track customer dues, generate bills, and manage
+              the store independently.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stats" class="stats-section reveal">
+      <div class="container">
+        <div class="stats-grid">
+          @for (c of counters; track c.label) {
+          <div class="stat-item">
+            <span class="stat-number">{{ getCounterDisplay(c) }}</span>
+            <span class="stat-label">{{ c.label }}</span>
+          </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials" class="testimonials reveal">
+      <div class="container">
+        <div class="section-label">Testimonials</div>
+        <h2>Real store owners. Real results.</h2>
+        <p class="section-sub">See why hundreds of store owners across India trust Handy Bill for their daily billing.
+        </p>
+        <div class="testimonial-card" (mouseenter)="pauseTestimonials()" (mouseleave)="resumeTestimonials()">
+          <div class="testimonial-content">
+            <div class="testimonial-stars">
+              @for (star of [1,2,3,4,5]; track star) {
+              <ion-icon name="star"></ion-icon>
+              }
+            </div>
+            <p class="testimonial-text">&ldquo;{{ testimonials[activeTestimonial].text }}&rdquo;</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">{{ testimonials[activeTestimonial].name.charAt(0) }}{{
+                testimonials[activeTestimonial].name.split(' ')[1]?.charAt(0) }}</div>
+              <div>
+                <div class="author-name">{{ testimonials[activeTestimonial].name }}</div>
+                <div class="author-role">{{ testimonials[activeTestimonial].role }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-nav">
+            <button class="nav-arrow" (click)="prevTestimonial()"><ion-icon name="chevron-back"></ion-icon></button>
+            <div class="nav-dots">
+              @for (dot of testimonials; track dot; let i = $index) {
+              <span [class.active]="i === activeTestimonial" (click)="activeTestimonial = i" class="dot"></span>
+              }
+            </div>
+            <button class="nav-arrow" (click)="nextTestimonial()"><ion-icon name="chevron-forward"></ion-icon></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="faq reveal">
+      <div class="container">
+        <div class="section-label">FAQ</div>
+        <h2>Have questions? We have answers.</h2>
+        <p class="section-sub">Everything you need to know about Handy Bill. If you do not find your answer here, reach
+          out to us on WhatsApp.</p>
+        <div class="faq-list">
+          @for (faq of faqs; track faq; let i = $index) {
+          <div class="faq-item" [class.open]="activeFaq === i">
+            <button class="faq-question" (click)="toggleFaq(i)">
+              <span>{{ faq.q }}</span>
+              <ion-icon [name]="activeFaq === i ? 'remove-outline' : 'add-outline'"></ion-icon>
+            </button>
+            @if (activeFaq === i) {
+            <div class="faq-answer">
+              <p>{{ faq.a }}</p>
+            </div>
+            }
+          </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section reveal">
+      <div class="container">
+        <div class="cta-card">
+          <div class="cta-pattern"></div>
+          <div class="cta-content">
+            <h2>Start your 3-month free trial today</h2>
+            <p class="cta-sub">Join 500+ store owners. No credit card. No commitment. Cancel anytime.</p>
+            <div class="cta-urgency">
+              <ion-icon name="sparkles-outline"></ion-icon>
+              <span>Limited time offer &mdash; Your 3 months start now</span>
+            </div>
+            <div class="cta-actions">
+              <ion-button class="btn-primary btn-white" (click)="navigateToBill()">
+                <ion-icon name="sparkles-outline" slot="start"></ion-icon>
+                Start Free Trial &mdash; It is Free
+              </ion-button>
+              <ion-button class="btn-outline btn-white-border" (click)="downloadPlayStore()">
+                <ion-icon name="logo-google-playstore" slot="start"></ion-icon>
+                Download on Play Store
+              </ion-button>
+            </div>
+            <div class="cta-trust">
+              <span><ion-icon name="shield-checkmark-outline"></ion-icon> No credit card needed</span>
+              <span><ion-icon name="checkmark-circle"></ion-icon> Cancel anytime</span>
+              <span><ion-icon name="checkmark-circle"></ion-icon> Free support included</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand-col">
+            <div class="footer-logo">
+              <ion-icon name="calculator-outline"></ion-icon>
+              <span>Handy Bill</span>
+            </div>
+            <p>Smart billing &amp; daily accounts for your fresh mart business. Empowering 500+ store owners across
+              India to run their stores smarter.</p>
+            <div class="footer-social">
+              <button class="social-btn whatsapp" (click)="openWhatsApp()" aria-label="WhatsApp">
+                <ion-icon name="logo-whatsapp"></ion-icon>
+              </button>
+              <button class="social-btn play" (click)="downloadPlayStore()" aria-label="Google Play">
+                <ion-icon name="logo-google-playstore"></ion-icon>
+              </button>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Product</h4>
+            <a (click)="scrollToSection('features')">Features</a>
+            <a (click)="scrollToSection('how-it-works')">How It Works</a>
+            <a (click)="scrollToSection('faq')">FAQ</a>
+            <a (click)="downloadPlayStore()">Download App</a>
+          </div>
+          <div class="footer-col">
+            <h4>Company</h4>
+            <a (click)="navigateToAbout()">About Us</a>
+            <a>Privacy Policy</a>
+            <a>Terms of Service</a>
+            <a (click)="openWhatsApp()">Contact Us</a>
+          </div>
+          <div class="footer-col">
+            <h4>Support</h4>
+            <a (click)="openWhatsApp()">WhatsApp Support</a>
+            <a>Help Center</a>
+            <a (click)="navigateToBill()">Get Started</a>
+            <a (click)="navigateToLogin()">Login</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Handy Bill. All rights reserved. Made for store owners in India.</p>
+        </div>
+      </div>
+    </footer>
+
+    <button class="whatsapp-float" (click)="openWhatsApp()" aria-label="Chat on WhatsApp">
+      <ion-icon name="logo-whatsapp"></ion-icon>
+      <span class="whatsapp-pulse"></span>
+    </button>
+
+  </div>
+</ion-content>

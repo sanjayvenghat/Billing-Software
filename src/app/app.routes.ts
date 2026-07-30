@@ -2,13 +2,17 @@ import { Routes } from '@angular/router';
 import { manualNavigationGuard } from './manual-navigation.guard';
 export const routes: Routes = [
   {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+    path: '',
+    loadComponent: () => import('./landing/landing.component').then((m) => m.LandingComponent),
+    pathMatch: 'full',
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
+    path: 'about-us',
+    loadComponent: () => import('./about-us/about-us.component').then((m) => m.AboutUsComponent),
+  },
+  {
+    path: 'home',
+    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
   },
   {
     path: 'ResisterLogin',

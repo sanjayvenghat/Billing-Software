@@ -1,0 +1,108 @@
+<ion-header class="about-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" (click)="goBack()" class="back-btn"></ion-back-button>
+    </ion-buttons>
+    <ion-title>About Us</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll()">
+  <div class="about-hero reveal">
+    <div class="hero-content">
+      <div class="pill-badge">
+        <span class="pill-dot"></span>
+        Empowering 500+ Indian Stores
+      </div>
+      <h1>We're on a mission to simplify billing for every Indian store</h1>
+      <p>Handy Bill was built by store owners, for store owners. We know the pain of manual billing, forgotten dues, and price disputes. So we built something better.</p>
+    </div>
+  </div>
+
+  <div id="about-stats" class="section stats-section reveal">
+    <div class="container">
+      <div class="stats-grid">
+        @for (c of counters; track c.label) {
+        <div class="stat-item">
+          <span class="stat-number">{{ getCounterDisplay(c) }}</span>
+          <span class="stat-label">{{ c.label }}</span>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="section mission-section reveal">
+    <div class="container">
+      <h2 class="section-title">What Drives Us</h2>
+      <div class="mission-grid">
+        <div class="mission-card">
+          <div class="mission-icon-wrap"><ion-icon name="locate-outline"></ion-icon></div>
+          <div class="mission-text">
+            <h3>Our Mission</h3>
+            <p>Empower small and medium grocery store owners with modern digital tools that are affordable, easy to use, and work offline — no internet required.</p>
+          </div>
+        </div>
+        <div class="mission-card">
+          <div class="mission-icon-wrap"><ion-icon name="eye-outline"></ion-icon></div>
+          <div class="mission-text">
+            <h3>Our Vision</h3>
+            <p>A world where every kirana shop and fresh mart in India runs on smart digital billing — eliminating lost sales, pricing errors, and manual paperwork.</p>
+          </div>
+        </div>
+        <div class="mission-card">
+          <div class="mission-icon-wrap"><ion-icon name="heart-outline"></ion-icon></div>
+          <div class="mission-text">
+            <h3>Our Values</h3>
+            <p>Simplicity first. We believe technology should adapt to the user, not the other way around. Every feature we build must be usable in under 10 seconds.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section story-section reveal">
+    <div class="container">
+      <h2 class="section-title">The Story Behind Handy Bill</h2>
+      <div class="story-content">
+        <p>Handy Bill started with a simple observation: most billing software is too complex for the typical Indian grocery store. Store owners don't have time for training, complicated setups, or expensive hardware.</p>
+        <p>We built Handy Bill to be different — a mobile-first app that any shop worker can use in minutes. Barcode scanning for instant price lookup. Pending bill tracking per customer. Daily reports. All in one simple app that works on any Android device.</p>
+        <p>Today, hundreds of stores across India trust Handy Bill for their daily billing. But we're just getting started.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section team-section reveal">
+    <div class="container">
+      <h2 class="section-title">Built for Store Owners,<br>Backed by a Real Team</h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">AT</div>
+          <h4>Sanjay Venghat</h4>
+          <span class="team-role">Founder &amp; CEO</span>
+          <p>2+ years in Software Development. Previously worked on creating user-friendly applications for organisations.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">SR</div>
+          <h4>Swati Rao</h4>
+          <span class="team-role">Head of Product</span>
+          <p>Former kirana shop owner herself. She knows exactly what store owners need — and what they don't.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">VP</div>
+          <h4>Vikram Patel</h4>
+          <span class="team-role">Lead Engineer</span>
+          <p>Built offline-first systems for rural India. Ensures Handy Bill works flawlessly even with spotty internet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section cta-section reveal">
+    <div class="container">
+      <h2>Ready to transform your store?</h2>
+      <p>Join 500+ store owners who have made the switch. Start your 3-month free trial today.</p>
+      <ion-button class="cta-btn" (click)="NavigateToRegisterComponent()">Try Handy Bill Free</ion-button>
+    </div>
+  </div>
+</ion-content>

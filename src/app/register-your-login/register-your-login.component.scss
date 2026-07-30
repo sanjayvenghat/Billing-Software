@@ -1,5 +1,5 @@
-$brand-blue: #1E3A8A;
-$brand-green: #10B981;
+$brand-primary: #4F46E5;
+$brand-dark: #0F172A;
 $bg-color: #F8FAFC;
 $text-dark: #0F172A;
 $text-light: #64748B;
@@ -10,7 +10,20 @@ $error-red: #EF4444;
 }
 
 .auth-bg {
-  --background: #{$bg-color};
+  --background: linear-gradient(135deg, #F8FAFC 0%, #EEF2FF 50%, #F8FAFC 100%);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -100px;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(79,70,229,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
 }
 
 .auth-container {
@@ -18,22 +31,24 @@ $error-red: #EF4444;
   flex-direction: column;
   justify-content: center;
   min-height: 100%;
-  padding: 20px 10px;
+  padding: 20px 16px;
+  position: relative;
+  z-index: 1;
 }
 
 .brand-header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 28px;
 
   .brand-icon {
-    font-size: 56px;
-    color: $brand-green; // Green for "New Account" creation
-    margin-bottom: 10px;
+    font-size: 52px;
+    color: $brand-primary;
+    margin-bottom: 8px;
   }
 
   .brand-name {
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 26px;
+    font-weight: 800;
     color: $text-dark;
     margin: 0;
   }
@@ -41,38 +56,45 @@ $error-red: #EF4444;
   .brand-tagline {
     font-size: 14px;
     color: $text-light;
-    margin-top: 5px;
+    margin-top: 4px;
   }
 }
 
 .login-card {
-  background: white;
-  border-radius: 24px;
-  padding: 30px 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 28px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(79,70,229,0.08);
+  border: 1px solid rgba(255,255,255,0.8);
 }
 
 .input-group {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 
   .input-label {
     font-size: 13px;
     font-weight: 600;
     color: $text-dark;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     display: block;
   }
 
   .custom-input {
-    --background: #F1F5F9;
+    --background: #F8FAFC;
     --border-radius: 12px;
-    --padding-start: 15px;
-    border: 1px solid transparent;
-    transition: 0.2s ease-in-out;
-    --color:#{$text-dark};
+    --padding-start: 14px;
+    --padding-end: 8px;
+    --color: #{$text-dark};
+    --highlight-height: 0;
+    border: 1.5px solid #E2E8F0;
+    transition: all 0.2s ease;
+    min-height: 48px;
 
     &:focus-within {
-      border: 1px solid $brand-blue;
+      border-color: $brand-primary;
+      --background: #fff;
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.08);
     }
 
     .country-code {
@@ -87,38 +109,88 @@ $error-red: #EF4444;
   .error-msg {
     font-size: 12px;
     color: $error-red;
-    margin-top: 5px;
-    padding-left: 5px;
+    margin-top: 4px;
+    padding-left: 4px;
   }
+}
+
+.verify-btn {
+  --color: #{$brand-primary};
+  font-weight: 600;
+  font-size: 12px;
+  margin: 0;
 }
 
 .eye-btn {
   --color: #{$text-light};
 }
 
+.otp-container {
+  background: #F8FAFC;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 18px;
+  border: 1px solid #E2E8F0;
+
+  .otp-hint {
+    font-size: 13px;
+    color: $text-light;
+    margin: 6px 0 0;
+  }
+}
+
 .submit-btn {
-  --background: #{$brand-green}; // Using green to indicate a successful creation action
+  --background: #{$brand-primary};
   --border-radius: 12px;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 14px;
   height: 48px;
-  margin-top: 15px;
+  margin-top: 8px;
+  --box-shadow: 0 4px 14px rgba(79,70,229,0.3);
+  letter-spacing: 0.3px;
 }
 
 .register-section {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 24px;
   font-size: 14px;
   color: $text-light;
 
   .register-link {
-    color: $brand-blue;
+    color: $brand-primary;
     font-weight: 700;
     text-decoration: none;
   }
 }
 
-
-
 .locked-otp {
   pointer-events: none;
+  opacity: 0.6;
+}
+
+.resend-text {
+  font-size: 13px;
+  color: $text-light;
+
+  a {
+    color: $brand-primary;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .disabled-link {
+    color: $text-light;
+    pointer-events: none;
+  }
+}
+
+.strength-container {
+  margin-top: 12px;
+  padding: 0 2px;
+}
+
+.strength-text {
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
 }
