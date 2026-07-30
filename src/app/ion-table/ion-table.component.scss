@@ -300,6 +300,63 @@ ion-content {
   }
 }
 
+.desktop-row-grid {
+  width: 100%;
+
+  .customer-identity {
+    display: flex;
+    align-items: center;
+  }
+
+  .customer-phone-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #475569;
+  }
+
+  .last-tx-text {
+    font-size: 14px;
+    color: #64748b;
+  }
+
+  .inline-pay-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 2px 4px;
+    height: 36px;
+    transition: all 0.15s ease-in-out;
+
+    &:focus-within {
+      border-color: #2a5298;
+      box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.15);
+    }
+
+    .inline-pay-input {
+      --background: transparent;
+      --box-shadow: none;
+      --padding-start: 8px;
+      --padding-end: 8px;
+      width: 75px;
+      font-size: 13px;
+      font-weight: 600;
+      margin: 0;
+      color: #0f172a;
+    }
+
+    .inline-pay-btn {
+      --border-radius: 6px;
+      --padding-start: 8px;
+      --padding-end: 8px;
+      height: 28px;
+      margin: 0;
+    }
+  }
+}
+
 .customer-name {
   font-weight: 600;
   font-size: 15px;

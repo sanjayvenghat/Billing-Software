@@ -11,6 +11,6 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
-    <app-quote-price></app-quote-price>
+    <app-quote-price [initialProductName]="productName" (productSaved)="close.emit()"></app-quote-price>
   </ng-template>
 </ion-modal>

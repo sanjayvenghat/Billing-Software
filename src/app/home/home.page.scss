@@ -75,8 +75,8 @@ $error-red: #EF4444;
     --padding-start: 15px;
     --color:#{$text-dark};
     border: 1px solid transparent;
-    transition: 0.2s ease-in-out; 
-    
+    transition: 0.2s ease-in-out;
+
 
     &:focus-within {
       border: 1px solid $brand-blue;

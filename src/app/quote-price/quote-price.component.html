@@ -1,55 +1,114 @@
-<ion-content class="ion-padding">
-  <div style="display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 10px; flex-wrap: wrap;">
-    <ion-input fill="outline" shape="round" [label]="'Item Name' | translate" labelPlacement="floating"
-      [(ngModel)]="ProductName" (ngModelChange)="savedItemUrl = ''" [placeholder]="'Enter item name' | translate"
-      style="flex: 1 1 200px;">
-    </ion-input>
+<ion-content class="add-product-content">
+  <div class="form-container">
+    <div class="form-card">
 
-    <ion-input fill="outline" shape="round" [label]="'Buying Price' | translate" labelPlacement="floating" type="number"
-      [(ngModel)]="BuyingPrice" (ngModelChange)="savedItemUrl = ''" [placeholder]="'Enter buying price' | translate"
-      style="flex: 1 1 200px;">
-    </ion-input>
+      <!-- Top header line/bar -->
+      <div class="card-accent-bar"></div>
 
-    @if (showProfitOfEveryProduct) {
-    <ion-input fill="outline" shape="round" [label]="'Selling Price' | translate" labelPlacement="floating"
-      type="number" [(ngModel)]="SellingPrice" (ngModelChange)="savedItemUrl = ''"
-      [placeholder]="'Enter selling price' | translate" style="flex: 1 1 200px;">
-    </ion-input>
-    }
-    <ion-item>
-      <ion-select [(ngModel)]="unit" interface="popover" [placeholder]="'Select unit' | translate">
-        <ion-select-option value="Weight">{{ 'Weight' | translate }}</ion-select-option>
-        <ion-select-option value="Piece">{{ 'Piece' | translate }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-button shape="round" style="height: 56px; margin: 0; flex: 1 1 100px;" color="success"
-      (click)="AddGroceryData()">
-      {{ 'Save' | translate }}
-    </ion-button>
-  </div>
-  <div style="margin-top: 10px;">
-    <ion-item lines="none">
-      <ion-checkbox justify="space-between" [(ngModel)]="generateQrCode">{{ 'Make QR Code For This Item' | translate
-        }}</ion-checkbox>
-    </ion-item>
-  </div>
+      <div class="card-header">
+        <div class="header-icon-circle">
+          <ion-icon name="cube-outline"></ion-icon>
+        </div>
+        <div>
+          <h2>{{ 'Add New Product' | translate }}</h2>
+          <p>{{ 'Fill in the specifications below to register the item.' | translate }}</p>
+        </div>
+      </div>
 
-  @if (generateQrCode) {
-  @if (savedItemUrl) {
-  <div style="display: flex; justify-content: center; margin-top: 20px;">
-    <qrcode [qrdata]="savedItemUrl" [width]="250" [errorCorrectionLevel]="'M'"></qrcode>
-  </div>
-  <p
-    style="display: flex; justify-content: center; align-items: center; gap: 6px; color: gray; font-size: 14px; margin-top: 8px;">
-    {{ 'Scan to view live item details' | translate }}
-    <ion-icon name="download" title="Download QR Code"
-      style="font-size: 18px; cursor: pointer; color: var(--ion-color-primary);" (click)="downloadQR()"></ion-icon>
-  </p>
-  } @else {
-  <div style="margin-top: 20px; text-align: center; color: var(--ion-color-medium);">
-    <p>{{ 'Please click Save to generate the QR Code for this item.' | translate }}</p>
-  </div>
-  }
-  }
+      <div class="form-body">
+        <ion-grid class="ion-no-padding">
+          <ion-row>
+            <!-- Product Name -->
+            <ion-col size="12">
+              <div class="input-field-wrap">
+                <ion-icon name="cube-outline" class="input-field-icon"></ion-icon>
+                <ion-input fill="outline" labelPlacement="floating" [label]="'Product Name' | translate"
+                  [(ngModel)]="ProductName" (ngModelChange)="savedItemUrl = ''"
+                  [placeholder]="'e.g. Organic Tomatoes' | translate" class="custom-input"></ion-input>
+              </div>
+            </ion-col>
+          </ion-row>
 
+          <ion-row class="ion-margin-top">
+            <!-- Cost Price -->
+            <ion-col size="12" size-md="6" class="pr-md-2">
+              <div class="input-field-wrap">
+                <ion-icon name="cash-outline" class="input-field-icon"></ion-icon>
+                <ion-input fill="outline" labelPlacement="floating" [label]="'Cost Price' | translate" type="number"
+                  [(ngModel)]="BuyingPrice" (ngModelChange)="savedItemUrl = ''" [placeholder]="'₹ 0.00' | translate"
+                  class="custom-input"></ion-input>
+              </div>
+            </ion-col>
+
+            <!-- Selling Price -->
+            <ion-col size="12" size-md="6" class="pl-md-2 mt-sm-down">
+              @if (showProfitOfEveryProduct) {
+              <div class="input-field-wrap">
+                <ion-icon name="pricetag-outline" class="input-field-icon"></ion-icon>
+                <ion-input fill="outline" labelPlacement="floating" [label]="'Selling Price' | translate" type="number"
+                  [(ngModel)]="SellingPrice" (ngModelChange)="savedItemUrl = ''" [placeholder]="'₹ 0.00' | translate"
+                  class="custom-input"></ion-input>
+              </div>
+              }
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="ion-margin-top ion-align-items-center">
+            <!-- Unit Select -->
+            <ion-col size="12" size-md="6" class="pr-md-2">
+              <div class="select-field-wrap">
+                <ion-icon name="scale-outline" class="select-field-icon"></ion-icon>
+                <ion-item lines="none" class="custom-select-item">
+                  <ion-select [(ngModel)]="unit" interface="popover" [placeholder]="'Select Unit' | translate"
+                    class="custom-select">
+                    <ion-select-option value="Weight">{{ 'Weight (kg)' | translate }}</ion-select-option>
+                    <ion-select-option value="Piece">{{ 'Piece (pcs)' | translate }}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </div>
+            </ion-col>
+
+            <!-- Save Action Button -->
+            <ion-col size="12" size-md="6" class="pl-md-2 mt-sm-down">
+              <ion-button expand="block" class="submit-btn gradient-btn" (click)="AddGroceryData()">
+                <ion-icon slot="start" name="save-outline"></ion-icon>
+                {{ 'Save Product' | translate }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <!-- Toggle Row for QR Code -->
+        <div class="qr-toggle-section ion-margin-top">
+          <ion-item lines="none" class="qr-checkbox-item">
+            <ion-checkbox justify="space-between" [(ngModel)]="generateQrCode" class="custom-checkbox">
+              {{ 'Generate QR Code for this product' | translate }}
+            </ion-checkbox>
+          </ion-item>
+
+          @if (generateQrCode) {
+          @if (savedItemUrl) {
+          <div class="qr-code-display-wrap">
+            <div class="qr-card">
+              <qrcode [qrdata]="savedItemUrl" [width]="200" [errorCorrectionLevel]="'M'"></qrcode>
+              <p class="qr-caption">
+                {{ 'Scan to verify details' | translate }}
+                <button class="qr-download-btn" (click)="downloadQR()">
+                  <ion-icon name="download-outline"></ion-icon>
+                </button>
+              </p>
+            </div>
+          </div>
+          } @else {
+          <div class="qr-placeholder-wrap">
+            <ion-icon name="qr-code-outline" class="qr-placeholder-icon"></ion-icon>
+            <p>{{ 'Click Save Product to generate QR code' | translate }}</p>
+          </div>
+          }
+          }
+        </div>
+
+      </div>
+    </div>
+  </div>
 </ion-content>

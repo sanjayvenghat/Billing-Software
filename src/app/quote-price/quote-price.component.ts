@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonInput, IonButton } from '@ionic/angular/standalone';
 import { QuoteService } from './quote-service';
 import { ToastService } from 'src/Service/ToasterService';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
-import { IonCheckbox, IonItem, IonIcon } from '@ionic/angular/standalone';
+import { IonCheckbox, IonItem, IonIcon, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { addIcons } from 'ionicons';
-import { download } from 'ionicons/icons';
+import { download, cubeOutline, cashOutline, pricetagOutline, scaleOutline, saveOutline, qrCodeOutline, downloadOutline } from 'ionicons/icons';
 import { environment } from 'src/environments/environment';
 import { LoaderService } from 'src/Service/LoaderService';
 import { IonSelect, IonSelectOption, } from '@ionic/angular/standalone';
@@ -19,9 +19,11 @@ import { TranslateService } from '../../Service/TranslateService';
   selector: 'app-quote-price',
   templateUrl: './quote-price.component.html',
   styleUrls: ['./quote-price.component.scss'],
-  imports: [FormsModule, IonContent, IonSelect, IonSelectOption, IonInput, IonButton, IonCheckbox, IonItem, QRCodeComponent, IonIcon, TranslatePipe]
+  imports: [FormsModule, IonContent, IonSelect, IonSelectOption, IonInput, IonButton, IonCheckbox, IonItem, IonGrid, IonRow, IonCol, QRCodeComponent, IonIcon, TranslatePipe]
 })
 export class QuotePriceComponent implements OnInit {
+  @Input() initialProductName: string = '';
+  @Output() productSaved = new EventEmitter<any>();
 
   ProductName: string = '';
   BuyingPrice: string = ''
@@ -39,12 +41,15 @@ export class QuotePriceComponent implements OnInit {
     private LoaderService: LoaderService,
     private translateService: TranslateService
   ) {
-    addIcons({ download });
+    addIcons({ download, cubeOutline, cashOutline, pricetagOutline, scaleOutline, saveOutline, qrCodeOutline, downloadOutline });
   }
 
   ngOnInit() {
     this.loadSettings();
     this.getCredentials();
+    if (this.initialProductName) {
+      this.ProductName = this.initialProductName;
+    }
   }
   loadSettings() {
     const saved = this.keysStorage.getItem('APP_SETTINGS');
@@ -91,6 +96,7 @@ export class QuotePriceComponent implements OnInit {
           this.SellingPrice = "";
           this.unit = "";
           this.toaster.showSuccess(this.translateService.translate(val.message));
+          this.productSaved.emit(val.CreatedUserInfo || true);
         }
         else {
           this.LoaderService.hideLoader();

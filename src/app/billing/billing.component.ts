@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { AlertController } from '@ionic/angular/standalone';
 
 import { IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover, IonModal, IonToolbar, IonTitle, IonContent, IonInput, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -15,10 +16,8 @@ import { LoaderService } from 'src/Service/LoaderService';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { documentTextOutline, documentOutline } from 'ionicons/icons'
 import { GenerateBillComponent } from '../generate-bill/generate-bill.component';
-import { AddProductComponent } from '../add-product/add-product.component';
 import { QuotePriceBillingComponent } from '../quote-price-billing/quote-price-billing.component';
 import { PendingComponent } from '../pending/pending.component';
-import { AddUserComponent } from '../add-user/add-user.component';
 import { CreateUserComponent } from '../create-user/create-user.component';
 import { TranslatePipe } from '../../Service/TranslatePipe';
 import { TranslateService } from '../../Service/TranslateService';
@@ -26,7 +25,7 @@ import { TranslateService } from '../../Service/TranslateService';
   selector: 'app-billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  imports: [HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, AddProductComponent, QuotePriceBillingComponent, PendingComponent, AddUserComponent, CreateUserComponent, IonToolbar, IonTitle, IonContent, IonModal, IonInput, IonSelect, IonSelectOption, DecimalPipe, TranslatePipe]
+  imports: [HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, QuotePriceBillingComponent, PendingComponent, CreateUserComponent, IonToolbar, IonTitle, IonContent, IonModal, IonInput, IonSelect, IonSelectOption, DecimalPipe, TranslatePipe]
 })
 export class BillingComponent implements OnInit, OnDestroy {
   private scanner: Html5QrcodeScanner | null = null;
@@ -37,8 +36,12 @@ export class BillingComponent implements OnInit, OnDestroy {
   currentDate: Date = new Date();
   scannedProduct: any = null;
   errorMessage: string = '';
-  searchQuery: any = {}
-  totalPrice: Number = 0;
+  searchQuery: any = {};
+  totalPrice: number = 0;
+  subtotalPrice: number = 0;
+  taxPercent: number = 0;
+  discountAmount: number = 0;
+  paymentType: string = 'Cash';
   isPendingModalOpen: boolean = false;
   isAddUserModalOpen: any = false;
   isCreateUserModalOpen: boolean = false;
@@ -50,7 +53,8 @@ export class BillingComponent implements OnInit, OnDestroy {
     private BillingService: Billingservice,
     private keysStorage: KEYSSTORAGE,
     private LoaderService: LoaderService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private alertController: AlertController
   ) {
     addIcons({
       barcodeOutline, 'add-outline': addOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline, 'trash-outline': trashOutline, 'add-circle-outline': addCircleOutline, 'remove-circle-outline': removeCircleOutline, 'arrow-forward-outline': arrowForwardOutline,
@@ -98,7 +102,7 @@ export class BillingComponent implements OnInit, OnDestroy {
     this.BillingService.searchProduct(query).subscribe({
       next: (response: any) => {
         if (response?.userdata?.length === 0) {
-          this.isCustomDialogOpen = true;
+          this.presentProductNotFoundAlert();
         }
         else {
           this.productSuggestions = response?.userdata ?? []
@@ -147,12 +151,12 @@ export class BillingComponent implements OnInit, OnDestroy {
 
   addToCart(product: any) {
     if (!product) return;
-    
+
     // Normalize unit if empty or unknown
     if (!product.unit || (product.unit !== 'Weight' && product.unit !== 'Piece')) {
       product.unit = 'Piece';
     }
-    
+
     const existingItem = this.cartItems.find(item =>
       (item.Barcode && item.Barcode === product.Barcode) ||
       (item._id && item._id === product._id)
@@ -207,7 +211,7 @@ export class BillingComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         if (response?.userdata?.length === 0) {
           this.errorMessage = '';
-          this.isAddUserModalOpen = true;
+          this.presentUserNotFoundAlert();
         }
         else {
           this.userSuggestions = response.userdata;
@@ -347,7 +351,33 @@ export class BillingComponent implements OnInit, OnDestroy {
     }
     this.billStatus = 'PAID';
     this.currentDate = new Date();
-    this.isBillModalOpen = true;
+    this.pendingAmountPaid = this.totalPrice;
+    this.pendingBalanceAmount = 0;
+
+    let request = {
+      customerId: this.searchQuery.customerId || null,
+      companyId: this.keysStorage.getItem("CompanyId"),
+      totalAmount: this.totalPrice,
+      amountPaid: this.totalPrice,
+      balanceAmount: 0,
+      notes: 'Paid Invoice',
+      cartItems: this.cartItems
+    };
+
+    this.LoaderService.showLoader(this.translateService.translate("Saving invoice details..."));
+    this.BillingService.SavePendingBill(request).subscribe({
+      next: (response: any) => {
+        this.LoaderService.hideLoader();
+        this.toasterService.showSuccess(this.translateService.translate("Invoice Saved Successfully"));
+        // Open the bill generator modal to download PDF
+        this.isBillModalOpen = true;
+      },
+      error: (err) => {
+        console.error('Error saving paid bill details:', err);
+        this.LoaderService.hideLoader();
+        this.toasterService.showError(this.translateService.translate("Error saving invoice details. Please try again."));
+      }
+    });
   }
   OpenUserModalFromDialog(event: any) {
     this.isAddUserModalOpen = false;
@@ -364,6 +394,46 @@ export class BillingComponent implements OnInit, OnDestroy {
         this.toasterService.showSuccess(this.translateService.translate("Selected customer:") + " " + name);
       }
     }
+  }
+
+  async presentProductNotFoundAlert() {
+    const alert = await this.alertController.create({
+      header: this.translateService.translate('Product Not Found'),
+      message: this.translateService.translate("We couldn't find this product in your database. Would you like to add it manually?"),
+      buttons: [
+        {
+          text: this.translateService.translate('No, Cancel'),
+          role: 'cancel'
+        },
+        {
+          text: this.translateService.translate('Yes, Add Product'),
+          handler: () => {
+            this.OpenProductModelFromDialog();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async presentUserNotFoundAlert() {
+    const alert = await this.alertController.create({
+      header: this.translateService.translate('Customer Not Found'),
+      message: this.translateService.translate("There Is No Such Customer Exist, Would You Like To Add This Customer?"),
+      buttons: [
+        {
+          text: this.translateService.translate('Cancel'),
+          role: 'cancel'
+        },
+        {
+          text: this.translateService.translate('Yes, Add Customer'),
+          handler: () => {
+            this.OpenUserModalFromDialog(null);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   clearBillingState() {

@@ -75,7 +75,8 @@
 @if(isScanning) {
 <div style="padding: 16px;">
   <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto; background: white;"></div>
-  <ion-button style="margin-top: 16px;" (click)="stopScanner()" color="danger" expand="block">{{ 'Cancel Scan' | translate }}</ion-button>
+  <ion-button style="margin-top: 16px;" (click)="stopScanner()" color="danger" expand="block">{{ 'Cancel Scan' |
+    translate }}</ion-button>
 </div>
 }
 @if(cartItems.length > 0) {
@@ -166,23 +167,20 @@
     </div>
   </div>
 </ion-footer>
-<app-quote-price-billing [isOpen]="isProductModalOpen" (close)="isProductModalOpen = false">
+<app-quote-price-billing [isOpen]="isProductModalOpen" [productName]="SearchProduct"
+  (close)="isProductModalOpen = false">
 </app-quote-price-billing>
 @if(isBillModalOpen) {
 <app-generate-bill [cartItems]="cartItems" [totalPrice]="totalPrice" [searchQuery]="searchQuery.customerName"
   [currentDate]="currentDate" [status]="billStatus" [amountPaid]="pendingAmountPaid"
-  [balanceAmount]="pendingBalanceAmount" (close)="isBillModalOpen = false">
+  [balanceAmount]="pendingBalanceAmount" [taxPercent]="taxPercent" [discountAmount]="discountAmount"
+  (close)="isBillModalOpen = false">
 </app-generate-bill>
 }
 <app-pending [isOpen]="isPendingModalOpen" [totalPrice]="totalPrice" [customerName]="searchQuery.customerName"
   (close)="isPendingModalOpen = false" (confirmPending)="handlePendingConfirm($event)">
 </app-pending>
-<app-add-product [isOpen]="isCustomDialogOpen" (close)="isCustomDialogOpen = false"
-  (confirm)="OpenProductModelFromDialog()">
-</app-add-product>
-<app-add-user [isOpen]="isAddUserModalOpen" (close)="isAddUserModalOpen = false"
-  (confirm)="OpenUserModalFromDialog($event)">
-</app-add-user>
+
 <ion-modal [isOpen]="isCreateUserModalOpen" (didDismiss)="isCreateUserModalOpen = false">
   <ng-template>
     <ion-header>

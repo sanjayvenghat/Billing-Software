@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { ProductService } from './product-service';
-import { IonItem, IonLabel, IonList, IonNote, IonAvatar, IonListHeader, IonInput, IonButton, IonIcon, IonSearchbar, IonHeader, IonToolbar, IonContent, IonButtons, AlertController } from '@ionic/angular/standalone';
+import { IonItem, IonLabel, IonList, IonNote, IonAvatar, IonListHeader, IonInput, IonButton, IonIcon, IonSearchbar, IonHeader, IonToolbar, IonContent, IonButtons, AlertController, IonModal, IonTitle } from '@ionic/angular/standalone';
 import { CurrencyPipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from 'src/Service/ToasterService';
 import { addIcons } from 'ionicons';
-import { createOutline, checkmarkOutline, closeOutline, funnel, trashOutline } from 'ionicons/icons';
+import { createOutline, checkmarkOutline, closeOutline, funnel, trashOutline, addOutline, close } from 'ionicons/icons';
 import { LoaderService } from 'src/Service/LoaderService';
 import { TranslatePipe } from '../../Service/TranslatePipe';
 import { TranslateService } from '../../Service/TranslateService';
+import { QuotePriceComponent } from '../quote-price/quote-price.component';
+
 @Component({
   selector: 'app-list-product',
   templateUrl: './list-product.component.html',
   styleUrls: ['./list-product.component.scss'],
-  imports: [IonItem, IonLabel, IonList, IonNote, IonAvatar, CurrencyPipe, IonListHeader, IonInput, IonButton, IonIcon, IonSearchbar, IonHeader, IonToolbar, IonContent, IonButtons, FormsModule, CommonModule, TranslatePipe],
+  imports: [IonItem, IonLabel, IonList, IonNote, IonAvatar, CurrencyPipe, IonListHeader, IonInput, IonButton, IonIcon, IonSearchbar, IonHeader, IonToolbar, IonContent, IonButtons, IonModal, IonTitle, FormsModule, CommonModule, TranslatePipe, QuotePriceComponent],
 })
 export class ListProductComponent implements OnInit {
   Grocery_List: any = [];
@@ -22,6 +24,7 @@ export class ListProductComponent implements OnInit {
   isAscending: boolean = true;
   searchQuery: string = '';
   showProfitOfEveryProduct: boolean = true;
+  isAddModalOpen: boolean = false;
 
   constructor(
     private keysStorage: KEYSSTORAGE,
@@ -31,7 +34,7 @@ export class ListProductComponent implements OnInit {
     private LoaderService: LoaderService,
     private translateService: TranslateService
   ) {
-    addIcons({ createOutline, checkmarkOutline, closeOutline, funnel, trashOutline });
+    addIcons({ createOutline, checkmarkOutline, closeOutline, funnel, trashOutline, addOutline, close });
   }
 
   ngOnInit() {

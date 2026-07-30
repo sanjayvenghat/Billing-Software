@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-
+import { manualNavigationGuard } from './manual-navigation.guard';
 export const routes: Routes = [
   {
     path: 'home',
@@ -20,11 +20,18 @@ export const routes: Routes = [
   },
   {
     path: 'settings',
-    loadComponent: () => import('./settings/settings.component').then((m) => m.SettingsComponent)
+    loadComponent: () => import('./settings/settings.component').then((m) => m.SettingsComponent),
+    canActivate: [manualNavigationGuard]
+  },
+  {
+    path: 'offer-and-discount',
+    loadComponent: () => import('./offer-discount/offer-discount.component').then((m) => m.OfferDiscountComponent),
+    canActivate: [manualNavigationGuard]
   },
   {
     path: 'GetUserDetails',
     loadComponent: () => import('./get-user-details/get-user-details.component').then((m) => m.GetUserDetailsComponent),
+    canActivate: [manualNavigationGuard],
     children: [
       {
         path: 'billing',
@@ -54,7 +61,7 @@ export const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'not-found'
+        redirectTo: '/not-found'
       }
     ]
   },

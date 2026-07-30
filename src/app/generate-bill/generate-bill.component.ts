@@ -1,30 +1,51 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { IonIcon } from '@ionic/angular/standalone';
 // @ts-ignore
 import html2pdf from 'html2pdf.js';
 import { LoaderService } from 'src/Service/LoaderService';
+import { KEYSSTORAGE } from 'src/Service/LocalStorage';
+import { TranslatePipe } from '../../Service/TranslatePipe';
+
 @Component({
   selector: 'app-generate-bill',
   templateUrl: './generate-bill.component.html',
   styleUrls: ['./generate-bill.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonIcon]
+  imports: [CommonModule, IonIcon, TranslatePipe, DecimalPipe]
 })
 export class GenerateBillComponent implements OnInit, AfterViewInit {
   @Input() currentDate!: Date;
   @Input() searchQuery!: string;
   @Input() cartItems: any[] = [];
-  @Input() totalPrice!: Number;
+  @Input() totalPrice!: number;
   @Input() status: 'PAID' | 'PENDING' = 'PAID';
   @Input() amountPaid: number = 0;
   @Input() balanceAmount: number = 0;
+  @Input() taxPercent: number = 0;
+  @Input() discountAmount: number = 0;
 
   @Output() close = new EventEmitter<void>();
 
-  constructor(private loaderservice: LoaderService) { }
+  storeName: string = 'Sakthistores';
+  subtotalPrice: number = 0;
+  taxAmount: number = 0;
+  invoiceNumber: string = '';
+
+  constructor(
+    private loaderservice: LoaderService,
+    private keysStorage: KEYSSTORAGE
+  ) { }
 
   ngOnInit() {
+    this.storeName = this.keysStorage.getItem('StoreName') || 'Sakthistores';
+    this.calculateTotals();
+  }
+
+  calculateTotals() {
+    this.subtotalPrice = this.cartItems.reduce((acc, item) => acc + this.getItemTotal(item), 0);
+    this.taxAmount = (this.subtotalPrice * (Number(this.taxPercent) || 0)) / 100;
+    this.invoiceNumber = 'INV-' + (this.currentDate ? this.currentDate.getTime().toString().slice(-6) : Math.floor(Math.random() * 1000000));
   }
 
   getItemTotal(item: any): number {

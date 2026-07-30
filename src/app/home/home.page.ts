@@ -55,13 +55,13 @@ export class HomePage implements OnInit {
         if (val?.message === 'User Settings Get Successfully') {
           this.toastService.showSuccess(this.translateService.translate(val.message));
           this.loginForm.reset();
-          if (val.userSettings && val.userSettings.darkMode) {
-            document.documentElement.classList.add('ion-palette-dark');
-            document.documentElement.classList.add('dark');
+          if (val.userSettings && val.userSettings.systemLanguage) {
+            this.translateService.setLanguage(val.userSettings.systemLanguage);
           } else {
-            document.documentElement.classList.remove('ion-palette-dark');
-            document.documentElement.classList.remove('dark');
+            this.translateService.setLanguage('English');
           }
+          document.documentElement.classList.remove('ion-palette-dark');
+          document.documentElement.classList.remove('dark');
           setTimeout(() => {
             this.router.navigate(['/GetUserDetails']);
           }, 1000);

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { settings } from 'ionicons/icons';
 import { TranslatePipe } from '../../Service/TranslatePipe';
+import { TranslateService } from '../../Service/TranslateService';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,12 +19,13 @@ import { TranslatePipe } from '../../Service/TranslatePipe';
     CommonModule,
     RouterModule,
     IonIcon, IonList, IonMenuToggle, IonItem, IonLabel,
-    TranslatePipe
+    TranslatePipe,
+
   ]
 })
 export class SidebarComponent implements OnInit {
 
-  constructor(private router: Router, private keysStorage: KEYSSTORAGE) {
+  constructor(private router: Router, private keysStorage: KEYSSTORAGE, private translateService: TranslateService) {
     addIcons({ basket, 'document-text': documentText, documents, 'trending-up': trendingUp, 'stats-chart': statsChart, 'log-out': logOut, diamond, settings, cart, speedometer, 'pricetag-outline': pricetagOutline });
   }
   SideBarMenu = [
@@ -55,6 +57,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit() { }
   chooseOption(item: any) {
     if (item.Title == "Log Out") {
+      this.translateService.setLanguage('English');
       this.keysStorage.clear();
       this.router.navigate(['/home']);
     } else {

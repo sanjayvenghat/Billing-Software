@@ -3,12 +3,12 @@ $brand-green: #10B981;
 $bg-color: #F8FAFC;
 $text-dark: #0F172A;
 $text-light: #64748B;
-$error-red: #EF4444; 
+$error-red: #EF4444;
 
-*
-{
+* {
   cursor: pointer;
 }
+
 .auth-bg {
   --background: #{$bg-color};
 }
@@ -115,7 +115,7 @@ $error-red: #EF4444;
     font-weight: 700;
     text-decoration: none;
   }
-} 
+}
 
 
 

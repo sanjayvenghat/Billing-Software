@@ -34,12 +34,10 @@ export class TranslateService {
     if (this.currentLang === 'English') {
       return key;
     }
-    // Try exact lookup first
     const trimmedKey = key.trim();
     if (TAMIL_DICTIONARY[trimmedKey]) {
       return TAMIL_DICTIONARY[trimmedKey];
     }
-    // Case insensitive/partial lookups if needed, but exact is cleanest
     return TAMIL_DICTIONARY[key] || key;
   }
 }

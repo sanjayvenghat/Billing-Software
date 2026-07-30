@@ -1,75 +1,138 @@
-<div style="background: #f4f5f8; padding: 16px;">
-  <!-- Receipt Card -->
-  <div class="receipt-card" id="receipt-card-pdf">
-    <div class="receipt-header">
-      <div class="store-logo">
-        <ion-icon name="cart-outline"></ion-icon>
+<div class="invoice-pdf-wrapper" id="receipt-card-pdf">
+  <!-- Invoice Header -->
+  <div class="invoice-header">
+    <div class="company-logo-section">
+      <div class="logo-box">
+        <ion-icon name="speedometer"></ion-icon>
       </div>
-      <h2>Handy Bill</h2>
-
-
-      <div class="status-badge" [ngClass]="status.toLowerCase()">
-        {{ status }}
+      <div class="company-info">
+        <h2>{{ storeName }}</h2>
+        <p class="company-tagline">{{ 'Tax Invoice' | translate }}</p>
       </div>
-
-      <div class="receipt-divider"></div>
     </div>
 
-    <div class="receipt-info">
-      <div class="info-row">
-        <span>Date:</span>
-        <span>{{ currentDate | date:'short' }}</span>
+    <div class="invoice-meta">
+      <h1 class="invoice-title">{{ 'INVOICE' | translate }}</h1>
+      <div class="meta-grid">
+        <div class="meta-item">
+          <span class="label">{{ 'Invoice No' | translate }}:</span>
+          <span class="val">#{{ invoiceNumber }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">{{ 'Date' | translate }}:</span>
+          <span class="val">{{ currentDate | date:'dd MMM yyyy, hh:mm a' }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">{{ 'Status' | translate }}:</span>
+          <span class="status-badge" [ngClass]="status.toLowerCase()">
+            {{ status | translate }}
+          </span>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <div class="invoice-divider"></div>
+
+  <!-- Billing Info -->
+  <div class="invoice-billing-row">
+    <div class="bill-to-box">
+      <span class="section-label">{{ 'BILLED TO' | translate }}</span>
       @if (searchQuery) {
-      <div class="info-row">
-        <span>Customer:</span>
-        <span>{{ searchQuery }}</span>
-      </div>
+      <h3 class="customer-name">{{ searchQuery }}</h3>
+      } @else {
+      <h3 class="customer-name">{{ 'General Customer' | translate }}</h3>
       }
     </div>
 
-    <div class="receipt-divider border-dashed"></div>
-
-    <div class="receipt-items">
-      <div class="item-row header">
-        <span class="item-name">Item</span>
-        <span class="item-qty">Qty</span>
-        <span class="item-price">Price</span>
-      </div>
-      @for (item of cartItems; track item) {
-      <div class="item-row">
-        <span class="item-name">{{ item.ProductName || item.name }}</span>
-        <span class="item-qty">x{{ item.Quantity }} {{ item.unit === 'Weight' ? (item.selectedSubUnit || 'kg') : 'Pcs'
-          }}</span>
-        <span class="item-price">₹{{ getItemTotal(item) | number:'1.2-2' }}</span>
-      </div>
-      }
+    <div class="payment-info-box text-right">
+      <span class="section-label">{{ 'PAYMENT METHOD' | translate }}</span>
+      <h3>{{ (status === 'PENDING' ? 'Credit Account' : 'Paid') | translate }}</h3>
     </div>
+  </div>
 
-    <div class="receipt-divider border-dashed"></div>
+  <!-- Items Table -->
+  <div class="invoice-table-container">
+    <table class="invoice-items-table">
+      <thead>
+        <tr>
+          <th>{{ 'ITEM DESCRIPTION' | translate }}</th>
+          <th class="text-center">{{ 'QTY' | translate }}</th>
+          <th class="text-right">{{ 'UNIT PRICE' | translate }}</th>
+          <th class="text-right">{{ 'TOTAL' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of cartItems; track item) {
+        <tr>
+          <td>
+            <span class="item-name">{{ item.ProductName || item.name }}</span>
+          </td>
+          <td class="text-center font-monospace">
+            {{ item.Quantity }} {{ item.unit === 'Weight' ? (item.selectedSubUnit || 'kg') : 'Pcs' | translate }}
+          </td>
+          <td class="text-right font-monospace">
+            ₹{{ item.SellingPrice | number:'1.2-2' }}
+          </td>
+          <td class="text-right font-monospace bold">
+            ₹{{ getItemTotal(item) | number:'1.2-2' }}
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 
-    <div class="receipt-total">
-      <div class="total-row">
-        <span>Total Amount</span>
-        <span class="total-amount">₹{{ totalPrice }}</span>
-      </div>
-      @if (status === 'PENDING') {
-      <div class="total-row sub-row" style="font-size: 14px; margin-top: 6px; color: #555;">
-        <span>Amount Paid:</span>
-        <span style="font-weight: 600;">₹{{ amountPaid }}</span>
-      </div>
-      }
-      @if (status === 'PENDING') {
-      <div class="total-row sub-row" style="font-size: 14px; margin-top: 4px; color: #ea580c; font-weight: bold;">
-        <span>Balance Pending:</span>
-        <span>₹{{ balanceAmount }}</span>
-      </div>
-      }
+  <!-- Invoice Summary Calculation Row -->
+  <div class="invoice-summary-block">
+    <div class="blank-space"></div>
+    <div class="totals-table-wrapper">
+      <table class="totals-table">
+        <tr>
+          <td>{{ 'Subtotal' | translate }}</td>
+          <td class="font-monospace">₹{{ subtotalPrice | number:'1.2-2' }}</td>
+        </tr>
+        @if (taxPercent > 0) {
+        <tr>
+          <td>{{ 'Tax' | translate }} ({{ taxPercent }}%)</td>
+          <td class="font-monospace">₹{{ taxAmount | number:'1.2-2' }}</td>
+        </tr>
+        }
+        @if (discountAmount > 0) {
+        <tr>
+          <td>{{ 'Discount' | translate }}</td>
+          <td class="font-monospace text-success">-₹{{ discountAmount | number:'1.2-2' }}</td>
+        </tr>
+        }
+        <tr class="grand-total-row">
+          <td class="bold">{{ 'Grand Total' | translate }}</td>
+          <td class="font-monospace bold purple-text">₹{{ totalPrice | number:'1.2-2' }}</td>
+        </tr>
+        @if (status === 'PENDING') {
+        <tr class="pending-calculations">
+          <td>{{ 'Amount Paid' | translate }}</td>
+          <td class="font-monospace text-success">₹{{ amountPaid | number:'1.2-2' }}</td>
+        </tr>
+        <tr class="pending-calculations remaining-due">
+          <td class="bold text-danger">{{ 'Balance Due' | translate }}</td>
+          <td class="font-monospace bold text-danger">₹{{ balanceAmount | number:'1.2-2' }}</td>
+        </tr>
+        }
+      </table>
     </div>
+  </div>
 
-    <div class="barcode-container">
-      <ion-icon name="barcode-outline" class="fake-barcode"></ion-icon>
-      <p>Thank you for shopping!</p>
+  <div class="invoice-divider mt-4"></div>
+
+  <!-- Invoice Footer -->
+  <div class="invoice-footer-section">
+    <div class="footer-terms">
+      <h4>{{ 'Terms & Conditions' | translate }}</h4>
+      <p>{{ 'Goods once sold will not be taken back or exchanged. Thank you for your business!' | translate }}</p>
+    </div>
+    <div class="authorized-signature">
+      <div class="sig-line"></div>
+      <p>{{ 'Authorized Signature' | translate }}</p>
     </div>
   </div>
 </div>
