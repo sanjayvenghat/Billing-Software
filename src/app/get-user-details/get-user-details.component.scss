@@ -5,6 +5,11 @@
   height: 100%;
 }
 
+ion-content.billing-tab-content {
+  --keyboard-offset: 0px !important;
+  --offset-bottom: 0px !important;
+}
+
 .ion-icon {
   font-size: 64px;
 }

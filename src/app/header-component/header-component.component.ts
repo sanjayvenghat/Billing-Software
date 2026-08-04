@@ -20,7 +20,7 @@ import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 export class HeaderComponentComponent implements OnInit, DoCheck {
   @Input() HeaderTitle: string = '';
   avatarUrl: string = 'assets/icon/store.png';
-  storeName: string = 'Sakthistores';
+  storeName: string = '';
 
   private lastIconType: string | null = null;
   private lastStoreName: string | null = null;

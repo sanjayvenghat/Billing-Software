@@ -39,85 +39,87 @@
           </thead>
           <tbody>
             @for (item of pagedProducts; track $index) {
-              <tr>
-                <!-- Product Name and Unit -->
-                <td>
-                  <div class="product-identity-wrap">
-                    <span class="product-title">{{ item.ProductName }}</span>
-                    <span class="product-subtitle">{{ item.unit || item.Unit || 'Piece' | translate }}</span>
-                  </div>
-                </td>
-                
-                <!-- Selling Price -->
-                <td>
-                  <span class="price-text bold">₹{{ item.SellingPrice }}</span>
-                </td>
-                
-                <!-- Cost Price -->
-                <td>
-                  <span class="price-text muted">₹{{ item.BuyingPrice }}</span>
-                </td>
-                
-                <!-- Barcode -->
-                <td>
-                  <span class="barcode-text">
-                    <ion-icon name="barcode-outline"></ion-icon>
-                    {{ item.ItemCode || 'No barcode' | translate }}
-                  </span>
-                </td>
-                
-                <!-- Action Buttons -->
-                <td class="text-right">
-                  <div class="action-buttons-group">
-                    <button class="action-btn qr-btn" (click)="openQrModal(item); $event.stopPropagation()" title="{{ 'Generate QR Code' | translate }}">
-                      <ion-icon name="qr-code-outline"></ion-icon>
-                    </button>
-                    <button class="action-btn edit-btn" (click)="openEditModal(item); $event.stopPropagation()" title="{{ 'Edit Product' | translate }}">
-                      <ion-icon name="create-outline"></ion-icon>
-                    </button>
-                    <button class="action-btn delete-btn" (click)="deleteProduct(item); $event.stopPropagation()">
-                      <ion-icon name="trash-outline"></ion-icon>
-                    </button>
-                  </div>
-                </td>
-              </tr>
+            <tr>
+              <!-- Product Name and Unit -->
+              <td>
+                <div class="product-identity-wrap">
+                  <span class="product-title">{{ item.ProductName }}</span>
+                  <span class="product-subtitle">{{ item.unit || item.Unit || 'Piece' | translate }}</span>
+                </div>
+              </td>
+
+              <!-- Selling Price -->
+              <td>
+                <span class="price-text bold">₹{{ item.SellingPrice }}</span>
+              </td>
+
+              <!-- Cost Price -->
+              <td>
+                <span class="price-text muted">₹{{ item.BuyingPrice }}</span>
+              </td>
+
+              <!-- Barcode -->
+              <td>
+                <span class="barcode-text">
+                  <ion-icon name="barcode-outline"></ion-icon>
+                  {{ item.ItemCode || 'No barcode' | translate }}
+                </span>
+              </td>
+
+              <!-- Action Buttons -->
+              <td class="text-right">
+                <div class="action-buttons-group">
+                  <button class="action-btn qr-btn" (click)="openQrModal(item); $event.stopPropagation()"
+                    title="{{ 'Generate QR Code' | translate }}">
+                    <ion-icon name="qr-code-outline"></ion-icon>
+                  </button>
+                  <button class="action-btn edit-btn" (click)="openEditModal(item); $event.stopPropagation()"
+                    title="{{ 'Edit Product' | translate }}">
+                    <ion-icon name="create-outline"></ion-icon>
+                  </button>
+                  <button class="action-btn delete-btn" (click)="deleteProduct(item); $event.stopPropagation()">
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
             }
           </tbody>
         </table>
-        
+
         @if (Filtered_Grocery_List.length === 0) {
-          <div class="empty-search-state">
-            <p>{{ 'No products match your search.' | translate }}</p>
-          </div>
+        <div class="empty-search-state">
+          <p>{{ 'No products match your search.' | translate }}</p>
+        </div>
         }
       </div>
-    }
-    
-    <!-- Pagination Controls -->
-    @if (totalPages > 1) {
-    <div class="pagination-bar">
-      <button class="page-nav-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
-        title="{{ 'Previous' | translate }}">
-        <ion-icon name="chevron-back-outline"></ion-icon>
-      </button>
-
-      @for (page of pageNumbers; track page) {
-      <button class="page-number-btn" [class.active]="page === currentPage" (click)="goToPage(page)">
-        {{ page }}
-      </button>
       }
 
-      <button class="page-nav-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages"
-        title="{{ 'Next' | translate }}">
-        <ion-icon name="chevron-forward-outline"></ion-icon>
-      </button>
+      <!-- Pagination Controls -->
+      @if (totalPages > 1) {
+      <div class="pagination-bar">
+        <button class="page-nav-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
+          title="{{ 'Previous' | translate }}">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </button>
 
-      <span class="page-info">{{ 'Page' | translate }} {{ currentPage }} / {{ totalPages }}</span>
-    </div>
-    }
-    
-    <!-- Empty State -->
-    @if (!Grocery_List || Grocery_List.length === 0) {
+        @for (page of pageNumbers; track page) {
+        <button class="page-number-btn" [class.active]="page === currentPage" (click)="goToPage(page)">
+          {{ page }}
+        </button>
+        }
+
+        <button class="page-nav-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages"
+          title="{{ 'Next' | translate }}">
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
+
+        <span class="page-info">{{ 'Page' | translate }} {{ currentPage }} / {{ totalPages }}</span>
+      </div>
+      }
+
+      <!-- Empty State -->
+      @if (!Grocery_List || Grocery_List.length === 0) {
       <div class="empty-products-dashed">
         <div class="empty-icon-circle">
           <ion-icon name="cube-outline"></ion-icon>
@@ -125,188 +127,189 @@
         <h3>{{ 'No products yet' | translate }}</h3>
         <p>{{ 'Add your first product to get started.' | translate }}</p>
       </div>
-    }
-  </div>
-
-  <!-- Add Product Modal Overlay -->
-  <ion-modal [isOpen]="isAddModalOpen" (didDismiss)="isAddModalOpen = false; GetProductList()" class="add-product-modal">
-    <ng-template>
-      <ion-header class="ion-no-border">
-        <ion-toolbar class="modal-toolbar">
-          <ion-title class="modal-title">{{ 'Add Product' | translate }}</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="isAddModalOpen = false" class="modal-close-btn">
-              <ion-icon name="close"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <app-quote-price (productSaved)="isAddModalOpen = false"></app-quote-price>
-  </ng-template>
-  </ion-modal>
-
-  <!-- Add User Modal Overlay -->
-  <ion-modal [isOpen]="isAddUserModalOpen" (didDismiss)="isAddUserModalOpen = false" class="add-user-modal">
-    <ng-template>
-      <ion-header class="ion-no-border">
-        <ion-toolbar class="modal-toolbar">
-          <ion-title class="modal-title">{{ 'Add User' | translate }}</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="isAddUserModalOpen = false" class="modal-close-btn">
-              <ion-icon name="close"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <app-create-user (customerAdded)="isAddUserModalOpen = false"></app-create-user>
-  </ng-template>
-  </ion-modal>
-
-  <!-- Generate QR Code Modal -->
-  <ion-modal [isOpen]="isQrModalOpen" (didDismiss)="closeQrModal()" class="qr-modal">
-    <ng-template>
-      <ion-header class="ion-no-border">
-        <ion-toolbar class="modal-toolbar">
-          <ion-title class="modal-title">{{ 'Product QR Code' | translate }}</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="closeQrModal()" class="modal-close-btn">
-              <ion-icon name="close"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <div class="qr-modal-body ion-padding">
-      <h4>{{ selectedQrProduct?.ProductName }}</h4>
-      <qrcode [qrdata]="qrUrl" [width]="220" [errorCorrectionLevel]="'M'"></qrcode>
-      <p>{{ 'Scan to verify product details' | translate }}</p>
-      <ion-button expand="block" class="qr-download-btn" (click)="downloadQR()">
-        <ion-icon slot="start" name="download-outline"></ion-icon>
-        {{ 'Download QR Code' | translate }}
-      </ion-button>
+      }
     </div>
-  </ng-template>
-  </ion-modal>
 
-  <!-- Edit Product Modal -->
-  <ion-modal [isOpen]="isEditModalOpen" (didDismiss)="closeEditModal()" class="edit-product-modal">
-    <ng-template>
-      <ion-header class="ion-no-border">
-        <ion-toolbar class="modal-toolbar">
-          <ion-title class="modal-title">{{ 'Edit Product' | translate }}</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="closeEditModal()" class="modal-close-btn">
-              <ion-icon name="close"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
+    <!-- Add Product Modal Overlay -->
+    <ion-modal [isOpen]="isAddModalOpen" (didDismiss)="isAddModalOpen = false; GetProductList()"
+      class="add-product-modal">
+      <ng-template>
+        <ion-header class="ion-no-border">
+          <ion-toolbar class="modal-toolbar">
+            <ion-title class="modal-title">{{ 'Add Product' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="isAddModalOpen = false" class="modal-close-btn">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <app-quote-price (productSaved)="isAddModalOpen = false"></app-quote-price>
+      </ng-template>
+    </ion-modal>
 
-      <ion-content class="edit-product-content">
-        <div class="edit-form-container">
-          <div class="form-card">
-            <div class="card-accent-bar"></div>
+    <!-- Add User Modal Overlay -->
+    <ion-modal [isOpen]="isAddUserModalOpen" (didDismiss)="isAddUserModalOpen = false" class="add-user-modal">
+      <ng-template>
+        <ion-header class="ion-no-border">
+          <ion-toolbar class="modal-toolbar">
+            <ion-title class="modal-title">{{ 'Add User' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="isAddUserModalOpen = false" class="modal-close-btn">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <app-create-user (customerAdded)="isAddUserModalOpen = false"></app-create-user>
+      </ng-template>
+    </ion-modal>
 
-            <div class="card-header">
-              <div class="header-icon-circle">
-                <ion-icon name="create-outline"></ion-icon>
+    <!-- Generate QR Code Modal -->
+    <ion-modal [isOpen]="isQrModalOpen" (didDismiss)="closeQrModal()" class="qr-modal">
+      <ng-template>
+        <ion-header class="ion-no-border">
+          <ion-toolbar class="modal-toolbar">
+            <ion-title class="modal-title">{{ 'Product QR Code' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="closeQrModal()" class="modal-close-btn">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <div class="qr-modal-body ion-padding">
+          <h4>{{ selectedQrProduct?.ProductName }}</h4>
+          <qrcode [qrdata]="qrUrl" [width]="220" [errorCorrectionLevel]="'M'"></qrcode>
+          <p>{{ 'Scan to verify product details' | translate }}</p>
+          <ion-button expand="block" class="qr-download-btn" (click)="downloadQR()">
+            <ion-icon slot="start" name="download-outline"></ion-icon>
+            {{ 'Download QR Code' | translate }}
+          </ion-button>
+        </div>
+      </ng-template>
+    </ion-modal>
+
+    <!-- Edit Product Modal -->
+    <ion-modal [isOpen]="isEditModalOpen" (didDismiss)="closeEditModal()" class="edit-product-modal">
+      <ng-template>
+        <ion-header class="ion-no-border">
+          <ion-toolbar class="modal-toolbar">
+            <ion-title class="modal-title">{{ 'Edit Product' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="closeEditModal()" class="modal-close-btn">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="edit-product-content">
+          <div class="edit-form-container">
+            <div class="form-card">
+              <div class="card-accent-bar"></div>
+
+              <div class="card-header">
+                <div class="header-icon-circle">
+                  <ion-icon name="create-outline"></ion-icon>
+                </div>
+                <div>
+                  <h2>{{ 'Edit Product Details' | translate }}</h2>
+                  <p>{{ 'Update the details below and save the changes.' | translate }}</p>
+                </div>
               </div>
-              <div>
-                <h2>{{ 'Edit Product Details' | translate }}</h2>
-                <p>{{ 'Update the details below and save the changes.' | translate }}</p>
-              </div>
-            </div>
 
-            <div class="form-body">
-              <ion-grid class="ion-no-padding">
-                <ion-row>
-                  <ion-col size="12">
-                    <div class="input-field-wrap">
-                      <ion-icon name="cube-outline" class="input-field-icon"></ion-icon>
-                      <ion-input fill="outline" labelPlacement="floating" [label]="'Product Name' | translate"
-                        [(ngModel)]="editItem.ProductName" readonly class="custom-input"></ion-input>
-                    </div>
-                  </ion-col>
-                </ion-row>
+              <div class="form-body">
+                <ion-grid class="ion-no-padding">
+                  <ion-row>
+                    <ion-col size="12">
+                      <div class="input-field-wrap">
+                        <ion-icon name="cube-outline" class="input-field-icon"></ion-icon>
+                        <ion-input fill="outline" labelPlacement="floating" [label]="'Product Name' | translate"
+                          [(ngModel)]="editItem.ProductName" readonly class="custom-input"></ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
 
-                <ion-row class="ion-margin-top">
-                  <ion-col size="12">
-                    <div class="input-field-wrap">
-                      <ion-icon name="barcode-outline" class="input-field-icon"></ion-icon>
-                      <ion-input fill="outline" labelPlacement="floating" [label]="'Item code or barcode' | translate"
-                        [(ngModel)]="editItem.ItemCode" class="custom-input"></ion-input>
-                    </div>
-                  </ion-col>
-                </ion-row>
+                  <ion-row class="ion-margin-top">
+                    <ion-col size="12">
+                      <div class="input-field-wrap">
+                        <ion-icon name="barcode-outline" class="input-field-icon"></ion-icon>
+                        <ion-input fill="outline" labelPlacement="floating" [label]="'Item code or barcode' | translate"
+                          [(ngModel)]="editItem.ItemCode" class="custom-input"></ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
 
-                <ion-row class="ion-margin-top">
-                  <ion-col size="12" size-md="6" class="pr-md-2">
-                    <div class="input-field-wrap">
-                      <ion-icon name="cash-outline" class="input-field-icon"></ion-icon>
-                      <ion-input fill="outline" labelPlacement="floating" [label]="'Cost Price' | translate" type="number"
-                        [(ngModel)]="editItem.BuyingPrice" class="custom-input"></ion-input>
-                    </div>
-                  </ion-col>
+                  <ion-row class="ion-margin-top">
+                    <ion-col size="12" size-md="6" class="pr-md-2">
+                      <div class="input-field-wrap">
+                        <ion-icon name="cash-outline" class="input-field-icon"></ion-icon>
+                        <ion-input fill="outline" labelPlacement="floating" [label]="'Cost Price' | translate"
+                          type="number" [(ngModel)]="editItem.BuyingPrice" class="custom-input"></ion-input>
+                      </div>
+                    </ion-col>
 
-                  <ion-col size="12" size-md="6" class="pl-md-2 mt-sm-down">
-                    <div class="input-field-wrap">
-                      <ion-icon name="pricetag-outline" class="input-field-icon"></ion-icon>
-                      <ion-input fill="outline" labelPlacement="floating" [label]="'Selling Price' | translate" type="number"
-                        [(ngModel)]="editItem.SellingPrice" class="custom-input"></ion-input>
-                    </div>
-                  </ion-col>
-                </ion-row>
+                    <ion-col size="12" size-md="6" class="pl-md-2 mt-sm-down">
+                      <div class="input-field-wrap">
+                        <ion-icon name="pricetag-outline" class="input-field-icon"></ion-icon>
+                        <ion-input fill="outline" labelPlacement="floating" [label]="'Selling Price' | translate"
+                          type="number" [(ngModel)]="editItem.SellingPrice" class="custom-input"></ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
 
-                <ion-row class="ion-margin-top">
-                  <ion-col size="12">
+                  <ion-row class="ion-margin-top">
+                    <ion-col size="12">
+                      <div class="select-field-wrap">
+                        <ion-icon name="scale-outline" class="select-field-icon"></ion-icon>
+                        <ion-item lines="none" class="custom-select-item">
+                          <ion-select [(ngModel)]="editItem.unit" interface="popover"
+                            [placeholder]="'Select Unit' | translate" class="custom-select">
+                            <ion-select-option value="Weight">{{ 'Weight (kg)' | translate }}</ion-select-option>
+                            <ion-select-option value="Piece">{{ 'Piece (pcs)' | translate }}</ion-select-option>
+                          </ion-select>
+                        </ion-item>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+
+                <div class="gst-toggle-section ion-margin-top">
+                  <ion-item lines="none" class="gst-checkbox-item mt-3">
+                    <ion-checkbox justify="space-between" [(ngModel)]="editEnableGst" class="custom-checkbox">
+                      {{ 'Enable GST' | translate }}
+                    </ion-checkbox>
+                  </ion-item>
+
+                  @if (editEnableGst) {
+                  <div class="gst-rate-select">
                     <div class="select-field-wrap">
-                      <ion-icon name="scale-outline" class="select-field-icon"></ion-icon>
+                      <ion-icon name="pricetag-outline" class="select-field-icon"></ion-icon>
                       <ion-item lines="none" class="custom-select-item">
-                        <ion-select [(ngModel)]="editItem.unit" interface="popover" [placeholder]="'Select Unit' | translate"
-                          class="custom-select">
-                          <ion-select-option value="Weight">{{ 'Weight (kg)' | translate }}</ion-select-option>
-                          <ion-select-option value="Piece">{{ 'Piece (pcs)' | translate }}</ion-select-option>
+                        <ion-select [(ngModel)]="editGstRate" interface="action-sheet"
+                          [placeholder]="'Select GST Rate' | translate" class="custom-select">
+                          @for (rate of gstRates; track rate) {
+                          <ion-select-option [value]="rate">
+                            {{ 'GST' | translate }} {{ rate }}%
+                          </ion-select-option>
+                          }
                         </ion-select>
                       </ion-item>
                     </div>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-
-              <div class="gst-toggle-section ion-margin-top">
-                <ion-item lines="none" class="gst-checkbox-item">
-                  <ion-checkbox justify="space-between" [(ngModel)]="editEnableGst" class="custom-checkbox">
-                    {{ 'Enable GST' | translate }}
-                  </ion-checkbox>
-                </ion-item>
-
-                @if (editEnableGst) {
-                <div class="gst-rate-select">
-                  <div class="select-field-wrap">
-                    <ion-icon name="pricetag-outline" class="select-field-icon"></ion-icon>
-                    <ion-item lines="none" class="custom-select-item">
-                      <ion-select [(ngModel)]="editGstRate" interface="action-sheet"
-                        [placeholder]="'Select GST Rate' | translate" class="custom-select">
-                        @for (rate of gstRates; track rate) {
-                        <ion-select-option [value]="rate">
-                          {{ 'GST' | translate }} {{ rate }}%
-                        </ion-select-option>
-                        }
-                      </ion-select>
-                    </ion-item>
                   </div>
+                  }
                 </div>
-                }
-              </div>
 
-              <ion-button expand="block" class="submit-btn gradient-btn ion-margin-top" (click)="saveProduct()">
-                <ion-icon slot="start" name="checkmark-outline"></ion-icon>
-                {{ 'Save Changes' | translate }}
-              </ion-button>
+                <ion-button expand="block" class="submit-btn gradient-btn mt-4" (click)="saveProduct()">
+                  <ion-icon slot="start" name="checkmark-outline"></ion-icon>
+                  {{ 'Save Changes' | translate }}
+                </ion-button>
+              </div>
             </div>
           </div>
-        </div>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
 
-</div>
+  </div>

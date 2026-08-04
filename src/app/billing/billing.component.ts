@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { ActionSheetController, AlertController } from '@ionic/angular/standalone';
 
 import { IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonPopover, IonModal, IonToolbar, IonTitle, IonContent, IonInput } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { barcodeOutline, addOutline, removeOutline, cubeOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline, closeCircle, cartOutline, downloadOutline, personCircle, alertCircleOutline, close, logoWhatsapp, shareSocialOutline, chatbubbleEllipsesOutline } from 'ionicons/icons';
+import { barcodeOutline, addOutline, removeOutline, cubeOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline, closeCircle, cartOutline, downloadOutline, personCircle, alertCircleOutline, close, logoWhatsapp, shareSocialOutline, chatbubbleEllipsesOutline, pricetagOutline } from 'ionicons/icons';
 import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -41,12 +41,17 @@ export class BillingComponent implements OnInit, OnDestroy {
   subtotalPrice: number = 0;
   taxPercent: number = 0;
   discountAmount: number = 0;
+  discountType: 'amount' | 'percent' = 'amount';
+  discountInput: number = 0;
   paymentType: string = 'Cash';
   isPendingModalOpen: boolean = false;
   isAddUserModalOpen: any = false;
   isCreateUserModalOpen: boolean = false;
   pendingAmountPaid: number = 0;
   pendingBalanceAmount: number = 0;
+  billShareMode: 'download' | 'share' = 'download';
+  private pendingShareTarget: 'whatsapp' | 'sms' | null = null;
+  @ViewChild('billingFooter') billingFooterRef?: ElementRef<HTMLElement>;
   constructor(
     private http: HttpClient,
     private toasterService: ToastService,
@@ -69,6 +74,7 @@ export class BillingComponent implements OnInit, OnDestroy {
       'logo-whatsapp': logoWhatsapp,
       'share-social-outline': shareSocialOutline,
       'chatbubble-ellipses-outline': chatbubbleEllipsesOutline,
+      'pricetag-outline': pricetagOutline,
       close
     });
   }
@@ -78,14 +84,26 @@ export class BillingComponent implements OnInit, OnDestroy {
   cartItems: any[] = [];
 
   ngOnInit() {
+    this.vhBaseline = window.innerHeight;
+    window.visualViewport?.addEventListener('resize', this.pinFooterToBottom);
     setTimeout(() => {
       this.toasterService.showWarning(this.translateService.translate("To Save In the Data Please Add User Else Billing Alone can be done"));
     }, 1000)
   }
 
   ngOnDestroy() {
+    window.visualViewport?.removeEventListener('resize', this.pinFooterToBottom);
     this.stopScanner();
   }
+
+  private vhBaseline = 0;
+
+  private pinFooterToBottom = () => {
+    const footer = this.billingFooterRef?.nativeElement;
+    if (!footer) return;
+    const shrink = Math.max(0, this.vhBaseline - window.innerHeight);
+    footer.style.transform = shrink > 0 ? `translateY(${shrink}px)` : '';
+  };
 
   onSearch(event: any) {
     const value = event.detail.value;
@@ -140,9 +158,28 @@ export class BillingComponent implements OnInit, OnDestroy {
   }
 
   calculateTotal() {
-    this.totalPrice = this.cartItems.reduce((acc, item) => {
+    this.subtotalPrice = this.cartItems.reduce((acc, item) => {
       return acc + this.getItemTotal(item);
     }, 0);
+
+    const raw = isNaN(Number(this.discountInput)) ? 0 : Number(this.discountInput);
+    let discount = this.discountType === 'percent'
+      ? (this.subtotalPrice * raw) / 100
+      : raw;
+    if (discount < 0) discount = 0;
+    if (discount > this.subtotalPrice) discount = this.subtotalPrice;
+    this.discountAmount = Math.round(discount * 100) / 100;
+    this.totalPrice = Math.round((this.subtotalPrice - this.discountAmount) * 100) / 100;
+  }
+
+  setDiscountType(type: 'amount' | 'percent') {
+    this.discountType = type;
+    this.calculateTotal();
+  }
+
+  clearDiscount() {
+    this.discountInput = 0;
+    this.calculateTotal();
   }
 
   onQuantityChange(item: any) {
@@ -423,7 +460,7 @@ export class BillingComponent implements OnInit, OnDestroy {
           text: this.translateService.translate('WhatsApp'),
           icon: 'logo-whatsapp',
           handler: () => {
-            window.open(`https://wa.me/${mobile}?text=${encodeURIComponent(message)}`, '_blank');
+            this.dismissAndSharePdf(mobile, message);
           }
         },
         {
@@ -441,6 +478,55 @@ export class BillingComponent implements OnInit, OnDestroy {
       ]
     });
     await actionSheet.present();
+  }
+
+  private async dismissAndSharePdf(mobile: string, message: string) {
+    await this.actionSheetController.dismiss();
+    this.billShareMode = 'share';
+    this.pendingShareTarget = 'whatsapp';
+    this.isBillModalOpen = true;
+  }
+
+  async onPdfReady(file: File) {
+    const target = this.pendingShareTarget;
+    this.pendingShareTarget = null;
+    this.isBillModalOpen = false;
+    this.billShareMode = 'download';
+
+    if (target !== 'whatsapp') {
+      return;
+    }
+
+    const message = this.buildBillMessage();
+    const canSharePdf = typeof navigator !== 'undefined'
+      && typeof navigator.share === 'function'
+      && typeof navigator.canShare === 'function'
+      && navigator.canShare({ files: [file] });
+
+    if (!canSharePdf) {
+      window.open(`https://wa.me/${(this.searchQuery?.mobileNumber || '').toString().replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
+      return;
+    }
+
+    const alert = await this.alertController.create({
+      header: this.translateService.translate('Share Invoice PDF'),
+      message: this.translateService.translate('Invoice PDF is ready. Tap Share to send it via WhatsApp.'),
+      buttons: [
+        {
+          text: this.translateService.translate('Cancel'),
+          role: 'cancel'
+        },
+        {
+          text: this.translateService.translate('Share'),
+          handler: () => {
+            navigator.share({ files: [file], title: 'Invoice', text: message }).catch(() => {
+              // User dismissed the share sheet - ignore
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   private buildBillMessage(): string {

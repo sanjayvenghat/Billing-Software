@@ -24,10 +24,12 @@ export class GenerateBillComponent implements OnInit, AfterViewInit {
   @Input() balanceAmount: number = 0;
   @Input() taxPercent: number = 0;
   @Input() discountAmount: number = 0;
+  @Input() mode: 'download' | 'share' = 'download';
 
   @Output() close = new EventEmitter<void>();
+  @Output() pdfReady = new EventEmitter<File>();
 
-  storeName: string = 'Sakthistores';
+  storeName: string = '';
   subtotalPrice: number = 0;
   taxAmount: number = 0;
   taxBreakdown: { rate: number, amount: number }[] = [];
@@ -40,7 +42,7 @@ export class GenerateBillComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.storeName = this.keysStorage.getItem('StoreName') || 'Sakthistores';
+    this.storeName = this.keysStorage.getItem('StoreName') || '';
     this.calculateTotals();
   }
 
@@ -81,21 +83,46 @@ export class GenerateBillComponent implements OnInit, AfterViewInit {
   confirmDownload() {
     const element = document.getElementById('receipt-card-pdf');
     if (element) {
-      const opt = {
-        margin: 0.5,
-        filename: `FreshMart_Bill_${this.currentDate.getTime()}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-
-      // @ts-ignore
-      html2pdf().from(element).set(opt).save().then(() => {
-        this.loaderservice.hideLoader()
-        this.close.emit();
-      });
+      if (this.mode === 'share') {
+        this.generatePdfBlob().then(blob => {
+          const file = new File([blob], `FreshMart_Bill_${this.currentDate.getTime()}.pdf`, { type: 'application/pdf' });
+          this.loaderservice.hideLoader();
+          this.pdfReady.emit(file);
+          this.close.emit();
+        }).catch(() => {
+          this.loaderservice.hideLoader();
+          this.close.emit();
+        });
+      } else {
+        const opt = this.getPdfOptions();
+        // @ts-ignore
+        html2pdf().from(element).set(opt).save().then(() => {
+          this.loaderservice.hideLoader()
+          this.close.emit();
+        });
+      }
     } else {
       this.close.emit();
     }
+  }
+
+  private getPdfOptions() {
+    return {
+      margin: 0.5,
+      filename: `FreshMart_Bill_${this.currentDate.getTime()}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+  }
+
+  private generatePdfBlob(): Promise<Blob> {
+    const element = document.getElementById('receipt-card-pdf');
+    if (!element) {
+      return Promise.reject('PDF element not found');
+    }
+    const opt = this.getPdfOptions();
+    // @ts-ignore
+    return html2pdf().from(element).set(opt).outputPdf('blob');
   }
 }

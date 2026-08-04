@@ -148,6 +148,39 @@
 
 <ion-footer class="ion-no-border billing-footer">
   <div class="checkout-sheet">
+    <div class="discount-row">
+      <div class="discount-label">
+        <ion-icon name="pricetag-outline"></ion-icon>
+        <span>{{ 'Discount' | translate }}</span>
+      </div>
+      <div class="discount-controls">
+        <div class="discount-mode-toggle">
+          <button type="button" class="mode-btn" [class.active]="discountType === 'amount'"
+            (click)="setDiscountType('amount')" title="Amount">₹</button>
+          <button type="button" class="mode-btn" [class.active]="discountType === 'percent'"
+            (click)="setDiscountType('percent')" title="Percentage">%</button>
+        </div>
+        <ion-item class="discount-item" lines="none">
+          <ion-input class="discount-input" fill="outline" type="number" min="0" [(ngModel)]="discountInput"
+            (ionInput)="calculateTotal()" placeholder="0.00" aria-label="Discount"></ion-input>
+        </ion-item>
+
+        @if (discountAmount > 0) {
+        <button type="button" class="discount-clear-btn" (click)="clearDiscount()" aria-label="Clear discount">
+          <ion-icon name="close-circle"></ion-icon>
+        </button>
+        }
+      </div>
+    </div>
+
+    @if (discountAmount > 0) {
+    <div class="discount-applied-line">
+      <span class="discount-applied-label">{{ 'Discount' | translate }} ({{ discountType === 'percent' ? discountInput +
+        '%' : '₹' }})</span>
+      <span class="discount-applied-value">-₹{{ discountAmount | number:'1.2-2' }}</span>
+    </div>
+    }
+
     <div class="grand-total-card">
       <div class="grand-total-head">
         <span class="total-label">{{ 'Grand Total' | translate }}</span>
@@ -204,7 +237,7 @@
 <app-generate-bill [cartItems]="cartItems" [totalPrice]="totalPrice" [searchQuery]="searchQuery.customerName"
   [currentDate]="currentDate" [status]="billStatus" [amountPaid]="pendingAmountPaid"
   [balanceAmount]="pendingBalanceAmount" [taxPercent]="taxPercent" [discountAmount]="discountAmount"
-  (close)="isBillModalOpen = false">
+  [mode]="billShareMode" (pdfReady)="onPdfReady($event)" (close)="isBillModalOpen = false">
 </app-generate-bill>
 }
 

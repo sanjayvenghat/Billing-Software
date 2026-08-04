@@ -71,8 +71,8 @@
               <div class="select-field-wrap">
                 <ion-icon name="scale-outline" class="select-field-icon"></ion-icon>
                 <ion-item lines="none" class="custom-select-item">
-                  <ion-select [(ngModel)]="unit" interface="popover" [placeholder]="'Select Unit' | translate"
-                    class="custom-select">
+                  <ion-select [(ngModel)]="unit" interface="popover" label="{{ 'Unit' | translate }}"
+                    labelPlacement="floating" [placeholder]="'Select Unit' | translate" class="custom-select">
                     <ion-select-option value="Weight">{{ 'Weight (kg)' | translate }}</ion-select-option>
                     <ion-select-option value="Piece">{{ 'Piece (pcs)' | translate }}</ion-select-option>
                   </ion-select>
@@ -96,6 +96,7 @@
               <ion-icon name="pricetag-outline" class="select-field-icon"></ion-icon>
               <ion-item lines="none" class="custom-select-item">
                 <ion-select [(ngModel)]="gstRate" interface="action-sheet"
+                  label="{{ 'GST Rate' | translate }}" labelPlacement="floating"
                   [placeholder]="'Select GST Rate' | translate" class="custom-select">
                   @for (opt of gstRates; track opt.gst) {
                   <ion-select-option [value]="opt.gst">

@@ -36,6 +36,9 @@ export class LoginService {
             map((response: any) => {
                 this.keysStorage.setItem("CompanyId", response?.CompanyId);
                 this.keysStorage.setItem("Token", response?.token);
+                if (payload?.storename) {
+                    this.keysStorage.setItem("StoreName", payload?.storename);
+                }
                 return response;
             }),
             catchError((error) => {
@@ -95,7 +98,9 @@ export class LoginService {
         }).pipe(map((response: any) => {
             console.log(response);
             this.keysStorage.setItem('IconType', response?.userSettings?.IconType)
-            this.keysStorage.setItem('StoreName', response?.userSettings?.StoreName)
+            if (response?.userSettings?.StoreName) {
+                this.keysStorage.setItem('StoreName', response?.userSettings?.StoreName)
+            }
             this.keysStorage.setItem('APP_SETTINGS', response?.userSettings)
             return response;
         }), catchError(err => {

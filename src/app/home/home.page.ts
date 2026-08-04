@@ -53,7 +53,6 @@ export class HomePage implements OnInit {
         this.isLoading = false;
         this.loaderService.hideLoader()
         if (val?.message === 'User Settings Get Successfully') {
-          this.toastService.showSuccess(this.translateService.translate(val.message));
           this.loginForm.reset();
           if (val.userSettings && val.userSettings.systemLanguage) {
             this.translateService.setLanguage(val.userSettings.systemLanguage);

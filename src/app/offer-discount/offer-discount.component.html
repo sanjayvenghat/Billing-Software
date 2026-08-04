@@ -53,7 +53,7 @@
                 <div class="form-body">
                   <div class="form-field">
                     <label>{{ 'Coupon Code' | translate }}</label>
-                    <input type="text" [(ngModel)]="newCoupon.Code" placeholder="e.g. EXTRA20" class="input-field" />
+                    <input type="text" [(ngModel)]="newCoupon.Code" placeholder="{{ 'e.g. EXTRA20' | translate }}" class="input-field" />
                   </div>
 
                   <div class="form-field-row">
@@ -66,14 +66,14 @@
                     </div>
                     <div class="form-field">
                       <label>{{ 'Discount Value' | translate }}</label>
-                      <input type="number" [(ngModel)]="newCoupon.Value" placeholder="e.g. 10" class="input-field" />
+                      <input type="number" [(ngModel)]="newCoupon.Value" placeholder="{{ 'e.g. 10' | translate }}" class="input-field" />
                     </div>
                   </div>
 
                   <div class="form-field-row">
                     <div class="form-field">
                       <label>{{ 'Min Purchase Amount (₹)' | translate }}</label>
-                      <input type="number" [(ngModel)]="newCoupon.MinPurchase" placeholder="e.g. 200"
+                      <input type="number" [(ngModel)]="newCoupon.MinPurchase" placeholder="{{ 'e.g. 200' | translate }}"
                         class="input-field" />
                     </div>
                     <div class="form-field">
@@ -182,7 +182,7 @@
                     </div>
                     <div class="form-field">
                       <label>{{ 'Discount Value' | translate }}</label>
-                      <input type="number" [(ngModel)]="productDiscountValue" placeholder="e.g. 10"
+                      <input type="number" [(ngModel)]="productDiscountValue" placeholder="{{ 'e.g. 10' | translate }}"
                         class="input-field" />
                     </div>
                   </div>

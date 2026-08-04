@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import {
   IonContent,
   IonHeader,
@@ -33,11 +33,26 @@ export class GetUserDetailsComponent {
   @ViewChild(ListProductComponent) listProductComponent!: ListProductComponent;
   @ViewChild(IonTableComponent) ionTableComponent!: IonTableComponent;
 
+  isMobile = true;
+  private desktopMedia?: MediaQueryList;
+
   constructor() {
     addIcons({ library, playCircle, radio, search, cashOutline, pricetags, personAdd, wallet });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.desktopMedia = window.matchMedia('(min-width: 992px)');
+    this.updateViewport();
+    this.desktopMedia.addEventListener('change', this.updateViewport);
+  }
+
+  ngOnDestroy() {
+    this.desktopMedia?.removeEventListener('change', this.updateViewport);
+  }
+
+  private updateViewport = () => {
+    this.isMobile = !this.desktopMedia?.matches;
+  };
 
   onTabChange(event: any) {
     if (event.tab === 'home') {

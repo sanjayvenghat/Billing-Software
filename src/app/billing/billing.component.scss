@@ -470,6 +470,139 @@
   max-width: 520px;
 }
 
+.discount-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 4px 12px;
+  border-bottom: 1px dashed #eef2f7;
+  margin-bottom: 10px;
+
+  .discount-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #475569;
+    white-space: nowrap;
+
+    ion-icon {
+      font-size: 16px;
+      color: #8b5cf6;
+    }
+  }
+
+  .discount-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  .discount-mode-toggle {
+    display: flex;
+    background: #f1f5f9;
+    border-radius: 10px;
+    padding: 3px;
+
+    .mode-btn {
+      width: 34px;
+      height: 30px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      &.active {
+        background: #6366f1;
+        color: #fff;
+        box-shadow: 0 3px 8px rgba(99, 102, 241, 0.35);
+      }
+    }
+  }
+
+  .discount-item {
+    --background: transparent;
+    --border-width: 0;
+    --inner-border-width: 0;
+    --min-height: 38px;
+    --padding-start: 0;
+    --padding-end: 0;
+    width: 116px;
+    flex: 0 1 auto;
+  }
+
+  .discount-input {
+    --background: #f8fafc;
+    --border-radius: 10px;
+    --border-width: 1.5px;
+    --border-style: solid;
+    --border-color: #cbd5e1;
+    --highlight-color-focused: #6366f1;
+    --padding-start: 10px;
+    --padding-end: 8px;
+    height: 38px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+
+    &.has-focus {
+      --border-width: 2px;
+    }
+
+    &::part(native) {
+      min-height: 38px;
+    }
+  }
+
+  .discount-clear-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 20px;
+    }
+
+    &:hover {
+      color: #ef4444;
+    }
+  }
+}
+
+.discount-applied-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px 10px;
+
+  .discount-applied-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+  }
+
+  .discount-applied-value {
+    font-size: 13px;
+    font-weight: 800;
+    color: #059669;
+  }
+}
+
 .grand-total-card {
   display: flex;
   align-items: center;
@@ -618,6 +751,15 @@ ion-modal.create-user-modal {
 
   .qty-stepper {
     gap: 4px;
+  }
+
+  .discount-row {
+    flex-wrap: wrap;
+
+    .discount-controls {
+      justify-content: flex-end;
+      width: 100%;
+    }
   }
 
   .grand-total-card {

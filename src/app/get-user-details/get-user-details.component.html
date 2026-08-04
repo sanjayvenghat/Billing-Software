@@ -3,7 +3,7 @@
     <ion-header>
       <app-header-component [HeaderTitle]="'Billing' | translate"></app-header-component>
     </ion-header>
-    <ion-content>
+    <ion-content class="billing-tab-content" [scrollY]="!isMobile">
       <app-billing></app-billing>
     </ion-content>
   </ion-tab>
