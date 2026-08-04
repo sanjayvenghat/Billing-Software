@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { AlertController } from '@ionic/angular/standalone';
+import { ActionSheetController, AlertController } from '@ionic/angular/standalone';
 
-import { IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonPopover, IonModal, IonToolbar, IonTitle, IonContent, IonInput, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import { IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonPopover, IonModal, IonToolbar, IonTitle, IonContent, IonInput } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { barcodeOutline, addOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline, closeCircle, cartOutline, downloadOutline, personCircle, alertCircleOutline, close } from 'ionicons/icons';
+import { barcodeOutline, addOutline, removeOutline, cubeOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline, closeCircle, cartOutline, downloadOutline, personCircle, alertCircleOutline, close, logoWhatsapp, shareSocialOutline, chatbubbleEllipsesOutline } from 'ionicons/icons';
 import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -25,7 +25,7 @@ import { TranslateService } from '../../Service/TranslateService';
   selector: 'app-billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
-  imports: [HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, QuotePriceBillingComponent, PendingComponent, CreateUserComponent, IonToolbar, IonTitle, IonContent, IonModal, IonInput, IonSelect, IonSelectOption, DecimalPipe, TranslatePipe]
+  imports: [HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, QuotePriceBillingComponent, PendingComponent, CreateUserComponent, IonToolbar, IonTitle, IonContent, IonModal, IonInput, DecimalPipe, TranslatePipe]
 })
 export class BillingComponent implements OnInit, OnDestroy {
   private scanner: Html5QrcodeScanner | null = null;
@@ -54,10 +54,11 @@ export class BillingComponent implements OnInit, OnDestroy {
     private keysStorage: KEYSSTORAGE,
     private LoaderService: LoaderService,
     private translateService: TranslateService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private actionSheetController: ActionSheetController
   ) {
     addIcons({
-      barcodeOutline, 'add-outline': addOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline, 'trash-outline': trashOutline, 'add-circle-outline': addCircleOutline, 'remove-circle-outline': removeCircleOutline, 'arrow-forward-outline': arrowForwardOutline,
+      barcodeOutline, 'add-outline': addOutline, 'remove-outline': removeOutline, 'cube-outline': cubeOutline, 'person-add-outline': personAddOutline, 'person-outline': personOutline, 'search-outline': searchOutline, 'trash-outline': trashOutline, 'add-circle-outline': addCircleOutline, 'remove-circle-outline': removeCircleOutline, 'arrow-forward-outline': arrowForwardOutline,
       'document-text-outline': documentTextOutline,
       'document-outline': documentOutline,
       'close-circle': closeCircle,
@@ -65,6 +66,9 @@ export class BillingComponent implements OnInit, OnDestroy {
       'download-outline': downloadOutline,
       'person-circle': personCircle,
       'alert-circle-outline': alertCircleOutline,
+      'logo-whatsapp': logoWhatsapp,
+      'share-social-outline': shareSocialOutline,
+      'chatbubble-ellipses-outline': chatbubbleEllipsesOutline,
       close
     });
   }
@@ -172,6 +176,16 @@ export class BillingComponent implements OnInit, OnDestroy {
     }
     this.scannedProduct = product; // keep it if needed
     this.calculateTotal();
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom() {
+    setTimeout(() => {
+      const content = document.querySelector('ion-content');
+      if (content && typeof (content as any).scrollToBottom === 'function') {
+        (content as any).scrollToBottom(300);
+      }
+    }, 100);
   }
 
   increaseQuantity(index: number) {
@@ -227,7 +241,11 @@ export class BillingComponent implements OnInit, OnDestroy {
   }
 
   selectUser(user: any) {
-    this.searchQuery = { customerName: user.CustomerName, customerId: user._id };
+    this.searchQuery = {
+      customerName: user.CustomerName,
+      customerId: user._id,
+      mobileNumber: user.MobileNumber
+    };
     this.userSuggestions = [];
     // Logic to attach user to the current bill can go here
   }
@@ -379,6 +397,76 @@ export class BillingComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  async shareBill() {
+    if (this.cartItems.length === 0) {
+      this.toasterService.showWarning(this.translateService.translate("Cart is empty. Cannot share bill."));
+      return;
+    }
+    if (!this.searchQuery?.customerName) {
+      this.toasterService.showWarning(this.translateService.translate("Please select a customer before sharing the bill."));
+      return;
+    }
+    const mobile = (this.searchQuery?.mobileNumber || '').toString().replace(/[^0-9]/g, '');
+    if (!mobile) {
+      this.toasterService.showWarning(this.translateService.translate("Selected customer has no mobile number. Please add a mobile number."));
+      return;
+    }
+
+    const message = this.buildBillMessage();
+
+    const actionSheet = await this.actionSheetController.create({
+      header: this.translateService.translate('Share Bill'),
+      subHeader: this.searchQuery.customerName + ' (' + mobile + ')',
+      buttons: [
+        {
+          text: this.translateService.translate('WhatsApp'),
+          icon: 'logo-whatsapp',
+          handler: () => {
+            window.open(`https://wa.me/${mobile}?text=${encodeURIComponent(message)}`, '_blank');
+          }
+        },
+        {
+          text: this.translateService.translate('SMS'),
+          icon: 'chatbubble-ellipses-outline',
+          handler: () => {
+            window.location.href = `sms:${mobile}?&body=${encodeURIComponent(message)}`;
+          }
+        },
+        {
+          text: this.translateService.translate('Cancel'),
+          icon: 'close',
+          role: 'cancel'
+        }
+      ]
+    });
+    await actionSheet.present();
+  }
+
+  private buildBillMessage(): string {
+    const storeName = this.keysStorage.getItem('StoreName') || 'Store';
+    const customer = this.searchQuery?.customerName || 'Customer';
+    const date = new Date();
+    const dateStr = date.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })
+      + ' ' + date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+
+    const lines: string[] = [];
+    lines.push(`🧾 *${storeName}*`);
+    lines.push(`Invoice for *${customer}*`);
+    lines.push(`Date: ${dateStr}`);
+    lines.push('------------------------------');
+    this.cartItems.forEach(item => {
+      const itemName = item.ProductName || item.name;
+      const qty = parseFloat(item.Quantity);
+      const validQty = (!isNaN(qty) && qty > 0) ? qty : 0;
+      const unit = item.unit === 'Weight' ? (item.selectedSubUnit || 'kg') : 'Pcs';
+      lines.push(`${itemName} x ${validQty} ${unit} - ₹${this.getItemTotal(item).toFixed(2)}`);
+    });
+    lines.push('------------------------------');
+    lines.push(`*Total: ₹${this.totalPrice.toFixed(2)}*`);
+    lines.push('Thank you for shopping with us!');
+    return lines.join('\n');
+  }
   OpenUserModalFromDialog(event: any) {
     this.isAddUserModalOpen = false;
     this.isCreateUserModalOpen = true;
@@ -389,8 +477,9 @@ export class BillingComponent implements OnInit, OnDestroy {
       const user = response.userdata || response.data || response.user || response;
       const name = user.CustomerName || user.customerName;
       const id = user._id || user.id;
+      const mobile = user.MobileNumber || user.mobileNumber || user.phoneNumber;
       if (name) {
-        this.searchQuery = { customerName: name, customerId: id };
+        this.searchQuery = { customerName: name, customerId: id, mobileNumber: mobile };
         this.toasterService.showSuccess(this.translateService.translate("Selected customer:") + " " + name);
       }
     }

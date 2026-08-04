@@ -7,7 +7,7 @@ import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { IonCheckbox, IonItem, IonIcon, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { addIcons } from 'ionicons';
-import { download, cubeOutline, cashOutline, pricetagOutline, scaleOutline, saveOutline, qrCodeOutline, downloadOutline } from 'ionicons/icons';
+import { download, cubeOutline, cashOutline, pricetagOutline, scaleOutline, saveOutline, qrCodeOutline, downloadOutline, barcodeOutline } from 'ionicons/icons';
 import { environment } from 'src/environments/environment';
 import { LoaderService } from 'src/Service/LoaderService';
 import { IonSelect, IonSelectOption, } from '@ionic/angular/standalone';
@@ -29,10 +29,22 @@ export class QuotePriceComponent implements OnInit {
   BuyingPrice: string = ''
   SellingPrice: string = '';
   unit: string = '';
+  ItemCode: string = '';
   companyId: string = '';
   generateQrCode: boolean = false;
   savedItemUrl: string = '';
   showProfitOfEveryProduct: boolean = true;
+  enableGst: boolean = false;
+  gstRate: number = 5;
+  gstRates: { gst: number, cgst: number, sgst: number, igst: number }[] = [
+    { gst: 0, cgst: 0, sgst: 0, igst: 0 },
+    { gst: 0.25, cgst: 0.125, sgst: 0.125, igst: 0.25 },
+    { gst: 3, cgst: 1.5, sgst: 1.5, igst: 3 },
+    { gst: 5, cgst: 2.5, sgst: 2.5, igst: 5 },
+    { gst: 12, cgst: 6, sgst: 6, igst: 12 },
+    { gst: 18, cgst: 9, sgst: 9, igst: 18 },
+    { gst: 28, cgst: 14, sgst: 14, igst: 28 }
+  ];
 
   constructor(
     private quoteService: QuoteService,
@@ -41,7 +53,7 @@ export class QuotePriceComponent implements OnInit {
     private LoaderService: LoaderService,
     private translateService: TranslateService
   ) {
-    addIcons({ download, cubeOutline, cashOutline, pricetagOutline, scaleOutline, saveOutline, qrCodeOutline, downloadOutline });
+    addIcons({ download, cubeOutline, cashOutline, pricetagOutline, scaleOutline, saveOutline, qrCodeOutline, downloadOutline, barcodeOutline });
   }
 
   ngOnInit() {
@@ -79,6 +91,8 @@ export class QuotePriceComponent implements OnInit {
       "BuyingPrice": this.BuyingPrice,
       "SellingPrice": this.SellingPrice,
       "Unit": this.unit,
+      "ItemCode": this.ItemCode,
+      "GST": this.enableGst ? this.gstRate : 0,
       "CompanyId": this.companyId
     }
     this.quoteService.AddgroceryData(payload).subscribe({
@@ -95,6 +109,7 @@ export class QuotePriceComponent implements OnInit {
           this.BuyingPrice = "";
           this.SellingPrice = "";
           this.unit = "";
+          this.ItemCode = "";
           this.toaster.showSuccess(this.translateService.translate(val.message));
           this.productSaved.emit(val.CreatedUserInfo || true);
         }
@@ -123,12 +138,23 @@ export class QuotePriceComponent implements OnInit {
     }
   }
 
+  getGstSplitInfo(): string {
+    const opt = this.gstRates.find(o => o.gst === this.gstRate);
+    if (!opt || opt.gst === 0) {
+      return '';
+    }
+    return `CGST ${opt.cgst}% + SGST ${opt.sgst}% (Intra-State) | IGST ${opt.igst}% (Inter-State)`;
+  }
+
   clearQuoteState() {
     this.ProductName = '';
     this.BuyingPrice = '';
     this.SellingPrice = '';
     this.unit = '';
+    this.ItemCode = '';
     this.generateQrCode = false;
     this.savedItemUrl = '';
+    this.enableGst = false;
+    this.gstRate = 5;
   }
 }

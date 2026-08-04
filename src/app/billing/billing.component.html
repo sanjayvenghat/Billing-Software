@@ -1,143 +1,167 @@
-<ion-header class="ion-no-border" style="z-index: 100; position: relative;">
-  <div style="background: var(--ion-toolbar-background, #fff); position: relative; z-index: 1000; padding: 4px 0;">
-    <ion-grid class="ion-no-padding" style="overflow: visible !important;">
-      <ion-row class="ion-align-items-center ion-justify-content-center"
-        style="flex-wrap: nowrap; overflow: visible !important; contain: none !important;">
-        <ion-col
-          style="flex: 1; min-width: 0; max-width: 600px; position: relative; overflow: visible !important; contain: none !important;">
-          <ion-searchbar id="user-searchbar" animated="true" shape="round" [placeholder]="'Search User...' | translate"
-            (ionInput)="onUserSearchInput($event)" [debounce]="500"
-            [(ngModel)]="searchQuery.customerName"></ion-searchbar>
-          @if(userSuggestions.length > 0) {
-          <div class="google-dropdown">
-            <ion-list lines="none" class="ion-no-padding">
-              @for (user of userSuggestions; track user) {
-              <ion-item button (click)="selectUser(user)" class="google-item">
-                <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
-                <ion-label>
-                  <span class="user-name" (click)="selectUser(user)">{{ user.CustomerName }}({{ user.MobileNumber
-                    }})</span>
-                </ion-label>
-              </ion-item>
-              }
-            </ion-list>
-          </div>
-          }
+<div class="search-panel">
+  <div class="search-card">
+    <ion-searchbar class="premium-searchbar" id="user-searchbar" animated="true" shape="round"
+      [placeholder]="'Search User...' | translate" (ionInput)="onUserSearchInput($event)" [debounce]="500"
+      [(ngModel)]="searchQuery.customerName"></ion-searchbar>
+    <ion-button class="add-user-fab" shape="round" (click)="isCreateUserModalOpen = true" aria-label="Add user">
+      <ion-icon slot="icon-only" name="person-add-outline"></ion-icon>
+    </ion-button>
 
-        </ion-col>
-        <ion-col size="auto">
-          <ion-button color="success" shape="round" class="add-user-btn" (click)="isCreateUserModalOpen = true">
-            <ion-icon slot="start" name="person-add-outline"></ion-icon>
-            <span class="ion-hide-sm-down">{{ 'Add User' | translate }}</span>
-            <span class="ion-hide-md-up">{{ 'Add' | translate }}</span>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-  <div
-    style="background: var(--ion-toolbar-background, #fff); position: relative; z-index: 500; padding: 4px 0; border-bottom: 1px solid #eee;">
-    <ion-grid class="ion-no-padding" style="overflow: visible !important;">
-      <ion-row class="ion-align-items-center ion-justify-content-center"
-        style="flex-wrap: nowrap; overflow: visible !important; contain: none !important;">
-        <ion-col
-          style="flex: 1; min-width: 0; position: relative; overflow: visible !important; contain: none !important;">
-          <ion-searchbar animated="true" shape="round" [placeholder]="'Search or Scan Barcode...' | translate"
-            (ionInput)="OnSearchproduct($event)" [(ngModel)]="SearchProduct" [debounce]="500"></ion-searchbar>
-          @if(productSuggestions.length > 0) {
-          <div class="google-dropdown" style="top: 100%; left: 16px; right: 16px;">
-            <ion-list lines="none" class="ion-no-padding">
-              @for(product of productSuggestions; track $index; let i = $index) {
-              <ion-item button (click)="selectProduct(product)" class="google-item">
-                <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
-                <ion-label>
-                  <span class="user-name">{{ product.ProductName || product.name }}</span>
-                </ion-label>
-              </ion-item>
-              }
-            </ion-list>
-          </div>
-          }
-        </ion-col>
-        <ion-col size="auto">
-          <ion-buttons>
-            @if(!isScanning) {
-            <ion-button (click)="scanBarcode()">
-              <ion-icon slot="icon-only" name="barcode-outline"></ion-icon>
-            </ion-button>
-            }
-          </ion-buttons>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-</ion-header>
-@if(isScanning) {
-<div style="padding: 16px;">
-  <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto; background: white;"></div>
-  <ion-button style="margin-top: 16px;" (click)="stopScanner()" color="danger" expand="block">{{ 'Cancel Scan' |
-    translate }}</ion-button>
-</div>
-}
-@if(cartItems.length > 0) {
-<div style="padding: 16px 16px 120px 16px;">
-  <ion-list>
-    @for (item of cartItems; track item; let i = $index) {
-    <ion-item>
-      <ion-label>
-        <h2>{{ item.ProductName || item.name }}</h2>
-        <p>Price: ₹{{ item.SellingPrice }} / {{ item.unit || 'Piece' }}</p>
-        @if(item.Barcode) {
-        <p>Barcode: {{ item.Barcode }}</p>
+    @if(userSuggestions.length > 0) {
+    <div class="google-dropdown">
+      <ion-list lines="none" class="ion-no-padding">
+        @for (user of userSuggestions; track user) {
+        <ion-item button (click)="selectUser(user)" class="google-item">
+          <ion-icon name="person-outline" slot="start" color="medium"></ion-icon>
+          <ion-label>
+            <span class="user-name" (click)="selectUser(user)">{{ user.CustomerName }} ({{ user.MobileNumber }})</span>
+          </ion-label>
+        </ion-item>
         }
-      </ion-label>
-      <div slot="end" style="display: flex; align-items: center;">
-        @if (item.unit === 'Weight') {
-        <ion-select [(ngModel)]="item.selectedSubUnit" (ngModelChange)="calculateTotal()" interface="popover"
-          style="font-size: 14px; font-weight: bold; margin-right: 4px; border: 1px solid #d1d5db; border-radius: 6px; height: 38px; --padding-start: 8px; --padding-end: 8px; background: #f9fafb;">
-          <ion-select-option value="kg">kg</ion-select-option>
-          <ion-select-option value="g">g</ion-select-option>
-        </ion-select>
-        }
-        <ion-input type="number" [(ngModel)]="item.Quantity" (ngModelChange)="calculateTotal()"
-          (change)="onQuantityChange(item)"
-          style="width: 80px; font-weight: bold; border: 1px solid #d1d5db; border-radius: 6px; text-align: center; --padding-start: 8px; --padding-end: 8px; margin: 0 8px;"
-          min="0.001">
-        </ion-input>
-        <span style="font-weight: bold; margin-left: 16px; color: var(--ion-color-primary);">
-          ₹{{ getItemTotal(item) | number:'1.2-2' }}
-        </span>
-        <ion-button fill="clear" (click)="removeItem(i)" style="margin-left: 8px; color: red;">
-          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-        </ion-button>
-      </div>
-    </ion-item>
+      </ion-list>
+    </div>
     }
-  </ion-list>
+  </div>
+
+  <div class="search-card">
+    <ion-searchbar class="premium-searchbar" animated="true" shape="round"
+      [placeholder]="'Search or Scan Barcode...' | translate" (ionInput)="OnSearchproduct($event)"
+      [(ngModel)]="SearchProduct" [debounce]="500"></ion-searchbar>
+    @if(!isScanning) {
+    <ion-button class="scan-fab" shape="round" (click)="scanBarcode()" aria-label="Scan barcode">
+      <ion-icon slot="icon-only" name="barcode-outline"></ion-icon>
+    </ion-button>
+    }
+
+    @if(productSuggestions.length > 0) {
+    <div class="google-dropdown">
+      <ion-list lines="none" class="ion-no-padding">
+        @for(product of productSuggestions; track $index) {
+        <ion-item button (click)="selectProduct(product)" class="google-item">
+          <ion-icon name="search-outline" slot="start" color="medium"></ion-icon>
+          <ion-label>
+            <span class="user-name">{{ product.ProductName || product.name }}</span>
+          </ion-label>
+        </ion-item>
+        }
+      </ion-list>
+    </div>
+    }
+  </div>
 </div>
-}
-@if(errorMessage) {
-<div style="padding: 16px; text-align: center; color: red;">
-  <p>{{ errorMessage }}</p>
+
+@if(isScanning) {
+<div class="scanner-section">
+  <div class="scanner-card">
+    <div class="scanner-header">
+      <ion-icon name="barcode-outline"></ion-icon>
+      <span>{{ 'Scanning Barcode' | translate }}</span>
+    </div>
+    <div id="reader"></div>
+    <ion-button class="cancel-scan-btn" (click)="stopScanner()" color="danger" expand="block">
+      <ion-icon slot="start" name="close"></ion-icon>
+      {{ 'Cancel Scan' | translate }}
+    </ion-button>
+  </div>
 </div>
 }
 
-<ion-footer class="ion-no-border"
-  style="position: fixed; bottom: 0px; left: 0; right: 0; z-index: 1000; background: transparent;">
-  <div class="checkout-footer-container">
-    <div class="total-display-box">
-      <span class="total-label">{{ 'Grand Total' | translate }}</span>
-      <div class="total-amount-row">
+@if(cartItems.length === 0) {
+<div class="empty-cart">
+  <div class="empty-cart-icon">
+    <ion-icon name="cart-outline"></ion-icon>
+  </div>
+  <h2 class="empty-cart-title">{{ 'Your cart is empty' | translate }}</h2>
+  <p class="empty-cart-text">
+    {{ 'Search for a customer, then search or scan products to start billing.' | translate }}
+  </p>
+</div>
+}
+
+@if(cartItems.length > 0) {
+<div class="cart-section">
+  <div class="cart-heading">
+    <div class="cart-heading-left">
+      <ion-icon name="cart-outline"></ion-icon>
+      <span>{{ 'Cart Items' | translate }}</span>
+    </div>
+    <span class="cart-count">{{ cartItems.length }} {{ 'items' | translate }}</span>
+  </div>
+
+  <div class="cart-list">
+    @for (item of cartItems; track item; let i = $index) {
+    <div class="cart-item-card">
+      <div class="cart-item-top">
+        <div class="item-info">
+          <h2 class="item-name">{{ item.ProductName || item.name }}</h2>
+          <p class="item-meta">₹{{ item.SellingPrice }} / {{ item.unit || 'Piece' }}</p>
+          @if(item.Barcode) {
+          <span class="barcode-chip">
+            <ion-icon name="barcode-outline"></ion-icon>
+            {{ item.Barcode }}
+          </span>
+          }
+        </div>
+        <div class="line-total">
+          <span class="line-total-label">{{ 'Total' | translate }}</span>
+          <span class="line-total-value">₹{{ getItemTotal(item) | number:'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <div class="cart-item-actions">
+        @if(item.unit === 'Weight') {
+        <div class="unit-toggle" role="group" aria-label="Unit">
+          <button type="button" [class.active]="item.selectedSubUnit !== 'g'"
+            (click)="item.selectedSubUnit = 'kg'; calculateTotal()">kg</button>
+          <button type="button" [class.active]="item.selectedSubUnit === 'g'"
+            (click)="item.selectedSubUnit = 'g'; calculateTotal()">g</button>
+        </div>
+        }
+
+        <div class="qty-stepper">
+          <button type="button" class="stepper-btn" (click)="decreaseQuantity(i)" aria-label="Decrease quantity">
+            <ion-icon name="remove-outline"></ion-icon>
+          </button>
+          <ion-input class="qty-input" type="number" [(ngModel)]="item.Quantity" (ngModelChange)="calculateTotal()"
+            (change)="onQuantityChange(item)" min="0.001" aria-label="Quantity"></ion-input>
+          <button type="button" class="stepper-btn plus" (click)="increaseQuantity(i)" aria-label="Increase quantity">
+            <ion-icon name="add-outline"></ion-icon>
+          </button>
+        </div>
+
+        <button class="item-remove-btn" (click)="removeItem(i)" aria-label="Remove item">
+          <ion-icon name="trash-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+}
+
+@if(errorMessage) {
+<div class="error-banner">
+  <ion-icon name="alert-circle-outline"></ion-icon>
+  <span>{{ errorMessage }}</span>
+</div>
+}
+
+<ion-footer class="ion-no-border billing-footer">
+  <div class="checkout-sheet">
+    <div class="grand-total-card">
+      <div class="grand-total-head">
+        <span class="total-label">{{ 'Grand Total' | translate }}</span>
+        <span class="items-chip">{{ cartItems.length }} {{ 'items' | translate }}</span>
+      </div>
+      <div class="grand-total-amount">
         <span class="total-currency">₹</span>
-        <span class="total-value">{{totalPrice}}</span>
+        <span class="total-value">{{ totalPrice | number:'1.2-2' }}</span>
       </div>
     </div>
 
-    <div class="checkout-actions-wrapper">
-      <!-- Pending Button with Custom SVG Icon -->
-      <ion-button shape="round" color="warning" class="pending-btn" (click)="onPendingCheckout()">
-        <svg viewBox="0 0 512 512"
-          style="width: 22px; height: 22px; margin-right: 6px; display: inline-block; vertical-align: middle;">
+    <div class="checkout-actions">
+      <ion-button shape="round" class="pending-btn" (click)="onPendingCheckout()">
+        <svg viewBox="0 0 512 512" aria-hidden="true">
           <rect x="30" y="30" width="452" height="270" rx="36" fill="#7ed7f5" />
           <path d="M256,30 h190 a36,36 0 0 1 36,36 v198 a36,36 0 0 1 -36,36 h-190 z" fill="#4d9bd6" />
           <rect x="30" y="70" width="452" height="64" fill="#3b6580" />
@@ -159,17 +183,23 @@
         {{ 'Pending' | translate }}
       </ion-button>
 
-      <!-- Invoice Button -->
-      <ion-button shape="round" color="primary" class="invoice-btn" (click)="DownloadPDF()">
+      <ion-button shape="round" class="invoice-btn" (click)="DownloadPDF()">
         {{ 'Invoice' | translate }}
-        <ion-icon name="document-text-outline" color="danger" style="margin-left: 6px;"></ion-icon>
+        <ion-icon name="document-text-outline" slot="end"></ion-icon>
+      </ion-button>
+
+      <ion-button shape="round" class="share-btn" (click)="shareBill()">
+        <ion-icon name="share-social-outline" slot="start"></ion-icon>
+        {{ 'Share' | translate }}
       </ion-button>
     </div>
   </div>
 </ion-footer>
+
 <app-quote-price-billing [isOpen]="isProductModalOpen" [productName]="SearchProduct"
   (close)="isProductModalOpen = false">
 </app-quote-price-billing>
+
 @if(isBillModalOpen) {
 <app-generate-bill [cartItems]="cartItems" [totalPrice]="totalPrice" [searchQuery]="searchQuery.customerName"
   [currentDate]="currentDate" [status]="billStatus" [amountPaid]="pendingAmountPaid"
@@ -177,23 +207,24 @@
   (close)="isBillModalOpen = false">
 </app-generate-bill>
 }
+
 <app-pending [isOpen]="isPendingModalOpen" [totalPrice]="totalPrice" [customerName]="searchQuery.customerName"
   (close)="isPendingModalOpen = false" (confirmPending)="handlePendingConfirm($event)">
 </app-pending>
 
-<ion-modal [isOpen]="isCreateUserModalOpen" (didDismiss)="isCreateUserModalOpen = false">
+<ion-modal [isOpen]="isCreateUserModalOpen" (didDismiss)="isCreateUserModalOpen = false" class="create-user-modal">
   <ng-template>
-    <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title>{{ 'Create Customer' | translate }}</ion-title>
+    <ion-header class="ion-no-border">
+      <ion-toolbar class="modal-toolbar">
+        <ion-title class="modal-title">{{ 'Create Customer' | translate }}</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="isCreateUserModalOpen = false">
+          <ion-button (click)="isCreateUserModalOpen = false" class="modal-close-btn">
             <ion-icon name="close"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
-    <ion-content>
+    <ion-content class="modal-content">
       <app-create-user [customerName]="searchQuery.customerName"
         (customerAdded)="handleCustomerAdded($event)"></app-create-user>
     </ion-content>

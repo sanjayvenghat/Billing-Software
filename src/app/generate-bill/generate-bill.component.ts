@@ -30,6 +30,8 @@ export class GenerateBillComponent implements OnInit, AfterViewInit {
   storeName: string = 'Sakthistores';
   subtotalPrice: number = 0;
   taxAmount: number = 0;
+  taxBreakdown: { rate: number, amount: number }[] = [];
+  grandTotal: number = 0;
   invoiceNumber: string = '';
 
   constructor(
@@ -44,7 +46,17 @@ export class GenerateBillComponent implements OnInit, AfterViewInit {
 
   calculateTotals() {
     this.subtotalPrice = this.cartItems.reduce((acc, item) => acc + this.getItemTotal(item), 0);
-    this.taxAmount = (this.subtotalPrice * (Number(this.taxPercent) || 0)) / 100;
+    const rateMap = new Map<number, number>();
+    this.cartItems.forEach(item => {
+      const rate = Number(item.GST) || 0;
+      const amount = (this.getItemTotal(item) * rate) / 100;
+      rateMap.set(rate, (rateMap.get(rate) || 0) + amount);
+    });
+    this.taxBreakdown = Array.from(rateMap.entries())
+      .filter(([rate]) => rate > 0)
+      .map(([rate, amount]) => ({ rate, amount }));
+    this.taxAmount = this.taxBreakdown.reduce((acc, t) => acc + t.amount, 0);
+    this.grandTotal = this.subtotalPrice + this.taxAmount - (this.discountAmount || 0);
     this.invoiceNumber = 'INV-' + (this.currentDate ? this.currentDate.getTime().toString().slice(-6) : Math.floor(Math.random() * 1000000));
   }
 

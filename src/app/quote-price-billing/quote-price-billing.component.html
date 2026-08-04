@@ -1,11 +1,11 @@
 <ion-modal [isOpen]="isOpen" (didDismiss)="close.emit()" [enterAnimation]="enterAnimation"
-  [leaveAnimation]="leaveAnimation">
+  [leaveAnimation]="leaveAnimation" class="quote-price-modal">
   <ng-template>
     <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title>Quote Price</ion-title>
+      <ion-toolbar class="modal-toolbar">
+        <ion-title class="modal-title">Quote Price</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="close.emit()">
+          <ion-button (click)="close.emit()" class="modal-close-btn">
             <ion-icon name="close"></ion-icon>
           </ion-button>
         </ion-buttons>

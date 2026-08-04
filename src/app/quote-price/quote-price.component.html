@@ -30,6 +30,18 @@
           </ion-row>
 
           <ion-row class="ion-margin-top">
+            <!-- Item Code or Barcode -->
+            <ion-col size="12">
+              <div class="input-field-wrap">
+                <ion-icon name="barcode-outline" class="input-field-icon"></ion-icon>
+                <ion-input fill="outline" labelPlacement="floating" [label]="'Item code or barcode' | translate"
+                  [(ngModel)]="ItemCode" (ngModelChange)="savedItemUrl = ''"
+                  [placeholder]="'e.g. 8901234567890' | translate" class="custom-input"></ion-input>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="ion-margin-top">
             <!-- Cost Price -->
             <ion-col size="12" size-md="6" class="pr-md-2">
               <div class="input-field-wrap">
@@ -53,9 +65,9 @@
             </ion-col>
           </ion-row>
 
-          <ion-row class="ion-margin-top ion-align-items-center">
+          <ion-row class="ion-margin-top">
             <!-- Unit Select -->
-            <ion-col size="12" size-md="6" class="pr-md-2">
+            <ion-col size="12">
               <div class="select-field-wrap">
                 <ion-icon name="scale-outline" class="select-field-icon"></ion-icon>
                 <ion-item lines="none" class="custom-select-item">
@@ -67,16 +79,44 @@
                 </ion-item>
               </div>
             </ion-col>
-
-            <!-- Save Action Button -->
-            <ion-col size="12" size-md="6" class="pl-md-2 mt-sm-down">
-              <ion-button expand="block" class="submit-btn gradient-btn" (click)="AddGroceryData()">
-                <ion-icon slot="start" name="save-outline"></ion-icon>
-                {{ 'Save Product' | translate }}
-              </ion-button>
-            </ion-col>
           </ion-row>
         </ion-grid>
+
+        <!-- Toggle Row for GST -->
+        <div class="gst-toggle-section ion-margin-top">
+          <ion-item lines="none" class="gst-checkbox-item">
+            <ion-checkbox justify="space-between" [(ngModel)]="enableGst" class="custom-checkbox">
+              {{ 'Enable GST' | translate }}
+            </ion-checkbox>
+          </ion-item>
+
+          @if (enableGst) {
+          <div class="gst-rate-select">
+            <div class="select-field-wrap">
+              <ion-icon name="pricetag-outline" class="select-field-icon"></ion-icon>
+              <ion-item lines="none" class="custom-select-item">
+                <ion-select [(ngModel)]="gstRate" interface="action-sheet"
+                  [placeholder]="'Select GST Rate' | translate" class="custom-select">
+                  @for (opt of gstRates; track opt.gst) {
+                  <ion-select-option [value]="opt.gst">
+                    {{ 'GST' | translate }} {{ opt.gst }}%
+                  </ion-select-option>
+                  }
+                </ion-select>
+              </ion-item>
+            </div>
+            @if (getGstSplitInfo()) {
+            <p class="gst-split-hint">{{ getGstSplitInfo() }}</p>
+            }
+          </div>
+          }
+        </div>
+
+        <!-- Save Action Button -->
+        <ion-button expand="block" class="submit-btn gradient-btn ion-margin-top" (click)="AddGroceryData()">
+          <ion-icon slot="start" name="save-outline"></ion-icon>
+          {{ 'Save Product' | translate }}
+        </ion-button>
 
         <!-- Toggle Row for QR Code -->
         <div class="qr-toggle-section ion-margin-top">

@@ -92,11 +92,13 @@
           <td>{{ 'Subtotal' | translate }}</td>
           <td class="font-monospace">₹{{ subtotalPrice | number:'1.2-2' }}</td>
         </tr>
-        @if (taxPercent > 0) {
+        @if (taxBreakdown.length > 0) {
+        @for (rate of taxBreakdown; track rate.rate) {
         <tr>
-          <td>{{ 'Tax' | translate }} ({{ taxPercent }}%)</td>
-          <td class="font-monospace">₹{{ taxAmount | number:'1.2-2' }}</td>
+          <td>{{ 'Tax' | translate }} ({{ rate.rate }}%)</td>
+          <td class="font-monospace">₹{{ rate.amount | number:'1.2-2' }}</td>
         </tr>
+        }
         }
         @if (discountAmount > 0) {
         <tr>
@@ -106,7 +108,7 @@
         }
         <tr class="grand-total-row">
           <td class="bold">{{ 'Grand Total' | translate }}</td>
-          <td class="font-monospace bold purple-text">₹{{ totalPrice | number:'1.2-2' }}</td>
+          <td class="font-monospace bold purple-text">₹{{ grandTotal | number:'1.2-2' }}</td>
         </tr>
         @if (status === 'PENDING') {
         <tr class="pending-calculations">

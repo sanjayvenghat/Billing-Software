@@ -33,14 +33,14 @@ export class ProductService {
     );
   }
 
-  UpdateProductPrice(ProductId: string, SellingPrice: string, BuyingPrice: string): Observable<any> {
-    const payload = { ProductId, SellingPrice, BuyingPrice };
-    return this.http.post(`${this.apiUrl}/UpdateProduct`, payload, { headers: this.getHeaders() }).pipe(
+  UpdateProduct(ProductId: string, payload: any): Observable<any> {
+    const body = { ProductId, ...payload };
+    return this.http.post(`${this.apiUrl}/UpdateProduct`, body, { headers: this.getHeaders() }).pipe(
       map((val: any) => {
         return val;
       }),
       catchError((error) => {
-        console.error('Error updating grocery price:', error);
+        console.error('Error updating grocery product:', error);
         return throwError(() => error);
       })
     );

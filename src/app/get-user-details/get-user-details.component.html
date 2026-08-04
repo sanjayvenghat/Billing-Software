@@ -7,16 +7,6 @@
       <app-billing></app-billing>
     </ion-content>
   </ion-tab>
-  <ion-tab tab="radio">
-    <div id="radio-page" class="ion-page">
-      <ion-header>
-        <app-header-component [HeaderTitle]="'Quote price' | translate"></app-header-component>
-      </ion-header>
-      <ion-content>
-        <app-quote-price></app-quote-price>
-      </ion-content>
-    </div>
-  </ion-tab>
   <ion-tab tab="library">
     <div id="library-page" class="ion-page">
       <ion-header>
@@ -33,32 +23,14 @@
       <app-ion-table></app-ion-table>
     </div>
   </ion-tab>
-  <ion-tab tab="Add User">
-    <div id="search-page" class="ion-page">
-      <ion-header>
-        <app-header-component [HeaderTitle]="'Add User' | translate"></app-header-component>
-      </ion-header>
-      <ion-content [scrollY]="false">
-        <app-create-user></app-create-user>
-      </ion-content>
-    </div>
-  </ion-tab>
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="home" routerLink="billing">
       <ion-icon name="cash-outline"></ion-icon>
       {{ 'Billing' | translate }}
     </ion-tab-button>
-    <ion-tab-button tab="radio" routerLink="quote-price">
-      <ion-icon name="pricetags"></ion-icon>
-      {{ 'Quote price' | translate }}
-    </ion-tab-button>
     <ion-tab-button tab="library" routerLink="product-list">
       <ion-icon name="library"></ion-icon>
       {{ 'Grocery List' | translate }}
-    </ion-tab-button>
-    <ion-tab-button tab="Add User" routerLink="add-user">
-      <ion-icon name="person-add"></ion-icon>
-      {{ 'Add User' | translate }}
     </ion-tab-button>
     <ion-tab-button tab="Accounts and pending" routerLink="pending">
       <ion-icon name="wallet"></ion-icon>

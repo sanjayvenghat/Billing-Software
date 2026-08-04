@@ -1,42 +1,54 @@
 <div class="center-container">
   <div class="form-wrapper">
-    <div class="form-header">
-      <div class="header-icon-container">
-        <ion-icon name="person-outline" class="header-icon"></ion-icon>
+    <div class="form-card">
+      <div class="form-header">
+        <div class="header-icon-container">
+          <ion-icon name="person-add-outline" class="header-icon"></ion-icon>
+        </div>
+        <h2 class="form-title">{{ 'New Customer' | translate }}</h2>
+        <p class="text-muted">{{ 'Fill in the details below to add a new customer.' | translate }}</p>
       </div>
-      <h2 class="ion-text-center form-title" color="primary">{{ 'New Customer' | translate }}</h2>
-      <p class="ion-text-center text-muted ">{{ 'Fill in the details below to add a new customer.' | translate }}</p>
-    </div>
 
-    <ion-grid>
-      <ion-row>
-        <ion-col size="12" class="custom-col">
-          <div class="input-with-icon">
+      <div class="form-fields">
+        <div class="input-group">
+          <ion-label class="input-label">{{ 'Customer Name' | translate }}</ion-label>
+          <div class="input-with-icon" [class.has-error]="submitted && !customerName">
             <ion-icon name="person-outline" class="input-icon"></ion-icon>
-            <ion-input [placeholder]="'Enter the customer Name' | translate" [(ngModel)]="customerName"
-              spellcheck="false" autocorrect="off"></ion-input>
+            <ion-input [placeholder]="'Enter customer name' | translate" [(ngModel)]="customerName" spellcheck="false"
+              autocorrect="off"></ion-input>
           </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="12" class="custom-col">
-          <div class="input-with-icon">
+          @if (submitted && !customerName) {
+          <span class="error-text">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            {{ 'Customer name is required' | translate }}
+          </span>
+          }
+        </div>
+
+        <div class="input-group">
+          <ion-label class="input-label">{{ 'Mobile Number' | translate }}</ion-label>
+          <div class="input-with-icon" [class.has-error]="submitted && !isValidPhone">
             <ion-icon name="call-outline" class="input-icon"></ion-icon>
-            <ion-input [placeholder]="'Enter the customer PhoneNumber' | translate" type="tel" inputmode="numeric"
+            <ion-input [placeholder]="'Enter 10-digit mobile number' | translate" type="tel" inputmode="numeric"
               maxlength="10" [(ngModel)]="phoneNumber" (ionInput)="validateNumber($event)" spellcheck="false"
-              autocorrect="off">
-            </ion-input>
+              autocorrect="off"></ion-input>
+            @if (isValidPhone) {
+            <ion-icon name="checkmark-circle" class="input-valid-icon"></ion-icon>
+            }
           </div>
-        </ion-col>
-      </ion-row>
-      <ion-row class="ion-margin-top">
-        <ion-col size="12" class="custom-col">
-          <ion-button expand="block" class="custom-button gradient-button" (click)="AddCustomer()">
-            <ion-icon slot="start" name="save-outline"></ion-icon>
-            {{ 'Add Customer' | translate }}
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+          @if (submitted && !isValidPhone) {
+          <span class="error-text">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            {{ 'Enter a valid 10-digit mobile number' | translate }}
+          </span>
+          }
+        </div>
+      </div>
+
+      <ion-button expand="block" class="custom-button gradient-button" (click)="AddCustomer()">
+        <ion-icon slot="start" name="person-add-outline"></ion-icon>
+        {{ 'Add Customer' | translate }}
+      </ion-button>
+    </div>
   </div>
 </div>

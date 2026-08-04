@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IonGrid, IonRow, IonCol, IonInput, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { IonInput, IonButton, IonIcon, IonLabel } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { personOutline, mailOutline, lockClosedOutline, callOutline, globeOutline, saveOutline } from 'ionicons/icons';
+import { personOutline, callOutline, saveOutline, personAddOutline, checkmarkCircle, alertCircleOutline } from 'ionicons/icons';
 import { FormsModule } from '@angular/forms';
 import { NewUser } from './new-user';
 import { ToastService } from 'src/Service/ToasterService';
@@ -13,12 +13,17 @@ import { TranslateService } from '../../Service/TranslateService';
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.scss'],
-  imports: [IonGrid, IonRow, IonCol, IonInput, IonButton, IonIcon, FormsModule, TranslatePipe]
+  imports: [IonInput, IonButton, IonIcon, IonLabel, FormsModule, TranslatePipe]
 })
 export class CreateUserComponent implements OnInit {
   @Input() customerName: String = ""
   @Input() phoneNumber: String = ""
   @Output() customerAdded = new EventEmitter<any>();
+  submitted = false;
+
+  get isValidPhone(): boolean {
+    return /^\d{10}$/.test((this.phoneNumber || '').toString().trim());
+  }
 
   constructor(
     private newUserService: NewUser,
@@ -26,7 +31,7 @@ export class CreateUserComponent implements OnInit {
     private keysStorage: KEYSSTORAGE,
     private translateService: TranslateService
   ) {
-    addIcons({ personOutline, mailOutline, lockClosedOutline, callOutline, globeOutline, saveOutline });
+    addIcons({ personOutline, callOutline, saveOutline, personAddOutline, checkmarkCircle, alertCircleOutline });
   }
 
   ngOnInit() {
@@ -36,11 +41,12 @@ export class CreateUserComponent implements OnInit {
     }
   }
   AddCustomer() {
+    this.submitted = true;
     if (!this.customerName) {
       this.toastr.showWarning(this.translateService.translate("Please enter customer name"));
       return;
     }
-    if (!this.phoneNumber) {
+    if (!this.isValidPhone) {
       this.toastr.showWarning(this.translateService.translate("Please enter Valid Mobile Number Before Saving The data"));
       return;
     }

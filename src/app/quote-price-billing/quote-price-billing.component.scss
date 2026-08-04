@@ -1,0 +1,30 @@
+ion-modal.quote-price-modal {
+  --border-radius: 22px;
+  --width: 100%;
+  --max-width: 460px;
+  --height: 86%;
+  --box-shadow: 0 24px 48px rgba(15, 23, 42, 0.3);
+
+  app-quote-price {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: auto;
+    min-height: 0;
+  }
+
+  .modal-toolbar {
+    --background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    --color: #fff;
+  }
+
+  .modal-title {
+    color: #fff;
+    font-weight: 800;
+    font-size: 16px;
+  }
+
+  .modal-close-btn {
+    --color: #fff;
+  }
+}

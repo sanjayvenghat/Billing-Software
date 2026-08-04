@@ -15,10 +15,10 @@ import { locateOutline, eyeOutline, heartOutline, statsChartOutline, shieldCheck
 export class AboutUsComponent implements OnInit {
 
   counters = [
-    { target: 500, current: 0, suffix: '+', label: 'Stores Trust Us' },
-    { target: 50000, current: 0, suffix: '+', label: 'Bills Generated' },
-    { target: 48, current: 0, suffix: '', label: 'Average Rating', display: (v: number) => (v / 10).toFixed(1) + '\u2605' },
-    { target: 200, current: 0, prefix: '\u20B9', suffix: 'Cr+', label: 'Dues Recovered' },
+    { target: 10, current: 0, suffix: '+', label: 'Stores Trust Us' },
+    { target: 100, current: 0, suffix: '+', label: 'Bills Generated' },
+    { target: 50, current: 0, suffix: '', label: 'Average Rating', display: (v: number) => (v / 10).toFixed(1) + '\u2605' },
+    { target: 20, current: 0, prefix: '\u20B9', suffix: '+', label: 'Dues Recovered' },
   ];
   countersStarted = false;
 

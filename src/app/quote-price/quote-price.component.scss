@@ -262,6 +262,35 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* GST Toggle Section */
+.gst-toggle-section {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 16px;
+
+  .gst-checkbox-item {
+    --background: transparent;
+    --padding-start: 0;
+    --padding-end: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 12px;
+  }
+
+  .gst-rate-select {
+    margin-top: 12px;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+
+    .gst-split-hint {
+      margin: 10px 0 0 0;
+      padding: 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      text-align: center;
+    }
+  }
+}
+
 /* responsive spacing adjustments */
 .pr-md-2 {
   @media (min-width: 768px) {

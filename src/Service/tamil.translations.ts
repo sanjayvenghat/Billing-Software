@@ -24,8 +24,7 @@ export const TAMIL_DICTIONARY: { [key: string]: string } = {
   'System Language': 'கணினி மொழி',
   'Configure default display language': 'இயல்புநிலை காட்சி மொழியை உள்ளமைக்கவும்',
   'OTHER OPTIONS': 'இதர விருப்பங்கள்',
-  'Dark Mode': 'டார்க் மோடு',
-  'Switch between light and dark interface themes': 'ஒளி மற்றும் இருண்ட இடைமுக தீம்களுக்கு இடையே மாறவும்',
+
   'Set Store Icon': 'கடையின் ஐகானை அமைக்கவும்',
   'Select Store Icon from below': 'கீழே இருந்து கடையின் ஐகானைத் தேர்ந்தெடுக்கவும்',
   'Save Settings': 'அமைப்புகளைச் சேமிக்கவும்',
@@ -41,6 +40,13 @@ export const TAMIL_DICTIONARY: { [key: string]: string } = {
   'Search or Scan Barcode...': 'தேடு அல்லது பார்கோடு ஸ்கேன் செய்...',
   'Grand Total': 'மொத்த தொகை',
   'Invoice': 'ரசீது',
+  'Share': 'பகிர்',
+  'Share Bill': 'பில் பகிர்க',
+  'WhatsApp': 'வாட்ஸ்அப்',
+  'SMS': 'எஸ்எம்எஸ்',
+  'Cart is empty. Cannot share bill.': 'கார்ட் காலியாக உள்ளது. பில் பகிர முடியாது.',
+  'Please select a customer before sharing the bill.': 'பில் பகிர்வதற்கு முன் வாடிக்கையாளரைத் தேர்ந்தெடுக்கவும்.',
+  'Selected customer has no mobile number. Please add a mobile number.': 'தேர்ந்தெடுக்கப்பட்ட வாடிக்கையாளரிடம் மொபைல் எண் இல்லை. மொபைல் எண்ணைச் சேர்க்கவும்.',
   'Create Customer': 'வாடிக்கையாளரை உருவாக்கு',
   'Close': 'மூடு',
 
@@ -49,6 +55,7 @@ export const TAMIL_DICTIONARY: { [key: string]: string } = {
   "We couldn't find this product in your database. Would you like to add it manually?": 'இந்த தயாரிப்பு எங்கள் தரவுத்தளத்தில் இல்லை. கைமுறையாக சேர்க்க வேண்டுமா?',
   'No, Cancel': 'இல்லை, ரத்துசெய்',
   'Yes, Add Product': 'ஆம், தயாரிப்பைச் சேர்',
+  'Item code or barcode': 'பொருள் குறியீடு அல்லது பார்கோடு',
 
   // Add User Modal / Create User
   'Customer Not Found': 'வாடிக்கையாளர் காணப்படவில்லை',
@@ -66,6 +73,8 @@ export const TAMIL_DICTIONARY: { [key: string]: string } = {
   'Cost': 'அடக்க விலை',
   'Profit': 'லாபம்',
   'Loss': 'நஷ்டம்',
+  'BARCODE': 'பார்கோடு',
+  'No barcode': 'பார்கோடு இல்லை',
   'No products match your search.': 'உங்கள் தேடலுக்கு எந்தப் பொருட்களும் பொருந்தவில்லை.',
   'No Products Found': 'தயாரிப்புகள் எதுவும் கிடைக்கவில்லை',
   'Your product library is currently empty. Add some products from the Quote Price tab.': 'உங்கள் தயாரிப்பு நூலகம் தற்போது காலியாக உள்ளது. விலைப்பட்டியல் தாவலில் இருந்து தயாரிப்புகளைச் சேர்க்கவும்.',

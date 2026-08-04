@@ -3,12 +3,13 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { PremiumToastComponent } from 'src/Service/premium-toast.component';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, SidebarComponent],
+  imports: [IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, SidebarComponent, PremiumToastComponent],
 })
 export class AppComponent implements OnInit {
   constructor(

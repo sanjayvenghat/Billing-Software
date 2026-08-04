@@ -18,7 +18,6 @@ import {
   refreshCircle,
   globe,
   arrowUndo,
-  moon,
   trendingUp,
   colorPalette,
   flash,
@@ -51,7 +50,6 @@ export class SettingsComponent implements OnInit {
   searchQuery: string = '';
 
   // Settings states
-  darkMode: boolean = false;
   gstBilling: boolean = false;
   showProfitOfEveryProduct: boolean = true;
   IconType: string = 'Standard Black';
@@ -97,7 +95,6 @@ export class SettingsComponent implements OnInit {
       'refresh-circle': refreshCircle,
       globe,
       'arrow-undo': arrowUndo,
-      moon,
       'trending-up': trendingUp,
       'color-palette': colorPalette,
       flash,
@@ -112,33 +109,17 @@ export class SettingsComponent implements OnInit {
   loadSettings() {
     let saved = this.keysStorage.getItem('APP_SETTINGS')
     if (saved) {
-      this.darkMode = saved.darkMode ?? false;
       this.gstBilling = saved.gstBilling ?? false;
       this.showProfitOfEveryProduct = saved.showProfitOfEveryProduct ?? true;
       this.IconType = saved.IconType;
       this.autoSync = saved.autoSync ?? false;
       this.systemLanguage = saved.systemLanguage ?? 'English';
     }
-    this.applyDarkMode(this.darkMode);
-  }
-
-  toggleDarkMode() {
-    this.applyDarkMode(this.darkMode);
-  }
-
-  applyDarkMode(isDark: boolean) {
-    if (isDark) {
-      document.documentElement.classList.add('ion-palette-dark');
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('ion-palette-dark');
-      document.documentElement.classList.remove('dark');
-    }
   }
 
   saveSettings() {
     const settingsObj = {
-      darkMode: this.darkMode,
+      darkMode: false,
       gstBilling: this.gstBilling,
       showProfitOfEveryProduct: this.showProfitOfEveryProduct,
       IconType: this.IconType,
@@ -159,7 +140,6 @@ export class SettingsComponent implements OnInit {
           this.keysStorage.setItem('APP_SETTINGS', settingsObj);
           this.translateService.setLanguage(this.systemLanguage);
           this.toastService.showSuccess(this.translateService.translate('Settings saved successfully!'));
-          this.applyDarkMode(this.darkMode);
         } else {
           this.toastService.showError(this.translateService.translate(val?.message || 'Failed to save settings.'));
         }
@@ -172,7 +152,6 @@ export class SettingsComponent implements OnInit {
   }
 
   resetToDefaults() {
-    this.darkMode = false;
     this.gstBilling = false;
     this.showProfitOfEveryProduct = true;
     this.IconType = 'Standard Black';
@@ -189,7 +168,8 @@ export class SettingsComponent implements OnInit {
 
   signOut() {
     this.keysStorage.clear();
-    this.applyDarkMode(false);
+    document.documentElement.classList.remove('ion-palette-dark');
+    document.documentElement.classList.remove('dark');
     this.router.navigate(['/home']);
   }
 
