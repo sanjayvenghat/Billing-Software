@@ -23,7 +23,7 @@ import { TranslatePipe } from '../../Service/TranslatePipe';
   selector: 'app-get-user-details',
   templateUrl: './get-user-details.component.html',
   styleUrls: ['./get-user-details.component.scss'],
-  imports: [IonTableComponent, RouterLink, IonContent, IonHeader, IonIcon, IonTab, IonTabBar, IonTabButton, IonTabs, IonToolbar, HeaderComponentComponent, BillingComponent, QuotePriceComponent, ListProductComponent, CreateUserComponent, TranslatePipe],
+  imports: [IonTableComponent, RouterLink, IonContent, IonHeader, IonIcon, IonTab, IonTabBar, IonTabButton, IonTabs, HeaderComponentComponent, BillingComponent, ListProductComponent, TranslatePipe],
 })
 export class GetUserDetailsComponent {
 

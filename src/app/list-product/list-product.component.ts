@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment';
   selector: 'app-list-product',
   templateUrl: './list-product.component.html',
   styleUrls: ['./list-product.component.scss'],
-  imports: [IonItem, IonLabel, IonList, IonNote, IonAvatar, CurrencyPipe, IonListHeader, IonInput, IonButton, IonIcon, IonSearchbar, IonHeader, IonToolbar, IonButtons, IonModal, IonTitle, IonSelect, IonSelectOption, IonCheckbox, IonGrid, IonRow, IonCol, IonFooter, IonContent, FormsModule, CommonModule, TranslatePipe, QuotePriceComponent, CreateUserComponent, QRCodeComponent],
+  imports: [IonItem, IonInput, IonButton, IonIcon, IonSearchbar, IonHeader, IonToolbar, IonButtons, IonModal, IonTitle, IonSelect, IonSelectOption, IonCheckbox, IonGrid, IonRow, IonCol, IonContent, FormsModule, CommonModule, TranslatePipe, QuotePriceComponent, CreateUserComponent, QRCodeComponent],
 })
 export class ListProductComponent implements OnInit {
   Grocery_List: any = [];
@@ -62,6 +62,8 @@ export class ListProductComponent implements OnInit {
     private translateService: TranslateService
   ) {
     addIcons({ createOutline, checkmarkOutline, closeOutline, funnel, trashOutline, addOutline, close, barcodeOutline, qrCodeOutline, downloadOutline, chevronBackOutline, chevronForwardOutline });
+    this.Grocery_List = [];
+    this.Filtered_Grocery_List = [];
   }
 
   ngOnInit() {
