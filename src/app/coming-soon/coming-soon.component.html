@@ -1,0 +1,28 @@
+<ion-content class="coming-soon-wrapper">
+  <div class="coming-soon-container">
+    <div class="glass-card">
+      <div class="icon-ring-wrapper">
+        <div class="pulse-ring ring-1"></div>
+        <div class="pulse-ring ring-2"></div>
+        <div class="icon-inner">
+          <ion-icon name="cart-outline"></ion-icon>
+        </div>
+      </div>
+
+      <div class="badge-status">
+        <span>{{ 'COMING SOON' | translate }}</span>
+      </div>
+
+      <h1 class="main-title">{{ 'E-Commerce Dashboard' | translate }}</h1>
+      <p class="sub-description">
+        {{ 'We are building a powerful, real-time analytics suite to track your store orders, delivery updates, and
+        customer shopping behavior. Stay tuned for a smarter e-commerce experience!' | translate }}
+      </p>
+
+      <button class="action-back-btn" (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+        <span>{{ 'Back to Billing' | translate }}</span>
+      </button>
+    </div>
+  </div>
+</ion-content>

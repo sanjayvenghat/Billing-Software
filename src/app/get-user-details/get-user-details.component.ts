@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import {
   IonContent,
   IonHeader,
@@ -15,10 +15,11 @@ import { addIcons } from 'ionicons';
 import { library, playCircle, radio, search, cashOutline, pricetags, personAdd, wallet } from 'ionicons/icons';
 import { QuotePriceComponent } from '../quote-price/quote-price.component';
 import { ListProductComponent } from '../list-product/list-product.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { CreateUserComponent } from '../create-user/create-user.component';
 import { IonTableComponent } from '../ion-table/ion-table.component';
 import { TranslatePipe } from '../../Service/TranslatePipe';
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-get-user-details',
   templateUrl: './get-user-details.component.html',
@@ -32,11 +33,12 @@ export class GetUserDetailsComponent {
   @ViewChild(CreateUserComponent) createUserComponent!: CreateUserComponent;
   @ViewChild(ListProductComponent) listProductComponent!: ListProductComponent;
   @ViewChild(IonTableComponent) ionTableComponent!: IonTableComponent;
+  @ViewChild('myTabs') tabs!: any;
 
   isMobile = true;
   private desktopMedia?: MediaQueryList;
 
-  constructor() {
+  constructor(private router: Router) {
     addIcons({ library, playCircle, radio, search, cashOutline, pricetags, personAdd, wallet });
   }
 
@@ -44,6 +46,30 @@ export class GetUserDetailsComponent {
     this.desktopMedia = window.matchMedia('(min-width: 992px)');
     this.updateViewport();
     this.desktopMedia.addEventListener('change', this.updateViewport);
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.syncTabWithRoute(event.urlAfterRedirects || event.url);
+    });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.syncTabWithRoute(this.router.url);
+    }, 150);
+  }
+
+  private syncTabWithRoute(url: string) {
+    console.log('syncTabWithRoute called with:', url, 'tabs availability:', !!this.tabs);
+    if (!this.tabs) return;
+    if (url.includes('/GetUserDetails/billing')) {
+      this.tabs.select('home');
+    } else if (url.includes('/GetUserDetails/product-list')) {
+      this.tabs.select('library');
+    } else if (url.includes('/GetUserDetails/pending')) {
+      this.tabs.select('Accounts and pending');
+    }
   }
 
   ngOnDestroy() {

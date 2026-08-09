@@ -1,0 +1,198 @@
+<ion-content class="report-content-wrapper">
+  <div class="report-container">
+
+    <!-- Title & Description Header -->
+    <div class="report-header">
+      <div class="header-left">
+        <div class="header-title-row">
+          <button class="app-back-btn" (click)="goBack()" title="Back to App">
+            <ion-icon name="arrow-undo-outline"></ion-icon>
+          </button>
+          <h1>{{ 'Profit & Sales Report' | translate }}</h1>
+        </div>
+        <p class="header-subtitle">{{ 'Real-time overview of your store revenues, costs, and profits.' | translate }}
+        </p>
+      </div>
+
+      <!-- Filter controls with clean labels -->
+      <div class="header-right-filters">
+        <div class="filter-control-group">
+          <span class="filter-lbl">{{ 'Show Period:' | translate }}</span>
+          <ion-segment scrollable="true" [value]="selectedRange" (ionChange)="onRangeChange($event)"
+            class="custom-segment">
+            <ion-segment-button value="week">
+              <ion-label>{{ 'This Week' | translate }}</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="month">
+              <ion-label>{{ 'This Month' | translate }}</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="all">
+              <ion-label>{{ 'All Time' | translate }}</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="custom">
+              <ion-label>{{ 'Custom' | translate }}</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+
+        <div class="filter-control-group">
+          <span class="filter-lbl">{{ 'Filter Bills:' | translate }}</span>
+          <ion-segment scrollable="true" [value]="selectedBillType" (ionChange)="onBillTypeChange($event)"
+            class="custom-segment bill-type-segment">
+            <ion-segment-button value="all">
+              <ion-label>{{ 'All Bills' | translate }}</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="paid">
+              <ion-label>{{ 'Paid Only' | translate }}</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="pending">
+              <ion-label>{{ 'Pending Only' | translate }}</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Date Inputs (only visible if selectedRange === 'custom') -->
+    @if (selectedRange === 'custom') {
+    <div class="custom-date-picker-container">
+      <div class="date-input-group">
+        <label for="start-date-input">{{ 'Start Date' | translate }}</label>
+        <input id="start-date-input" type="date" [(ngModel)]="startDate" (change)="onDateChange()"
+          class="native-date-input" />
+      </div>
+      <div class="date-input-group">
+        <label for="end-date-input">{{ 'End Date' | translate }}</label>
+        <input id="end-date-input" type="date" [(ngModel)]="endDate" (change)="onDateChange()"
+          class="native-date-input" />
+      </div>
+    </div>
+    }
+
+    <!-- PRIMARY METRIC SPOTLIGHT (Net Profit is the most important) -->
+    <div class="spotlight-card">
+      <div class="spotlight-header">
+        <span class="spotlight-label">{{ 'Net Profit' | translate }}</span>
+        <div class="spotlight-badge">
+          <ion-icon name="trending-up-outline"></ion-icon>
+          <span>{{ 'Net Earnings' | translate }}</span>
+        </div>
+      </div>
+      <h1 class="spotlight-value">₹{{ netProfit | number:'1.2-2' }}</h1>
+      <p class="spotlight-description">{{ 'Your total earnings after product acquisition costs are deducted.' |
+        translate }}</p>
+    </div>
+
+    <!-- SECONDARY METRICS GRID -->
+    <div class="stats-grid">
+      <!-- Total Sales Card -->
+      <div class="stat-card border-sales">
+        <div class="card-icon-wrap">
+          <ion-icon name="cash-outline"></ion-icon>
+        </div>
+        <div class="card-details">
+          <span class="card-label">{{ 'Total Sales' | translate }}</span>
+          <h2 class="card-value">₹{{ totalSales | number:'1.2-2' }}</h2>
+          <span class="card-subtext">{{ 'Gross revenue from bills' | translate }}</span>
+        </div>
+      </div>
+
+      <!-- Total Cost Card -->
+      <div class="stat-card border-cost">
+        <div class="card-icon-wrap">
+          <ion-icon name="wallet-outline"></ion-icon>
+        </div>
+        <div class="card-details">
+          <span class="card-label">{{ 'Product Cost' | translate }}</span>
+          <h2 class="card-value">₹{{ totalCost | number:'1.2-2' }}</h2>
+          <span class="card-subtext">{{ 'Acquisition costs of goods sold' | translate }}</span>
+        </div>
+      </div>
+
+      <!-- Pending Dues Card -->
+      <div class="stat-card border-pending">
+        <div class="card-icon-wrap">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+        </div>
+        <div class="card-details">
+          <span class="card-label">{{ 'Pending Dues' | translate }}</span>
+          <h2 class="card-value">₹{{ totalPending | number:'1.2-2' }}</h2>
+          <span class="card-subtext">{{ 'Outstanding customer balance' | translate }}</span>
+        </div>
+      </div>
+
+      <!-- Profit Margin Card -->
+      <div class="stat-card border-margin">
+        <div class="card-icon-wrap">
+          <ion-icon name="stats-chart-outline"></ion-icon>
+        </div>
+        <div class="card-details">
+          <span class="card-label">{{ 'Profit Margin' | translate }}</span>
+          <h2 class="card-value">{{ profitMargin | number:'1.1-1' }}%</h2>
+          <span class="card-subtext">{{ 'Revenue percentage kept as profit' | translate }}</span>
+        </div>
+      </div>
+    </div>
+    <!-- Recent Bills Panel (Full Width) -->
+    <div class="dashboard-panel-card">
+      <div class="panel-header">
+        <ion-icon name="calendar-outline" class="panel-header-icon"></ion-icon>
+        <h3>{{ 'Recent Bills Detail' | translate }}</h3>
+      </div>
+
+      <div class="panel-body">
+        @if (filteredTransactions.length === 0) {
+        <div class="empty-panel-state">
+          <ion-icon name="receipt-outline" class="empty-icon"></ion-icon>
+          <p class="empty-text-main">{{ 'No transactions recorded for the selection.' | translate }}</p>
+          <p class="empty-text-sub">{{ 'Try selecting a different period or create a new bill.' | translate }}</p>
+          <button class="primary-cta-btn" (click)="navigateToBilling()">
+            <ion-icon name="add-outline"></ion-icon>
+            <span>{{ 'Create New Bill' | translate }}</span>
+          </button>
+        </div>
+        }
+
+        @for (tx of filteredTransactions; track tx.billId) {
+        <div class="tx-detail-card">
+          <div class="tx-card-header">
+            <div class="tx-customer-identity">
+              <div class="tx-customer-avatar">
+                <ion-icon name="person-outline"></ion-icon>
+              </div>
+              <div class="tx-customer-info">
+                <h4>{{ tx.customerName }}</h4>
+                <span class="tx-date">{{ tx.date | date:'dd MMM yyyy, hh:mm a' }}</span>
+              </div>
+            </div>
+            <div class="tx-net-badge">
+              <span class="tx-badge-lbl">{{ 'Earnings' | translate }}</span>
+              <ion-badge color="success" class="tx-profit-badge">+₹{{ tx.calculatedProfit | number:'1.2-2'
+                }}</ion-badge>
+            </div>
+          </div>
+
+          <div class="tx-card-financials">
+            <div class="tx-financial-metric">
+              <span class="metric-lbl">{{ 'Bill Total' | translate }}</span>
+              <span class="metric-val">₹{{ tx.totalAmount | number:'1.2-2' }}</span>
+            </div>
+            <div class="tx-financial-metric">
+              <span class="metric-lbl">{{ 'Cost of Sales' | translate }}</span>
+              <span class="metric-val">₹{{ tx.calculatedCost | number:'1.2-2' }}</span>
+            </div>
+            <div class="tx-financial-metric">
+              <span class="metric-lbl">{{ 'Dues Status' | translate }}</span>
+              <span class="metric-val" [class.unpaid-text]="tx.balanceAmount > 0"
+                [class.paid-text]="tx.balanceAmount === 0">
+                {{ (tx.balanceAmount > 0 ? 'Outstanding' : 'Paid') | translate }}
+              </span>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+  </div>
+</ion-content>

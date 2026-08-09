@@ -28,8 +28,13 @@ export const routes: Routes = [
     canActivate: [manualNavigationGuard]
   },
   {
-    path: 'offer-and-discount',
-    loadComponent: () => import('./offer-discount/offer-discount.component').then((m) => m.OfferDiscountComponent),
+    path: 'profit-report',
+    loadComponent: () => import('./profit-report/profit-report.component').then((m) => m.ProfitReportComponent),
+    canActivate: [manualNavigationGuard]
+  },
+  {
+    path: 'EcommerceDashboard',
+    loadComponent: () => import('./coming-soon/coming-soon.component').then((m) => m.ComingSoonComponent),
     canActivate: [manualNavigationGuard]
   },
   {

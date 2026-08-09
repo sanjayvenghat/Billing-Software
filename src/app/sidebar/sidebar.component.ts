@@ -42,10 +42,11 @@ export class SidebarComponent implements OnInit {
       ColorClass: 'month-bills-box'
     },
     {
-      Title: 'Offer and Discount',
-      Url: '/offer-and-discount',
-      Icon: 'pricetag-outline',
-      ColorClass: 'offer-box'
+      Title: 'Profit Report',
+      Url: '/profit-report',
+      Icon: 'trending-up',
+      ColorClass: 'week-profit-box',
+      isProfit: true
     },
     {
       Title: 'Log Out',
@@ -54,6 +55,9 @@ export class SidebarComponent implements OnInit {
       ColorClass: 'logout-box'
     },
   ];
+  get filteredMenu() {
+    return this.SideBarMenu;
+  }
   ngOnInit() { }
   chooseOption(item: any) {
     if (item.Title == "Log Out") {

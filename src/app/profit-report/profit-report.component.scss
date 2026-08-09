@@ -1,0 +1,790 @@
+.report-content-wrapper {
+  --background: #f8fafc;
+  --ion-background-color: #f8fafc;
+}
+
+.report-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+/* Header layout styling */
+.report-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  gap: 16px;
+
+  @media (min-width: 992px) {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .header-left {
+    .header-title-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .app-back-btn {
+      background: white;
+      border: 1px solid #e2e8f0;
+      font-size: 20px;
+      cursor: pointer;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+      &:hover {
+        color: #4f46e5;
+        border-color: #4f46e5;
+        background: #eef2ff;
+        transform: scale(1.05);
+      }
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+
+    .header-subtitle {
+      margin: 6px 0 0 0;
+      font-size: 13px;
+      color: #64748b;
+    }
+  }
+
+  /* Filters grouping wrapper */
+  .header-right-filters {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 14px;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      width: auto;
+      align-items: center;
+    }
+
+    .filter-control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+
+      @media (min-width: 768px) {
+        flex: none;
+      }
+
+      .filter-lbl {
+        font-size: 11px;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+}
+
+/* Segment controls styling */
+.custom-segment {
+  background: #e2e8f0;
+  border-radius: 12px;
+  padding: 3px;
+  min-height: 40px;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: auto;
+  }
+
+  ion-segment-button {
+    --background-checked: #ffffff;
+    --color-checked: #4f46e5;
+    --color: #64748b;
+    --indicator-color: transparent;
+    --border-radius: 9px;
+    font-weight: 600;
+    font-size: 13px;
+    margin: 0;
+    transition: all 0.2s ease;
+    min-width: 90px;
+
+    &::part(indicator) {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border-radius: 9px;
+    }
+  }
+}
+
+/* PRIMARY SPOTLIGHT CARD (Visual Hierarchy Focus) */
+.spotlight-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.015);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .spotlight-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+
+    .spotlight-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .spotlight-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #ecfdf5;
+      color: #059669;
+      padding: 6px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+
+      ion-icon {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .spotlight-value {
+    margin: 8px 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: #059669;
+    letter-spacing: -0.5px;
+
+    @media (min-width: 576px) {
+      font-size: 34px;
+    }
+
+    @media (min-width: 768px) {
+      font-size: 40px;
+      letter-spacing: -1px;
+    }
+  }
+
+  .spotlight-description {
+    margin: 0;
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
+  }
+}
+
+/* Secondary Stats Cards Grid */
+.stats-grid {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 4px 4px 12px 4px;
+  margin-bottom: 24px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+  }
+
+  .stat-card {
+    flex: 0 0 200px;
+    scroll-snap-align: start;
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.015);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.035);
+    }
+
+    .card-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+      flex-shrink: 0;
+
+      ion-icon {
+        font-size: 18px;
+        color: #64748b;
+      }
+    }
+
+    .card-details {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+
+      .card-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card-value {
+        margin: 2px 0;
+        font-size: 16px;
+        font-weight: 800;
+        color: #0f172a;
+        letter-spacing: -0.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card-subtext {
+        font-size: 10px;
+        color: #94a3b8;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    /* Stat Card Accent Colors (Communicating meaning elegantly) */
+    &.border-sales {
+      border-left: 4px solid #3b82f6;
+
+      .card-icon-wrap {
+        background: #eff6ff;
+
+        ion-icon {
+          color: #3b82f6;
+        }
+      }
+    }
+
+    &.border-cost {
+      border-left: 4px solid #ef4444;
+
+      .card-icon-wrap {
+        background: #fdf2f2;
+
+        ion-icon {
+          color: #ef4444;
+        }
+      }
+    }
+
+    &.border-pending {
+      border-left: 4px solid #f59e0b;
+
+      .card-icon-wrap {
+        background: #fffbeb;
+
+        ion-icon {
+          color: #f59e0b;
+        }
+      }
+    }
+
+    &.border-margin {
+      border-left: 4px solid #a855f7;
+
+      .card-icon-wrap {
+        background: #faf5ff;
+
+        ion-icon {
+          color: #a855f7;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    overflow-x: visible;
+    gap: 16px;
+    padding: 0;
+
+    .stat-card {
+      flex: none;
+      padding: 18px;
+      gap: 14px;
+      border-radius: 16px;
+
+      .card-icon-wrap {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+
+        ion-icon {
+          font-size: 20px;
+        }
+      }
+
+      .card-details {
+        .card-label {
+          font-size: 12px;
+        }
+
+        .card-value {
+          margin: 4px 0;
+          font-size: 20px;
+        }
+
+        .card-subtext {
+          font-size: 11px;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Dashboard panels grid layout */
+.main-dashboard-grid {
+  margin-top: 10px;
+
+  .col-padding-right {
+    @media (min-width: 992px) {
+      padding-right: 12px;
+    }
+  }
+
+  .col-padding-left {
+    @media (min-width: 992px) {
+      padding-left: 12px;
+    }
+  }
+
+  .mt-md-down {
+    @media (max-width: 991px) {
+      margin-top: 24px;
+    }
+  }
+}
+
+.dashboard-panel-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+  border: 1px solid #e2e8f0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f1f5f9;
+
+    .panel-header-icon {
+      font-size: 20px;
+      color: #64748b;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 750;
+      color: #0f172a;
+    }
+  }
+
+  .panel-body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 480px;
+  }
+}
+
+/* Empty State Styling */
+.empty-panel-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 44px;
+    color: #94a3b8;
+    margin-bottom: 12px;
+  }
+
+  .empty-text-main {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #475569;
+  }
+
+  .empty-text-sub {
+    margin: 6px 0 20px 0;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+
+  .primary-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #4f46e5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
+    transition: all 0.2s ease;
+
+    ion-icon {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: #4338ca;
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Top product ranks list styling */
+.product-ranking-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .product-rank-num {
+    width: 26px;
+    height: 26px;
+    background: #f1f5f9;
+    color: #475569;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .product-ranking-details {
+    flex: 1;
+
+    .product-ranking-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+
+      .product-ranking-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: #1e293b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 140px;
+
+        @media (min-width: 576px) {
+          max-width: 250px;
+        }
+
+        @media (min-width: 992px) {
+          max-width: 160px;
+        }
+
+        @media (min-width: 1200px) {
+          max-width: 220px;
+        }
+      }
+
+      .product-ranking-count {
+        font-size: 11px;
+        color: #64748b;
+        font-weight: 500;
+      }
+    }
+
+    /* Custom ranking bar */
+    .ranking-progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: #f1f5f9;
+      border-radius: 3px;
+      margin-bottom: 6px;
+      overflow: hidden;
+
+      .ranking-progress-bar-fill {
+        height: 100%;
+        background: #4f46e5;
+        border-radius: 3px;
+        transition: width 0.8s ease-out;
+      }
+    }
+
+    .product-ranking-financials {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+
+      .ranking-label {
+        color: #94a3b8;
+      }
+
+      .ranking-value {
+        font-weight: 700;
+        color: #0f172a;
+      }
+    }
+  }
+}
+
+/* Recent Transaction Cards */
+.tx-detail-card {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  border: 1px solid #f1f5f9;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: #f1f5f9;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .tx-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .tx-customer-identity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .tx-customer-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #475569;
+
+        ion-icon {
+          font-size: 16px;
+        }
+      }
+
+      .tx-customer-info {
+        display: flex;
+        flex-direction: column;
+
+        h4 {
+          margin: 0;
+          font-size: 13px;
+          font-weight: 700;
+          color: #0f172a;
+        }
+
+        .tx-date {
+          font-size: 11px;
+          color: #94a3b8;
+          margin-top: 1px;
+        }
+      }
+    }
+
+    .tx-net-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1px;
+
+      .tx-badge-lbl {
+        font-size: 8px;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .tx-profit-badge {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 6px;
+        border-radius: 6px;
+        --background: #d1fae5;
+        --color: #065f46;
+      }
+    }
+  }
+
+  .tx-card-financials {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    border-top: 1px dashed #e2e8f0;
+    padding-top: 10px;
+
+    .tx-financial-metric {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+
+      &:first-child {
+        text-align: left;
+      }
+
+      &:last-child {
+        text-align: right;
+      }
+
+      .metric-lbl {
+        font-size: 10px;
+        color: #94a3b8;
+        margin-bottom: 2px;
+      }
+
+      .metric-val {
+        font-size: 12px;
+        font-weight: 700;
+        color: #1e293b;
+
+        &.unpaid-text {
+          color: #f59e0b;
+        }
+
+        &.paid-text {
+          color: #10b981;
+        }
+      }
+    }
+  }
+}
+
+/* Custom Date Picker Container */
+.custom-date-picker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: white;
+  padding: 16px 20px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+
+  @media (min-width: 576px) {
+    flex-direction: row;
+  }
+
+  .date-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+
+    label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .native-date-input {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+      outline: none;
+      transition: all 0.2s ease;
+      width: 100%;
+
+      &:focus {
+        border-color: #4f46e5;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      }
+    }
+  }
+}

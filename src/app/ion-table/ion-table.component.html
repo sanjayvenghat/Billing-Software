@@ -48,7 +48,7 @@
       <ion-searchbar [placeholder]="'Search customer by Name' | translate" [(ngModel)]="searchQuery"
         (ionInput)="applyFilter()" class="custom-searchbar"></ion-searchbar>
     </ion-col>
-    <ion-col size="12" size-md="6">
+    <ion-col size="12" size-md="6" class="segment-col">
       <ion-segment [(ngModel)]="filterType" (ionChange)="applyFilter()" class="custom-segment">
         <ion-segment-button value="pending">
           <ion-label>{{ 'Pending' | translate }}</ion-label>
@@ -63,14 +63,11 @@
 
 
 <ion-content class="ion-padding-horizontal">
-  <div class="header-toggle-bar"
-    style="position: sticky; top: 0; z-index: 1000; background: #f8fafc; display: flex; justify-content: flex-end; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05); margin-bottom: 8px;">
-    <ion-button fill="clear" size="small" (click)="toggleHeader()"
-      style="margin: 0; --color: #1e3c72; font-weight: 600; font-size: 13px;">
-      <ion-icon [name]="isHeaderVisible ? 'chevron-up-outline' : 'chevron-down-outline'" slot="start"
-        style="margin-right: 4px;"></ion-icon>
-      {{ (isHeaderVisible ? 'Hide Stats' : 'Show Stats ') | translate }}
-    </ion-button>
+  <div class="header-toggle-bar">
+    <button class="stats-toggle-btn" (click)="toggleHeader()">
+      <ion-icon [name]="isHeaderVisible ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+      <span>{{ (isHeaderVisible ? 'Hide Account Analytics' : 'Show Account Analytics') | translate }}</span>
+    </button>
   </div>
 
   <!-- Main Table Container -->

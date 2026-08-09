@@ -74,7 +74,7 @@ export class IonTableComponent implements OnInit {
   customers: any[] = [];
   filteredCustomers: any[] = [];
   expandedCustomerId: string | null = null;
-  isHeaderVisible: boolean = true;
+  isHeaderVisible: boolean = false;
 
   toggleHeader() {
     this.isHeaderVisible = !this.isHeaderVisible;

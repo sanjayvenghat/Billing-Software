@@ -129,19 +129,36 @@ ion-content {
   padding: 0;
 }
 
+.segment-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 .custom-segment {
   --background: #f4f5f8;
   border-radius: 12px;
   padding: 4px;
+  max-width: 320px;
+  width: 100%;
 
   ion-segment-button {
-    --indicator-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-    --indicator-color: #ffffff;
-    --color: #666;
-    --color-checked: #1e3c72;
+    --background-checked: #f97316;
+    /* Premium orange background when selected */
+    --indicator-color: transparent;
+    /* Hide default white indicator card */
+    --color: #64748b;
+    /* Gray text when unchecked */
+    --color-checked: #ffffff;
+    /* White text on selected tab */
+    --color-activated: #ffffff;
+    /* White text while clicking/pressing */
+    --color-focused: #ffffff;
+    /* White text when focused */
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 750;
     margin: 0;
     min-height: 38px;
   }
@@ -805,5 +822,51 @@ ion-content {
 
   ion-icon {
     font-size: 14px;
+  }
+}
+
+/* Header Toggle Bar & Capsule Button styling */
+.header-toggle-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
+  margin-bottom: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: transparent;
+}
+
+.stats-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 750;
+  color: #f97316;
+  /* Brand orange color matching the segment indicators */
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+  outline: none;
+
+  ion-icon {
+    font-size: 16px;
+  }
+
+  &:hover {
+    background: #fff7ed;
+    border-color: #f97316;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(249, 115, 22, 0.08);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }

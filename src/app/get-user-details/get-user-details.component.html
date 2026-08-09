@@ -1,4 +1,4 @@
-<ion-tabs (ionTabsDidChange)="onTabChange($event)">
+<ion-tabs #myTabs (ionTabsDidChange)="onTabChange($event)">
   <ion-tab tab="home">
     <ion-header>
       <app-header-component [HeaderTitle]="'Billing' | translate"></app-header-component>

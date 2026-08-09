@@ -6,6 +6,7 @@ import { LoadingController } from '@ionic/angular/standalone';
 })
 export class LoaderService {
   private activeLoader: HTMLIonLoadingElement | null = null;
+  private isLoading = false;
 
   constructor(private loadingController: LoadingController) { }
 
@@ -14,18 +15,24 @@ export class LoaderService {
    * @param message Message to display on the loader
    */
   async showLoader(message: string = 'Loading...') {
-    if (this.activeLoader) {
+    if (this.isLoading || this.activeLoader) {
       return;
     }
+    this.isLoading = true;
 
-    this.activeLoader = await this.loadingController.create({
-      message,
-      cssClass: 'custom-loading',
-    });
-
-    await this.activeLoader.present();
+    try {
+      this.activeLoader = await this.loadingController.create({
+        message,
+        cssClass: 'custom-loading',
+      });
+      await this.activeLoader.present();
+    } catch (e) {
+      this.isLoading = false;
+      this.activeLoader = null;
+    }
   }
   async hideLoader() {
+    this.isLoading = false;
     if (this.activeLoader) {
       await this.activeLoader.dismiss();
       this.activeLoader = null;

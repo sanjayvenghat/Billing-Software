@@ -13,7 +13,7 @@
     <div class="menu-section">
       <h3 class="section-title">{{ 'Settings' | translate }}</h3>
       <ion-list lines="none" class="transparent-list">
-        @for (p of SideBarMenu; track p) {
+        @for (p of filteredMenu; track p) {
         <ion-menu-toggle auto-hide="false">
           <ion-item routerDirection="root" class="menu-item" detail="false" (click)="chooseOption(p)">
             <div class="icon-box" [ngClass]="p.ColorClass" slot="start">
