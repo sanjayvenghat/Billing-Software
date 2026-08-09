@@ -4,8 +4,8 @@ import { ActionSheetController, AlertController } from '@ionic/angular/standalon
 
 import { IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonPopover, IonModal, IonToolbar, IonTitle, IonContent, IonInput } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { barcodeOutline, addOutline, removeOutline, cubeOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline, closeCircle, cartOutline, downloadOutline, personCircle, alertCircleOutline, close, logoWhatsapp, shareSocialOutline, chatbubbleEllipsesOutline, pricetagOutline } from 'ionicons/icons';
-import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode';
+import { barcodeOutline, addOutline, removeOutline, cubeOutline, personAddOutline, personOutline, searchOutline, trashOutline, addCircleOutline, removeCircleOutline, arrowForwardOutline, closeCircle, cartOutline, downloadOutline, personCircle, alertCircleOutline, close, logoWhatsapp, shareSocialOutline, chatbubbleEllipsesOutline, pricetagOutline, flash, flashOutline } from 'ionicons/icons';
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ToastService } from 'src/Service/ToasterService';
@@ -28,10 +28,15 @@ import { TranslateService } from '../../Service/TranslateService';
   imports: [HttpClientModule, IonHeader, IonSearchbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonFooter, FormsModule, GenerateBillComponent, QuotePriceBillingComponent, PendingComponent, CreateUserComponent, IonToolbar, IonTitle, IonContent, IonModal, IonInput, DecimalPipe, TranslatePipe]
 })
 export class BillingComponent implements OnInit, OnDestroy {
-  private scanner: Html5QrcodeScanner | null = null;
+  private scanner: Html5Qrcode | null = null;
+  isTorchSupported = false;
+  isTorchOn = false;
   isScanning = false;
+  scannedBarcode = '';
   isProductModalOpen = false;
   isBillModalOpen = false;
+  isSharePopupOpen = false;
+  generatedPdfFile: File | null = null;
   isCustomDialogOpen = false;
   currentDate: Date = new Date();
   scannedProduct: any = null;
@@ -75,6 +80,7 @@ export class BillingComponent implements OnInit, OnDestroy {
       'share-social-outline': shareSocialOutline,
       'chatbubble-ellipses-outline': chatbubbleEllipsesOutline,
       'pricetag-outline': pricetagOutline,
+      flash, 'flash-outline': flashOutline,
       close
     });
   }
@@ -291,40 +297,91 @@ export class BillingComponent implements OnInit, OnDestroy {
     this.isScanning = true;
     this.scannedProduct = null;
     this.errorMessage = '';
+    this.isTorchOn = false;
+    this.isTorchSupported = false;
+    this.scannedBarcode = '';
+
     setTimeout(() => {
-      // 1D barcodes like EAN/UPC require a wider capture box and higher fps for accurate reading
-      this.scanner = new Html5QrcodeScanner(
-        "reader",
-        {
-          fps: 30,
-          qrbox: { width: 350, height: 150 },
-          aspectRatio: 1.0,
+      try {
+        this.scanner = new Html5Qrcode("reader", {
+          verbose: false,
           formatsToSupport: [
             Html5QrcodeSupportedFormats.EAN_13,
-            Html5QrcodeSupportedFormats.EAN_8,
             Html5QrcodeSupportedFormats.UPC_A,
             Html5QrcodeSupportedFormats.UPC_E,
             Html5QrcodeSupportedFormats.CODE_128,
             Html5QrcodeSupportedFormats.CODE_39
           ],
-          experimentalFeatures: {
-            useBarCodeDetectorIfSupported: true
-          }
-        },
-        /* verbose= */ false
-      );
-      this.scanner.render(this.onScanSuccess.bind(this), this.onScanFailure.bind(this));
-    }, 100);
+          useBarCodeDetectorIfSupported: true
+        });
+
+        // 1D barcodes scan best with a rectangular layout box (aspect ratio 4:3 matches default viewfinder container)
+        const config = {
+          fps: 30,
+          qrbox: { width: 260, height: 120 },
+          aspectRatio: 1.333333
+        };
+
+        this.scanner.start(
+          { facingMode: "environment" },
+          config,
+          this.onScanSuccess.bind(this),
+          this.onScanFailure.bind(this)
+        ).then(() => {
+          this.checkTorchSupport();
+        }).catch(err => {
+          console.error("Failed to start camera scan:", err);
+          this.errorMessage = 'Could not access the camera. Make sure permissions are granted.';
+          this.isScanning = false;
+        });
+      } catch (err) {
+        console.error("Failed to initialize Html5Qrcode:", err);
+        this.isScanning = false;
+      }
+    }, 150);
+  }
+
+  checkTorchSupport() {
+    if (this.scanner) {
+      try {
+        const capabilities = this.scanner.getRunningTrackCameraCapabilities();
+        this.isTorchSupported = capabilities.torchFeature()?.isSupported() || false;
+      } catch (e) {
+        console.warn("Torch capability check failed:", e);
+        this.isTorchSupported = false;
+      }
+    }
+  }
+
+  toggleTorch() {
+    if (this.scanner && this.isTorchSupported) {
+      try {
+        const torch = this.scanner.getRunningTrackCameraCapabilities().torchFeature();
+        const nextState = !this.isTorchOn;
+        torch.apply(nextState).then(() => {
+          this.isTorchOn = nextState;
+        }).catch(err => {
+          console.error("Failed to toggle torch:", err);
+        });
+      } catch (e) {
+        console.error("Failed to apply torch constraint:", e);
+      }
+    }
   }
 
   stopScanner() {
     if (this.scanner) {
-      this.scanner.clear().catch(error => {
-        console.error("Failed to clear html5QrcodeScanner. ", error);
+      const p = this.scanner.isScanning ? this.scanner.stop() : Promise.resolve();
+      p.then(() => {
+        this.scanner = null;
+      }).catch(error => {
+        console.error("Failed to stop html5Qrcode. ", error);
+        this.scanner = null;
       });
-      this.scanner = null;
     }
     this.isScanning = false;
+    this.isTorchOn = false;
+    this.isTorchSupported = false;
   }
 
   onScanSuccess(decodedText: string) {
@@ -335,11 +392,12 @@ export class BillingComponent implements OnInit, OnDestroy {
   onScanFailure(error: any) {
     // console.warn(`Code scan error = ${error}`);
   }
-
   fetchProductDetails(id: string) {
-    const url = `${environment.LoginUrl}/api/grocery/getProductDetails?id=${id}`;
     const token = this.keysStorage.getItem("Token");
+    const companyId = this.keysStorage.getItem("CompanyId");
+    const url = `${environment.LoginUrl}/api/grocery/getProductDetails?id=${id}&CompanyId=${companyId}`;
     const headers = { 'Authorization': `Bearer ${token}` };
+
     this.http.get(url, { headers }).subscribe({
       next: (response: any) => {
         this.addToCart(response.data || response);
@@ -349,6 +407,9 @@ export class BillingComponent implements OnInit, OnDestroy {
         console.error('Error fetching product details from barcode id:', err);
         this.scannedProduct = null;
         this.errorMessage = 'Product not found in databases.';
+        // Auto-open Quote Price / Add Product modal with barcode prepopulated
+        this.scannedBarcode = id;
+        this.isProductModalOpen = true;
       }
     });
   }
@@ -497,36 +558,37 @@ export class BillingComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const message = this.buildBillMessage();
-    const canSharePdf = typeof navigator !== 'undefined'
-      && typeof navigator.share === 'function'
-      && typeof navigator.canShare === 'function'
-      && navigator.canShare({ files: [file] });
+    this.generatedPdfFile = file;
+    this.isSharePopupOpen = true;
+  }
 
-    if (!canSharePdf) {
-      window.open(`https://wa.me/${(this.searchQuery?.mobileNumber || '').toString().replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
-      return;
+  triggerNativeShare() {
+    if (this.generatedPdfFile) {
+      const message = this.buildBillMessage();
+      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+        navigator.share({
+          files: [this.generatedPdfFile],
+          title: 'Invoice',
+          text: message
+        }).then(() => {
+          this.isSharePopupOpen = false;
+          this.generatedPdfFile = null;
+        }).catch(err => {
+          console.warn("Native share failed, using fallback:", err);
+          this.openWhatsappFallback(message);
+        });
+      } else {
+        console.warn("Native share not supported, using fallback");
+        this.openWhatsappFallback(message);
+      }
     }
+  }
 
-    const alert = await this.alertController.create({
-      header: this.translateService.translate('Share Invoice PDF'),
-      message: this.translateService.translate('Invoice PDF is ready. Tap Share to send it via WhatsApp.'),
-      buttons: [
-        {
-          text: this.translateService.translate('Cancel'),
-          role: 'cancel'
-        },
-        {
-          text: this.translateService.translate('Share'),
-          handler: () => {
-            navigator.share({ files: [file], title: 'Invoice', text: message }).catch(() => {
-              // User dismissed the share sheet - ignore
-            });
-          }
-        }
-      ]
-    });
-    await alert.present();
+  private openWhatsappFallback(message: string) {
+    const mobile = (this.searchQuery?.mobileNumber || '').toString().replace(/[^0-9]/g, '');
+    window.open(`https://wa.me/${mobile}?text=${encodeURIComponent(message)}`, '_blank');
+    this.isSharePopupOpen = false;
+    this.generatedPdfFile = null;
   }
 
   private buildBillMessage(): string {

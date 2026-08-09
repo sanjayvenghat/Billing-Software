@@ -51,17 +51,41 @@
 </div>
 
 @if(isScanning) {
-<div class="scanner-section">
+<div class="scanner-overlay-container">
   <div class="scanner-card">
     <div class="scanner-header">
       <ion-icon name="barcode-outline"></ion-icon>
-      <span>{{ 'Scanning Barcode' | translate }}</span>
+      <h3>{{ 'Scan Barcode' | translate }}</h3>
+      <p>{{ 'Place barcode inside the frame to scan' | translate }}</p>
     </div>
-    <div id="reader"></div>
-    <ion-button class="cancel-scan-btn" (click)="stopScanner()" color="danger" expand="block">
-      <ion-icon slot="start" name="close"></ion-icon>
-      {{ 'Cancel Scan' | translate }}
-    </ion-button>
+
+    <div class="scanner-viewfinder">
+      <div id="reader"></div>
+
+      <!-- Custom Target Overlay guides (rendered on top of reader) -->
+      <div class="scanner-overlay">
+        <div class="scanner-guide">
+          <div class="corner top-left"></div>
+          <div class="corner top-right"></div>
+          <div class="corner bottom-left"></div>
+          <div class="corner bottom-right"></div>
+          <div class="laser-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scanner-actions">
+      @if (isTorchSupported) {
+      <ion-button class="torch-btn" fill="clear" (click)="toggleTorch()">
+        <ion-icon slot="start" [name]="isTorchOn ? 'flash' : 'flash-outline'"></ion-icon>
+        {{ (isTorchOn ? 'Turn Flash Off' : 'Turn Flash On') | translate }}
+      </ion-button>
+      }
+      <ion-button class="cancel-scan-btn" (click)="stopScanner()" color="danger" fill="solid" expand="block">
+        <ion-icon slot="start" name="close-circle"></ion-icon>
+        {{ 'Cancel Scan' | translate }}
+      </ion-button>
+    </div>
   </div>
 </div>
 }
@@ -229,7 +253,7 @@
   </div>
 </ion-footer>
 
-<app-quote-price-billing [isOpen]="isProductModalOpen" [productName]="SearchProduct"
+<app-quote-price-billing [isOpen]="isProductModalOpen" [productName]="SearchProduct" [itemCode]="scannedBarcode"
   (close)="isProductModalOpen = false">
 </app-quote-price-billing>
 
@@ -261,5 +285,29 @@
       <app-create-user [customerName]="searchQuery.customerName"
         (customerAdded)="handleCustomerAdded($event)"></app-create-user>
     </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="isSharePopupOpen" (didDismiss)="isSharePopupOpen = false" class="share-drawer-modal">
+  <ng-template>
+    <div class="share-drawer-content">
+      <div class="drawer-drag-handle"></div>
+
+      <div class="share-drawer-header">
+        <ion-icon name="alert-circle-outline" class="share-alert-icon"></ion-icon>
+        <h3>{{ 'Invoice PDF Ready' | translate }}</h3>
+        <p>{{ 'Your invoice has been generated. Click below to share it with the customer.' | translate }}</p>
+      </div>
+
+      <div class="share-drawer-actions">
+        <ion-button class="share-confirm-btn" expand="block" (click)="triggerNativeShare()">
+          <ion-icon slot="start" name="share-social-outline"></ion-icon>
+          {{ 'Share Invoice' | translate }}
+        </ion-button>
+        <ion-button class="share-cancel-btn" fill="clear" expand="block" (click)="isSharePopupOpen = false">
+          {{ 'Cancel' | translate }}
+        </ion-button>
+      </div>
+    </div>
   </ng-template>
 </ion-modal>

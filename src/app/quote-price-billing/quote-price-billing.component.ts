@@ -14,6 +14,7 @@ import { QuotePriceComponent } from '../quote-price/quote-price.component';
 export class QuotePriceBillingComponent implements OnInit {
   @Input() isOpen: boolean = false;
   @Input() productName: string = '';
+  @Input() itemCode: string = '';
   @Output() close = new EventEmitter<void>();
 
   constructor(private animationCtrl: AnimationController) {

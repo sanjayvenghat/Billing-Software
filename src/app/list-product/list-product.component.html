@@ -283,7 +283,7 @@
                   </ion-item>
 
                   @if (editEnableGst) {
-                  <div class="gst-rate-select">
+                  <div class="gst-rate-select mb-2">
                     <div class="select-field-wrap">
                       <ion-icon name="pricetag-outline" class="select-field-icon"></ion-icon>
                       <ion-item lines="none" class="custom-select-item">
@@ -301,7 +301,7 @@
                   }
                 </div>
 
-                <ion-button expand="block" class="submit-btn gradient-btn mt-4" (click)="saveProduct()">
+                <ion-button expand="block" class="submit-btn gradient-btn mt-5 ion-margin-top" (click)="saveProduct()">
                   <ion-icon slot="start" name="checkmark-outline"></ion-icon>
                   {{ 'Save Changes' | translate }}
                 </ion-button>

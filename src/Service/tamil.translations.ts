@@ -249,7 +249,7 @@ export const TAMIL_DICTIONARY: { [key: string]: string } = {
   'Need help?': 'உதவி தேவையா?',
   'Contact Support': 'ஆதரவைத் தொடர்பு கொள்ளவும்',
   'Please enter product name, buying price and select unit': 'தயவுசெய்து பொருளின் பெயர், அடக்க விலை ஆகியவற்றை உள்ளிட்டு அலகைத் தேர்ந்தெடுக்கவும்',
-  
+
   // Offers and Discount UI
   'Offers and Discounts': 'சலுகைகள் மற்றும் தள்ளுபடிகள்',
   'Manage coupons and product-specific discounts for your store.': 'உங்கள் கடையின் கூப்பன்கள் மற்றும் தயாரிப்பு தள்ளுபடிகளை நிர்வகிக்கவும்.',
@@ -357,6 +357,10 @@ export const TAMIL_DICTIONARY: { [key: string]: string } = {
   // Billing
   'Scanning Barcode': 'பார்கோடு ஸ்கேன் செய்யப்படுகிறது',
   'Cancel Scan': 'ஸ்கேன் ரத்துசெய்',
+  'Place barcode inside the frame to scan': 'ஸ்கேன் செய்ய பார்கோடை சட்டத்திற்குள் வைக்கவும்',
+  'Turn Flash On': 'ஃப்ளாஷ் ஆன் செய்',
+  'Turn Flash Off': 'ஃப்ளாஷ் ஆஃப் செய்',
+  'Scan Barcode': 'பார்கோடு ஸ்கேன் செய்',
   'Your cart is empty': 'உங்கள் கார்ட் காலியாக உள்ளது',
   'Search for a customer, then search or scan products to start billing.': 'வாடிக்கையாளரைத் தேடவும், பின்னர் பில்லிங் தொடங்க தயாரிப்புகளைத் தேடவும் அல்லது ஸ்கேன் செய்யவும்.',
   'Cart Items': 'கார்ட் பொருட்கள்',
@@ -364,6 +368,9 @@ export const TAMIL_DICTIONARY: { [key: string]: string } = {
   'Saving invoice details...': 'விலைப்பட்டியல் விவரங்களைச் சேமிக்கிறது...',
   'Invoice Saved Successfully': 'விலைப்பட்டியல் வெற்றிகரமாக சேமிக்கப்பட்டது',
   'Error saving invoice details. Please try again.': 'விலைப்பட்டியல் விவரங்களைச் சேமிப்பதில் பிழை. மீண்டும் முயற்சிக்கவும்.',
+  'Invoice PDF Ready': 'விலைப்பட்டியல் PDF தயார்',
+  'Your invoice has been generated. Click below to share it with the customer.': 'உங்கள் விலைப்பட்டியல் உருவாக்கப்பட்டது. வாடிக்கையாளருடன் பகிர கீழே கிளிக் செய்யவும்.',
+  'Share Invoice': 'விலைப்பட்டியல் பகிரவும்',
 
   // Customer / Create User
   'Customer Name': 'வாடிக்கையாளர் பெயர்',

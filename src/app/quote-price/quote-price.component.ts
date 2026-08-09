@@ -23,6 +23,7 @@ import { TranslateService } from '../../Service/TranslateService';
 })
 export class QuotePriceComponent implements OnInit {
   @Input() initialProductName: string = '';
+  @Input() initialItemCode: string = '';
   @Output() productSaved = new EventEmitter<any>();
 
   ProductName: string = '';
@@ -61,6 +62,9 @@ export class QuotePriceComponent implements OnInit {
     this.getCredentials();
     if (this.initialProductName) {
       this.ProductName = this.initialProductName;
+    }
+    if (this.initialItemCode) {
+      this.ItemCode = this.initialItemCode;
     }
   }
   loadSettings() {
