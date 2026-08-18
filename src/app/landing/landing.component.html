@@ -68,17 +68,18 @@
 
     <section class="hero">
       <video #bgVideo class="bg-video" autoplay muted loop playsinline preload="auto">
-    <source src="assets/icon/Product_video_for_Handy_Bill_202608172322.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-  <div class="overlay"></div>
+        <source src="assets/icon/Product_video_for_Handy_Bill_202608172322.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="overlay"></div>
       <div class="container hero-grid">
         <div class="hero-text">
           <div class="pill-badge">
             <span class="pill-dot"></span>
             3 Months Free Trial &mdash; No Credit Card Needed
           </div>
-          <h1><span class="typewriter-text">Run Your Handly Bill To <br>Remove the Paper BILLS</span></h1>
+          <h1>Smart Store Billing to<br><span class="typewriter-text"></span><span class="typewriter-cursor">|</span>
+          </h1>
           <p class="hero-subtitle">
             Empower your workers with barcode price lookup, never miss a pending bill, and get real-time store insights
             from anywhere. Trusted by <strong>{{ counters[0].target }}+ stores</strong> across India.
@@ -173,16 +174,27 @@
     </section>
 
     <section id="trust" class="trust-bar reveal">
-      <div class="container">
+      <div class="container-fluid" style="overflow: hidden; width: 100%; position: relative; padding: 0;">
         <p>Trusted by store owners across India</p>
-        <div class="trust-logos">
-          <span class="trust-logo">Fresh Mart</span>
-          <span class="trust-logo">Green Grocers</span>
-          <span class="trust-logo">Daily Fresh</span>
-          <span class="trust-logo">Organic Hub</span>
-          <span class="trust-logo">Veggie Kart</span>
-          <span class="trust-logo">Farm 2 Home</span>
-          <span class="trust-logo">Fresh &amp; Fast</span>
+        <div class="trust-marquee-container" style="overflow: hidden; width: 100%;">
+          <div class="trust-logos">
+            <!-- First Set -->
+            <span class="trust-logo">Fresh Mart</span>
+            <span class="trust-logo">Green Grocers</span>
+            <span class="trust-logo">Daily Fresh</span>
+            <span class="trust-logo">Organic Hub</span>
+            <span class="trust-logo">Veggie Kart</span>
+            <span class="trust-logo">Farm 2 Home</span>
+            <span class="trust-logo">Fresh &amp; Fast</span>
+            <!-- Second Set for Seamless loop -->
+            <span class="trust-logo">Fresh Mart</span>
+            <span class="trust-logo">Green Grocers</span>
+            <span class="trust-logo">Daily Fresh</span>
+            <span class="trust-logo">Organic Hub</span>
+            <span class="trust-logo">Veggie Kart</span>
+            <span class="trust-logo">Farm 2 Home</span>
+            <span class="trust-logo">Fresh &amp; Fast</span>
+          </div>
         </div>
       </div>
     </section>
@@ -266,7 +278,7 @@
               collections &mdash; all in one dashboard.</p>
             <ul class="feature-list">
               <li><ion-icon name="checkmark-circle"></ion-icon> Daily, weekly, monthly sales reports</li>
-              <li><ion-icon name="checkmark-circle"></ion-icon> Best-selling products分析</li>
+              <li><ion-icon name="checkmark-circle"></ion-icon> Best-selling products</li>
               <li><ion-icon name="checkmark-circle"></ion-icon> Collection &amp; pending tracking</li>
               <li><ion-icon name="checkmark-circle"></ion-icon> Export reports anytime</li>
             </ul>
@@ -323,39 +335,82 @@
         <h2>Get started in 3 simple steps</h2>
         <p class="section-sub">No technical skills required. You and your team will be up and running in under 5
           minutes.</p>
-        <div class="steps">
-          <div class="step">
-            <div class="step-number-wrap">
-              <div class="step-number">1</div>
+        <div class="steps-marquee-container" (mouseenter)="pauseStepsMarquee()" (mouseleave)="resumeStepsMarquee()" style="overflow: hidden; width: 100%; cursor: grab;">
+          <div class="steps-marquee-track" style="display: flex; gap: 40px; width: max-content; padding: 10px 0; align-items: flex-start;">
+            <!-- Set 1 -->
+            <div class="step">
+              <div class="step-number-wrap">
+                <div class="step-number">1</div>
+              </div>
+              <div class="step-icon"><ion-icon name="download-outline"></ion-icon></div>
+              <h3>Download the App</h3>
+              <p>Get Handy Bill from Google Play Store. It is free to download and works on any Android phone or tablet.
+                No registration needed to start.</p>
             </div>
-            <div class="step-icon"><ion-icon name="download-outline"></ion-icon></div>
-            <h3>Download the App</h3>
-            <p>Get Handy Bill from Google Play Store. It is free to download and works on any Android phone or tablet.
-              No registration needed to start.</p>
-          </div>
-          <div class="step-connector">
-            <div class="connector-dot"></div>
-          </div>
-          <div class="step">
-            <div class="step-number-wrap">
-              <div class="step-number">2</div>
+            <div class="step-connector">
+              <div class="connector-dot"></div>
             </div>
-            <div class="step-icon"><ion-icon name="storefront-outline"></ion-icon></div>
-            <h3>Add Your Products</h3>
-            <p>Add your products with barcodes and prices. Use our quick-add feature, import from a spreadsheet, or add
-              items one by one as you bill.</p>
-          </div>
-          <div class="step-connector">
-            <div class="connector-dot"></div>
-          </div>
-          <div class="step">
-            <div class="step-number-wrap">
-              <div class="step-number">3</div>
+            <div class="step">
+              <div class="step-number-wrap">
+                <div class="step-number">2</div>
+              </div>
+              <div class="step-icon"><ion-icon name="storefront-outline"></ion-icon></div>
+              <h3>Add Your Products</h3>
+              <p>Add your products with barcodes and prices. Use our quick-add feature, import from a spreadsheet, or add
+                items one by one as you bill.</p>
             </div>
-            <div class="step-icon"><ion-icon name="receipt-outline"></ion-icon></div>
-            <h3>Start Billing</h3>
-            <p>Begin billing instantly. Your workers can scan barcodes, track customer dues, generate bills, and manage
-              the store independently.</p>
+            <div class="step-connector">
+              <div class="connector-dot"></div>
+            </div>
+            <div class="step">
+              <div class="step-number-wrap">
+                <div class="step-number">3</div>
+              </div>
+              <div class="step-icon"><ion-icon name="receipt-outline"></ion-icon></div>
+              <h3>Start Billing</h3>
+              <p>Begin billing instantly. Your workers can scan barcodes, track customer dues, generate bills, and manage
+                the store independently.</p>
+            </div>
+            <div class="step-connector">
+              <div class="connector-dot"></div>
+            </div>
+            <!-- Set 2 (Duplicated for seamless looping) -->
+            <div class="step">
+              <div class="step-number-wrap">
+                <div class="step-number">1</div>
+              </div>
+              <div class="step-icon"><ion-icon name="download-outline"></ion-icon></div>
+              <h3>Download the App</h3>
+              <p>Get Handy Bill from Google Play Store. It is free to download and works on any Android phone or tablet.
+                No registration needed to start.</p>
+            </div>
+            <div class="step-connector">
+              <div class="connector-dot"></div>
+            </div>
+            <div class="step">
+              <div class="step-number-wrap">
+                <div class="step-number">2</div>
+              </div>
+              <div class="step-icon"><ion-icon name="storefront-outline"></ion-icon></div>
+              <h3>Add Your Products</h3>
+              <p>Add your products with barcodes and prices. Use our quick-add feature, import from a spreadsheet, or add
+                items one by one as you bill.</p>
+            </div>
+            <div class="step-connector">
+              <div class="connector-dot"></div>
+            </div>
+            <div class="step">
+              <div class="step-number-wrap">
+                <div class="step-number">3</div>
+              </div>
+              <div class="step-icon"><ion-icon name="receipt-outline"></ion-icon></div>
+              <h3>Start Billing</h3>
+              <p>Begin billing instantly. Your workers can scan barcodes, track customer dues, generate bills, and manage
+                the store independently.</p>
+            </div>
+            <div class="step-connector">
+              <div class="connector-dot"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -375,36 +430,58 @@
     </section>
 
     <section id="testimonials" class="testimonials reveal">
-      <div class="container">
-        <div class="section-label">Testimonials</div>
-        <h2>Real store owners. Real results.</h2>
-        <p class="section-sub">See why hundreds of store owners across India trust Handy Bill for their daily billing.
-        </p>
-        <div class="testimonial-card" (mouseenter)="pauseTestimonials()" (mouseleave)="resumeTestimonials()">
-          <div class="testimonial-content">
-            <div class="testimonial-stars">
-              @for (star of [1,2,3,4,5]; track star) {
-              <ion-icon name="star"></ion-icon>
-              }
-            </div>
-            <p class="testimonial-text">&ldquo;{{ testimonials[activeTestimonial].text }}&rdquo;</p>
-            <div class="testimonial-author">
-              <div class="author-avatar">{{ testimonials[activeTestimonial].name.charAt(0) }}{{
-                testimonials[activeTestimonial].name.split(' ')[1]?.charAt(0) }}</div>
-              <div>
-                <div class="author-name">{{ testimonials[activeTestimonial].name }}</div>
-                <div class="author-role">{{ testimonials[activeTestimonial].role }}</div>
+      <div class="container-fluid" style="overflow: hidden; width: 100%; padding: 40px 0;">
+        <div style="text-align: center; max-width: 600px; margin: 0 auto 48px; padding: 0 24px;">
+          <div class="section-label">Testimonials</div>
+          <h2>Real store owners. Real results.</h2>
+          <p class="section-sub" style="margin-bottom: 0;">See why hundreds of store owners across India trust Handy
+            Bill for their daily billing.</p>
+        </div>
+
+        <div class="testimonials-marquee-container" (mouseenter)="pauseMarquee()" (mouseleave)="resumeMarquee()"
+          style="overflow: hidden; width: 100%; cursor: grab;">
+          <div class="testimonials-marquee-track"
+            style="display: flex; gap: 24px; width: max-content; padding: 10px 0;">
+            <!-- First set of testimonials -->
+            @for (t of testimonials; track t.name + '1') {
+            <div class="testimonial-card-item">
+              <div class="testimonial-stars">
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+              </div>
+              <p class="testimonial-text">&ldquo;{{ t.text }}&rdquo;</p>
+              <div class="testimonial-author">
+                <div class="author-avatar">{{ t.name.charAt(0) }}{{ t.name.split(' ')[1]?.charAt(0) }}</div>
+                <div>
+                  <div class="author-name">{{ t.name }}</div>
+                  <div class="author-role">{{ t.role }}</div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="testimonial-nav">
-            <button class="nav-arrow" (click)="prevTestimonial()"><ion-icon name="chevron-back"></ion-icon></button>
-            <div class="nav-dots">
-              @for (dot of testimonials; track dot; let i = $index) {
-              <span [class.active]="i === activeTestimonial" (click)="activeTestimonial = i" class="dot"></span>
-              }
+            }
+            <!-- Duplicated set of testimonials for seamless scrolling -->
+            @for (t of testimonials; track t.name + '2') {
+            <div class="testimonial-card-item">
+              <div class="testimonial-stars">
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+              </div>
+              <p class="testimonial-text">&ldquo;{{ t.text }}&rdquo;</p>
+              <div class="testimonial-author">
+                <div class="author-avatar">{{ t.name.charAt(0) }}{{ t.name.split(' ')[1]?.charAt(0) }}</div>
+                <div>
+                  <div class="author-name">{{ t.name }}</div>
+                  <div class="author-role">{{ t.role }}</div>
+                </div>
+              </div>
             </div>
-            <button class="nav-arrow" (click)="nextTestimonial()"><ion-icon name="chevron-forward"></ion-icon></button>
+            }
           </div>
         </div>
       </div>
@@ -437,6 +514,8 @@
     <section class="cta-section reveal">
       <div class="container">
         <div class="cta-card">
+          <div class="cta-glow-orb orb-1"></div>
+          <div class="cta-glow-orb orb-2"></div>
           <div class="cta-pattern"></div>
           <div class="cta-content">
             <h2>Start your 3-month free trial today</h2>

@@ -93,6 +93,7 @@ export class HomePage implements OnInit {
             this.toastService.showSuccess(this.translateService.translate(val.message));
             this.getSettingsForLogin();
           } else {
+            this.loaderService.hideLoader()
             this.toastService.showWarning(this.translateService.translate(val?.message || 'Invalid store name or password.'));
           }
         },
@@ -111,6 +112,7 @@ export class HomePage implements OnInit {
       } else {
         this.toastService.showError(this.translateService.translate('Please fill all fields correctly.'));
       }
+      this.loaderService.hideLoader()
     }
   }
 

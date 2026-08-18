@@ -13,6 +13,10 @@ import {
   shieldCheckmarkOutline, flashOutline, informationCircleOutline,
   starOutline, helpCircleOutline, logInOutline
 } from 'ionicons/icons';
+import { gsap } from 'gsap';
+import { TextPlugin } from 'gsap/TextPlugin';
+
+gsap.registerPlugin(TextPlugin);
 
 @Component({
   selector: 'app-landing',
@@ -34,7 +38,11 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
   private testimonialInterval?: ReturnType<typeof setInterval>;
   autoPlayTestimonials = true;
 
-  ngAfterViewInit() {
+  marqueeTween?: any;
+  trustMarqueeTween?: any;
+  stepsTween?: any;
+
+  async ngAfterViewInit() {
     // Ensure video is muted and starts playing automatically
     if (this.bgVideo && this.bgVideo.nativeElement) {
       this.bgVideo.nativeElement.muted = true;
@@ -46,6 +54,184 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
+    this.initTypewriter();
+    this.initMarquee();
+    this.initTrustMarquee();
+    this.initStepsMarquee();
+
+    try {
+      const scrollElement = await this.content.getScrollElement();
+
+      // Uncover footer reveal
+      gsap.from('.site-footer', {
+        yPercent: -45,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.site-footer',
+          scroller: scrollElement,
+          start: 'top bottom',
+          end: 'bottom bottom',
+          scrub: true
+        }
+      });
+    } catch (e) {
+      console.warn("ScrollTrigger setup failed:", e);
+    }
+
+    // 3D Tilt Effect on CTA Card
+    const ctaCard = document.querySelector('.cta-card') as HTMLElement;
+    if (ctaCard) {
+      ctaCard.addEventListener('mousemove', (e: MouseEvent) => {
+        const rect = ctaCard.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const xc = rect.width / 2;
+        const yc = rect.height / 2;
+        const rotateY = ((x - xc) / xc) * 8; // max 8deg Y rotation
+        const rotateX = ((yc - y) / yc) * 8; // max 8deg X rotation
+
+        gsap.to(ctaCard, {
+          rotateX: rotateX,
+          rotateY: rotateY,
+          transformPerspective: 800,
+          ease: 'power1.out',
+          duration: 0.3
+        });
+      });
+
+      ctaCard.addEventListener('mouseleave', () => {
+        gsap.to(ctaCard, {
+          rotateX: 0,
+          rotateY: 0,
+          ease: 'power2.out',
+          duration: 0.6
+        });
+      });
+    }
+
+    // Button Hover Spring Effects
+    const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .social-btn, .header-cta, .cta-actions button');
+    buttons.forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        gsap.to(btn, {
+          scale: 1.05,
+          y: -3,
+          duration: 0.3,
+          ease: 'power2.out',
+          boxShadow: '0 8px 16px rgba(79, 70, 229, 0.15)'
+        });
+      });
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, {
+          scale: 1,
+          y: 0,
+          duration: 0.4,
+          ease: 'elastic.out(1, 0.3)',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)'
+        });
+      });
+      btn.addEventListener('mousedown', () => {
+        gsap.to(btn, {
+          scale: 0.96,
+          duration: 0.1
+        });
+      });
+      btn.addEventListener('mouseup', () => {
+        gsap.to(btn, {
+          scale: 1.05,
+          duration: 0.1
+        });
+      });
+    });
+  }
+
+  initStepsMarquee() {
+    const track = document.querySelector('.steps-marquee-track') as HTMLElement;
+    if (!track) return;
+
+    this.stepsTween = gsap.to(track, {
+      xPercent: -50,
+      ease: 'none',
+      duration: 30,
+      repeat: -1
+    });
+  }
+
+  pauseStepsMarquee() {
+    this.stepsTween?.pause();
+  }
+
+  resumeStepsMarquee() {
+    this.stepsTween?.play();
+  }
+
+  initMarquee() {
+    const track = document.querySelector('.testimonials-marquee-track') as HTMLElement;
+    if (!track) return;
+
+    this.marqueeTween = gsap.to(track, {
+      xPercent: -50,
+      ease: 'none',
+      duration: 35,
+      repeat: -1
+    });
+  }
+
+  pauseMarquee() {
+    this.marqueeTween?.pause();
+  }
+
+  resumeMarquee() {
+    this.marqueeTween?.play();
+  }
+
+  initTrustMarquee() {
+    const track = document.querySelector('.trust-logos') as HTMLElement;
+    if (!track) return;
+
+    this.trustMarqueeTween = gsap.to(track, {
+      xPercent: -50,
+      ease: 'none',
+      duration: 20,
+      repeat: -1
+    });
+  }
+
+  initTypewriter() {
+    const words = [
+      'Empower your workers with barcode price lookup',
+      'Never miss a pending bill',
+      'Get real-time store insights from anywhere',
+      'Trusted by 10+ stores across India'
+    ];
+
+    // Animate cursor blink
+    gsap.to('.typewriter-cursor', {
+      opacity: 0,
+      ease: "power2.inOut",
+      repeat: -1,
+      yoyo: true,
+      duration: 0.5
+    });
+
+    const masterTl = gsap.timeline({ repeat: -1 });
+
+    words.forEach(word => {
+      const tl = gsap.timeline({
+        yoyo: true,
+        repeat: 1,
+        repeatDelay: 2.0
+      });
+      tl.to('.typewriter-text', {
+        duration: Math.max(1, word.length * 0.05),
+        text: {
+          value: word,
+          delimiter: ""
+        },
+        ease: "none"
+      });
+      masterTl.add(tl);
+    });
   }
 
 
