@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { IonContent, IonIcon, IonButton } from '@ionic/angular/standalone';
@@ -21,8 +21,10 @@ import {
   standalone: true,
   imports: [IonContent, IonIcon, IonButton],
 })
-export class LandingComponent implements OnInit, OnDestroy {
+export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(IonContent) content!: IonContent;
+  @ViewChild('bgVideo') bgVideo!: ElementRef<HTMLVideoElement>;
+  // Removed duplicate @ViewChild(IonContent)
 
   whatsappNumber = '919080933196';
   isScrolled = false;
@@ -31,6 +33,20 @@ export class LandingComponent implements OnInit, OnDestroy {
   activeTestimonial = 0;
   private testimonialInterval?: ReturnType<typeof setInterval>;
   autoPlayTestimonials = true;
+
+  ngAfterViewInit() {
+    // Ensure video is muted and starts playing automatically
+    if (this.bgVideo && this.bgVideo.nativeElement) {
+      this.bgVideo.nativeElement.muted = true;
+      const playPromise = this.bgVideo.nativeElement.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay might be blocked; user interaction will be needed
+        });
+      }
+    }
+
+  }
 
 
 
