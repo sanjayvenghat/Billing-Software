@@ -173,6 +173,26 @@
       </div>
     </section>
 
+    <section id="agent" class="agent-ad-section">
+      <div class="agent-bg-shape"></div>
+      <div class="container agent-grid">
+        <div class="agent-content">
+          <h1>Make <br>YOUR Billing<br> Digitally</h1>
+          <h2>Easy Billing Software for Grocery Shops</h2>
+          <p>Handy Bill makes billing fast and effortless for your grocery shop — create bills in seconds, track pending
+            payments, and never lose a sale to long queues or manual errors again.</p>
+
+          <div class="contact-form">
+            <input type="tel" #phoneInput placeholder="Enter your phone number" class="phone-input" />
+            <button class="btn-orange">Call Our Agent</button>
+          </div>
+        </div>
+        <div class="agent-visual">
+          <img src="assets/icon/Add.png" alt="Billing Agent Shop" />
+        </div>
+      </div>
+    </section>
+
     <section id="trust" class="trust-bar reveal">
       <div class="container-fluid" style="overflow: hidden; width: 100%; position: relative; padding: 0;">
         <p>Trusted by store owners across India</p>
@@ -335,8 +355,10 @@
         <h2>Get started in 3 simple steps</h2>
         <p class="section-sub">No technical skills required. You and your team will be up and running in under 5
           minutes.</p>
-        <div class="steps-marquee-container" (mouseenter)="pauseStepsMarquee()" (mouseleave)="resumeStepsMarquee()" style="overflow: hidden; width: 100%; cursor: grab;">
-          <div class="steps-marquee-track" style="display: flex; gap: 40px; width: max-content; padding: 10px 0; align-items: flex-start;">
+        <div class="steps-marquee-container" (mouseenter)="pauseStepsMarquee()" (mouseleave)="resumeStepsMarquee()"
+          style="overflow: hidden; width: 100%; cursor: grab;">
+          <div class="steps-marquee-track"
+            style="display: flex; gap: 40px; width: max-content; padding: 10px 0; align-items: flex-start;">
             <!-- Set 1 -->
             <div class="step">
               <div class="step-number-wrap">
@@ -356,7 +378,8 @@
               </div>
               <div class="step-icon"><ion-icon name="storefront-outline"></ion-icon></div>
               <h3>Add Your Products</h3>
-              <p>Add your products with barcodes and prices. Use our quick-add feature, import from a spreadsheet, or add
+              <p>Add your products with barcodes and prices. Use our quick-add feature, import from a spreadsheet, or
+                add
                 items one by one as you bill.</p>
             </div>
             <div class="step-connector">
@@ -368,7 +391,8 @@
               </div>
               <div class="step-icon"><ion-icon name="receipt-outline"></ion-icon></div>
               <h3>Start Billing</h3>
-              <p>Begin billing instantly. Your workers can scan barcodes, track customer dues, generate bills, and manage
+              <p>Begin billing instantly. Your workers can scan barcodes, track customer dues, generate bills, and
+                manage
                 the store independently.</p>
             </div>
             <div class="step-connector">
@@ -393,7 +417,8 @@
               </div>
               <div class="step-icon"><ion-icon name="storefront-outline"></ion-icon></div>
               <h3>Add Your Products</h3>
-              <p>Add your products with barcodes and prices. Use our quick-add feature, import from a spreadsheet, or add
+              <p>Add your products with barcodes and prices. Use our quick-add feature, import from a spreadsheet, or
+                add
                 items one by one as you bill.</p>
             </div>
             <div class="step-connector">
@@ -405,7 +430,8 @@
               </div>
               <div class="step-icon"><ion-icon name="receipt-outline"></ion-icon></div>
               <h3>Start Billing</h3>
-              <p>Begin billing instantly. Your workers can scan barcodes, track customer dues, generate bills, and manage
+              <p>Begin billing instantly. Your workers can scan barcodes, track customer dues, generate bills, and
+                manage
                 the store independently.</p>
             </div>
             <div class="step-connector">
@@ -511,6 +537,8 @@
       </div>
     </section>
 
+
+
     <section class="cta-section reveal">
       <div class="container">
         <div class="cta-card">
@@ -591,10 +619,30 @@
       </div>
     </footer>
 
-    <button class="whatsapp-float" (click)="openWhatsApp()" aria-label="Chat on WhatsApp">
+    <button class="whatsapp-float" (click)="openWhatsApp()" aria-label="Chat on WhatsApp"
+      [class.shifted]="showBottomDownload">
       <ion-icon name="logo-whatsapp"></ion-icon>
       <span class="whatsapp-pulse"></span>
     </button>
+
+    <button class="agent-float" (click)="scrollToSection('agent')" aria-label="Contact our agent"
+      [class.shifted]="showBottomDownload">
+      <ion-icon name="chatbox-outline"></ion-icon>
+      <span class="agent-float-text">Contact our agent</span>
+    </button>
+
+    <div class="sticky-download-bar" [class.show]="showBottomDownload">
+      <div class="sticky-bar-content">
+        <div class="sticky-bar-text">
+          <strong>Start your free trial today</strong>
+          <span>Available on Android</span>
+        </div>
+        <ion-button class="btn-primary sticky-btn" (click)="downloadPlayStore()">
+          <ion-icon name="logo-google-playstore" slot="start"></ion-icon>
+          Download App
+        </ion-button>
+      </div>
+    </div>
 
   </div>
 </ion-content>

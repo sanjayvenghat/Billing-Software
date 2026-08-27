@@ -11,7 +11,7 @@ import {
   removeOutline, downloadOutline, storefrontOutline, receiptOutline,
   cartOutline, closeCircle, arrowForward, peopleOutline,
   shieldCheckmarkOutline, flashOutline, informationCircleOutline,
-  starOutline, helpCircleOutline, logInOutline
+  starOutline, helpCircleOutline, logInOutline, chatboxOutline
 } from 'ionicons/icons';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
@@ -33,6 +33,8 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
 
   whatsappNumber = '919080933196';
   isScrolled = false;
+  showBottomDownload = false;
+  hasAutoScrolled = false;
   menuOpen = false;
   activeFaq: number | null = null;
   activeTestimonial = 0;
@@ -308,7 +310,7 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
         hourglassOutline, scanOutline, barChartOutline, checkmarkCircle,
         logoWhatsapp, star, chevronBack, chevronForward, addOutline,
         removeOutline, downloadOutline, storefrontOutline, receiptOutline,
-        cartOutline, closeCircle, arrowForward, peopleOutline,
+        cartOutline, closeCircle, arrowForward, peopleOutline, chatboxOutline,
         shieldCheckmarkOutline, flashOutline, informationCircleOutline,
         starOutline, helpCircleOutline, logInOutline
       });
@@ -356,6 +358,7 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
   onScroll(event?: CustomEvent<ScrollDetail>) {
     const st = event?.detail?.scrollTop ?? 0;
     this.isScrolled = st > 60;
+    this.showBottomDownload = st > 400;
 
     if (!this.countersStarted) {
       const el = document.getElementById('stats');
@@ -373,7 +376,7 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
   checkVisibility() {
     const h = window.innerHeight;
     document.querySelectorAll('.reveal').forEach((el) => {
-      if (el.getBoundingClientRect().top < h - 80) {
+      if (el.getBoundingClientRect().top < h - 60) {
         el.classList.add('visible');
       }
     });
@@ -426,6 +429,17 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
 
   openWhatsApp() {
     window.open(`https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent('Get Quote')}`, '_blank');
+  }
+
+  scrollToAgent() {
+    const adSection = document.querySelector('.agent-ad-section') as HTMLElement;
+    if (adSection) {
+      adSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  submitContact(phone: string) {
+    this.router.navigate(['/DownloadApp']);
   }
 
   downloadPlayStore() {
