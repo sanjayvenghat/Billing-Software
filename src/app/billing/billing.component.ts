@@ -679,5 +679,16 @@ export class BillingComponent implements OnInit, OnDestroy {
     this.productSuggestions = [];
     this.userSuggestions = [];
     this.errorMessage = '';
+    this.cartItems = [];
+    this.totalPrice = 0;
+    this.subtotalPrice = 0;
+    this.taxPercent = 0;
+    this.discountAmount = 0;
+    this.discountType = 'amount';
+    this.discountInput = 0;
+    this.paymentType = 'Cash';
+    this.scannedProduct = null;
+    this.pendingAmountPaid = 0;
+    this.pendingBalanceAmount = 0;
   }
 }

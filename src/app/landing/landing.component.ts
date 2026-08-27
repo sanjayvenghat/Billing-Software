@@ -15,6 +15,7 @@ import {
 } from 'ionicons/icons';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
+import { ToastService } from 'src/Service/ToasterService';
 
 gsap.registerPlugin(TextPlugin);
 
@@ -295,7 +296,12 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
     },
   ];
 
-  constructor(private router: Router, private title: Title, private meta: Meta) {
+  constructor(
+    private router: Router,
+    private title: Title,
+    private meta: Meta,
+    private toastService: ToastService
+  ) {
     try {
       addIcons({
         calculatorOutline, sparklesOutline, logoGooglePlaystore, barcodeOutline,
@@ -423,7 +429,7 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   downloadPlayStore() {
-    window.open('https://play.google.com/store/apps/details?id=com.freshmart.billing', '_blank');
+    this.router.navigate(['/DownloadApp']);
   }
 
   async scrollToSection(id: string) {

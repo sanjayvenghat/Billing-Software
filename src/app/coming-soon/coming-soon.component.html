@@ -5,7 +5,7 @@
         <div class="pulse-ring ring-1"></div>
         <div class="pulse-ring ring-2"></div>
         <div class="icon-inner">
-          <ion-icon name="cart-outline"></ion-icon>
+          <ion-icon [name]="iconName"></ion-icon>
         </div>
       </div>
 
@@ -13,10 +13,9 @@
         <span>{{ 'COMING SOON' | translate }}</span>
       </div>
 
-      <h1 class="main-title">{{ 'E-Commerce Dashboard' | translate }}</h1>
+      <h1 class="main-title">{{ title | translate }}</h1>
       <p class="sub-description">
-        {{ 'We are building a powerful, real-time analytics suite to track your store orders, delivery updates, and
-        customer shopping behavior. Stay tuned for a smarter e-commerce experience!' | translate }}
+        {{ description | translate }}
       </p>
 
       <button class="action-back-btn" (click)="goBack()">

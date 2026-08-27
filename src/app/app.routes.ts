@@ -35,7 +35,21 @@ export const routes: Routes = [
   {
     path: 'EcommerceDashboard',
     loadComponent: () => import('./coming-soon/coming-soon.component').then((m) => m.ComingSoonComponent),
-    canActivate: [manualNavigationGuard]
+    canActivate: [manualNavigationGuard],
+    data: {
+      title: 'E-Commerce Dashboard',
+      description: 'We are building a powerful, real-time analytics suite to track your store orders, delivery updates, and customer shopping behavior. Stay tuned for a smarter e-commerce experience!',
+      iconName: 'cart-outline'
+    }
+  },
+  {
+    path: 'DownloadApp',
+    loadComponent: () => import('./coming-soon/coming-soon.component').then((m) => m.ComingSoonComponent),
+    data: {
+      title: 'Download App',
+      description: 'Our mobile application is currently under development. Soon you will be able to manage your store directly from your pocket!',
+      iconName: 'download-outline'
+    }
   },
   {
     path: 'GetUserDetails',
