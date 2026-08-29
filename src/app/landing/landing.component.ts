@@ -488,7 +488,6 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
 
       },
       error: (err) => {
-        console.error("Agent call request failed", err);
         this.toastService.showError("Failed to submit call request. Please try again.");
       }
     });
