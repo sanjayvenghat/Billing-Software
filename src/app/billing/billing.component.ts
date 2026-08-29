@@ -157,7 +157,7 @@ export class BillingComponent implements OnInit, OnDestroy {
     const qty = parseFloat(item.Quantity);
     const validQty = (!isNaN(qty) && qty > 0) ? qty : 0;
     const price = item.SellingPrice || 0;
-    if (item.unit === 'Weight' && item.selectedSubUnit === 'g') {
+    if ((item.unit === 'Weight' && item.selectedSubUnit === 'g') || (item.unit === 'Liter' && item.selectedSubUnit === 'ml')) {
       return price * (validQty / 1000);
     }
     return price * validQty;
@@ -175,7 +175,7 @@ export class BillingComponent implements OnInit, OnDestroy {
     if (discount < 0) discount = 0;
     if (discount > this.subtotalPrice) discount = this.subtotalPrice;
     this.discountAmount = Math.round(discount * 100) / 100;
-    this.totalPrice = Math.round((this.subtotalPrice - this.discountAmount) * 100) / 100;
+    this.totalPrice = Math.round(this.subtotalPrice - this.discountAmount);
   }
 
   setDiscountType(type: 'amount' | 'percent') {
@@ -200,7 +200,7 @@ export class BillingComponent implements OnInit, OnDestroy {
     if (!product) return;
 
     // Normalize unit if empty or unknown
-    if (!product.unit || (product.unit !== 'Weight' && product.unit !== 'Piece')) {
+    if (!product.unit || (product.unit !== 'Weight' && product.unit !== 'Piece' && product.unit !== 'Liter')) {
       product.unit = 'Piece';
     }
 
@@ -214,6 +214,8 @@ export class BillingComponent implements OnInit, OnDestroy {
       product.Quantity = 1;
       if (product.unit === 'Weight') {
         product.selectedSubUnit = 'kg';
+      } else if (product.unit === 'Liter') {
+        product.selectedSubUnit = 'L';
       }
       this.cartItems.push(product);
     }
@@ -607,7 +609,7 @@ export class BillingComponent implements OnInit, OnDestroy {
       const itemName = item.ProductName || item.name;
       const qty = parseFloat(item.Quantity);
       const validQty = (!isNaN(qty) && qty > 0) ? qty : 0;
-      const unit = item.unit === 'Weight' ? (item.selectedSubUnit || 'kg') : 'Pcs';
+      const unit = item.unit === 'Weight' ? (item.selectedSubUnit || 'kg') : (item.unit === 'Liter' ? (item.selectedSubUnit || 'L') : 'Pcs');
       lines.push(`${itemName} x ${validQty} ${unit} - ₹${this.getItemTotal(item).toFixed(2)}`);
     });
     lines.push('------------------------------');

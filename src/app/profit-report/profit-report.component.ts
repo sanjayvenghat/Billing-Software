@@ -155,7 +155,7 @@ export class ProfitReportComponent implements OnInit {
               // If weight is in grams, cost = BuyingPrice * (qty/1000)
               const itemCostPerUnit = item.BuyingPrice || item.buyingPrice || 0;
               let itemTotalCost = itemCostPerUnit * validQty;
-              if (item.unit === 'Weight' && item.selectedSubUnit === 'g') {
+              if ((item.unit === 'Weight' && item.selectedSubUnit === 'g') || (item.unit === 'Liter' && item.selectedSubUnit === 'ml')) {
                 itemTotalCost = itemCostPerUnit * (validQty / 1000);
               }
               billCost += itemTotalCost;
@@ -264,7 +264,7 @@ export class ProfitReportComponent implements OnInit {
 
           let itemSales = sellingPrice * validQty;
           let itemCost = buyingPrice * validQty;
-          if (item.unit === 'Weight' && item.selectedSubUnit === 'g') {
+          if ((item.unit === 'Weight' && item.selectedSubUnit === 'g') || (item.unit === 'Liter' && item.selectedSubUnit === 'ml')) {
             itemSales = sellingPrice * (validQty / 1000);
             itemCost = buyingPrice * (validQty / 1000);
           }

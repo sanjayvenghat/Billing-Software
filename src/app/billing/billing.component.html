@@ -141,6 +141,14 @@
             (click)="item.selectedSubUnit = 'g'; calculateTotal()">g</button>
         </div>
         }
+        @if(item.unit === 'Liter') {
+        <div class="unit-toggle" role="group" aria-label="Unit">
+          <button type="button" [class.active]="item.selectedSubUnit !== 'ml'"
+            (click)="item.selectedSubUnit = 'L'; calculateTotal()">L</button>
+          <button type="button" [class.active]="item.selectedSubUnit === 'ml'"
+            (click)="item.selectedSubUnit = 'ml'; calculateTotal()">ml</button>
+        </div>
+        }
 
         <div class="qty-stepper">
           <button type="button" class="stepper-btn" (click)="decreaseQuantity(i)" aria-label="Decrease quantity">

@@ -272,7 +272,7 @@
                     <span class="col-name">{{ item.ProductName }}</span>
                     <span class="col-qty">{{ item.Quantity }} {{ item.selectedSubUnit || (item.unit === 'Weight' ?
                       'kg'
-                      : 'Pcs') }}</span>
+                      : (item.unit === 'Liter' ? 'L' : 'Pcs')) }}</span>
                     <span class="col-price">₹{{ item.SellingPrice }}</span>
                     <span class="col-total">₹{{ getItemTotal(item) | number:'1.2-2' }}</span>
                   </div>

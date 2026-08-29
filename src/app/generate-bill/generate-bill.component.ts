@@ -58,7 +58,7 @@ export class GenerateBillComponent implements OnInit, AfterViewInit {
       .filter(([rate]) => rate > 0)
       .map(([rate, amount]) => ({ rate, amount }));
     this.taxAmount = this.taxBreakdown.reduce((acc, t) => acc + t.amount, 0);
-    this.grandTotal = this.subtotalPrice + this.taxAmount - (this.discountAmount || 0);
+    this.grandTotal = Math.round(this.subtotalPrice + this.taxAmount - (this.discountAmount || 0));
     this.invoiceNumber = 'INV-' + (this.currentDate ? this.currentDate.getTime().toString().slice(-6) : Math.floor(Math.random() * 1000000));
   }
 
@@ -66,7 +66,7 @@ export class GenerateBillComponent implements OnInit, AfterViewInit {
     const qty = parseFloat(item.Quantity);
     const validQty = (!isNaN(qty) && qty > 0) ? qty : 0;
     const price = item.SellingPrice || 0;
-    if (item.unit === 'Weight' && item.selectedSubUnit === 'g') {
+    if ((item.unit === 'Weight' && item.selectedSubUnit === 'g') || (item.unit === 'Liter' && item.selectedSubUnit === 'ml')) {
       return price * (validQty / 1000);
     }
     return price * validQty;

@@ -322,7 +322,7 @@ export class IonTableComponent implements OnInit {
     const qty = parseFloat(item.Quantity);
     const validQty = (!isNaN(qty) && qty > 0) ? qty : 0;
     const price = item.SellingPrice || 0;
-    if (item.unit === 'Weight' && item.selectedSubUnit === 'g') {
+    if ((item.unit === 'Weight' && item.selectedSubUnit === 'g') || (item.unit === 'Liter' && item.selectedSubUnit === 'ml')) {
       return price * (validQty / 1000);
     }
     return price * validQty;
