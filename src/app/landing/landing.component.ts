@@ -16,6 +16,8 @@ import {
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { ToastService } from 'src/Service/ToasterService';
+import { LandingService } from './landing.service';
+import { FormsModule } from '@angular/forms';
 
 gsap.registerPlugin(TextPlugin);
 
@@ -24,7 +26,7 @@ gsap.registerPlugin(TextPlugin);
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss'],
   standalone: true,
-  imports: [IonContent, IonIcon, IonButton],
+  imports: [IonContent, IonIcon, IonButton, FormsModule],
 })
 export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(IonContent) content!: IonContent;
@@ -32,6 +34,7 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
   // Removed duplicate @ViewChild(IonContent)
 
   whatsappNumber = '919080933196';
+  contactNumber: String = ""
   isScrolled = false;
   showBottomDownload = false;
   hasAutoScrolled = false;
@@ -302,7 +305,8 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private title: Title,
     private meta: Meta,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private landingService: LandingService
   ) {
     try {
       addIcons({
@@ -342,7 +346,7 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
   startTestimonialAutoScroll() {
     this.testimonialInterval = setInterval(() => {
       if (this.autoPlayTestimonials) {
-        this.nextTestimonial();
+        this.nextTestimonial()
       }
     }, 4000);
   }
@@ -463,5 +467,30 @@ export class LandingComponent implements OnInit, OnDestroy, AfterViewInit {
 
   prevTestimonial() {
     this.activeTestimonial = (this.activeTestimonial - 1 + this.testimonials.length) % this.testimonials.length;
+  }
+
+  onPhoneInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^0-9]/g, '').substring(0, 10);
+  }
+
+  AgentCall(phoneNumber: string) {
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneNumber || !phoneRegex.test(phoneNumber)) {
+      this.toastService.showError("Please enter a valid 10-digit phone number.");
+      return;
+    }
+
+    this.landingService.requestAgentCall(phoneNumber).subscribe({
+      next: () => {
+        this.contactNumber = ""
+        this.toastService.showSuccess("Your call request has been submitted. Our agent will call you back soon.");
+
+      },
+      error: (err) => {
+        console.error("Agent call request failed", err);
+        this.toastService.showError("Failed to submit call request. Please try again.");
+      }
+    });
   }
 }

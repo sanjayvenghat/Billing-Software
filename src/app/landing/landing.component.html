@@ -183,8 +183,9 @@
             payments, and never lose a sale to long queues or manual errors again.</p>
 
           <div class="contact-form">
-            <input type="tel" #phoneInput placeholder="Enter your phone number" class="phone-input" />
-            <button class="btn-orange">Call Our Agent</button>
+            <input type="tel" #phoneInput placeholder="Enter your phone number" class="phone-input" maxlength="10"
+              [(ngModel)]="contactNumber" (input)="onPhoneInput($event)" />
+            <button class="btn-orange" (click)="AgentCall(phoneInput.value)">Call Our Agent</button>
           </div>
         </div>
         <div class="agent-visual">
