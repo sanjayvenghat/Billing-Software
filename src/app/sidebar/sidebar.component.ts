@@ -42,12 +42,6 @@ export class SidebarComponent implements OnInit {
       ColorClass: 'month-bills-box'
     },
     {
-      Title: 'Inventory Management',
-      Url: '/inventorymanagement',
-      Icon: 'cube',
-      ColorClass: 'month-bills-box'
-    },
-    {
       Title: 'Profit Report',
       Url: '/profit-report',
       Icon: 'trending-up',

@@ -104,9 +104,7 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  goToInventory() {
-    this.router.navigate(['/inventorymanagement']);
-  }
+
 
   ngOnInit() {
     this.loadSettings();
