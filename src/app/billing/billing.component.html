@@ -118,7 +118,14 @@
       <div class="cart-item-top">
         <div class="item-info">
           <h2 class="item-name">{{ item.ProductName || item.name }}</h2>
-          <p class="item-meta">₹{{ item.SellingPrice }} / {{ item.unit || 'Piece' }}</p>
+          <p class="item-meta">
+            ₹{{ item.SellingPrice }} / {{ item.unit || 'Piece' }}
+            @if (item.Stock !== undefined && (item.unit === 'Piece' || item.Unit === 'Piece')) {
+            <span style="margin-left: 8px; color: var(--ion-color-medium);">
+              | {{ 'Stock' | translate }}: {{ item.Stock }}
+            </span>
+            }
+          </p>
           @if(item.Barcode) {
           <span class="barcode-chip">
             <ion-icon name="barcode-outline"></ion-icon>

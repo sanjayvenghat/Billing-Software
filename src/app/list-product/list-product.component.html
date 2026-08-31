@@ -34,6 +34,7 @@
               <th>{{ 'SELLING PRICE' | translate }}</th>
               <th>{{ 'COST PRICE' | translate }}</th>
               <th>{{ 'BARCODE' | translate }}</th>
+              <th>{{ 'STOCK' | translate }}</th>
               <th class="text-right">{{ 'EDIT' | translate }}</th>
             </tr>
           </thead>
@@ -63,6 +64,26 @@
                 <span class="barcode-text">
                   <ion-icon name="barcode-outline"></ion-icon>
                   {{ item.ItemCode || 'No barcode' | translate }}
+                </span>
+              </td>
+
+              <!-- Stock -->
+              <td>
+                <span class="price-text bold"
+                  [ngStyle]="{
+                    'color': (item.unit === 'Weight' || item.unit === 'Liter') ? 'var(--ion-color-medium)' : 
+                             (item.Stock === undefined || item.Stock === null) ? 'var(--ion-color-warning)' : 
+                             (item.Stock === 0) ? 'var(--ion-color-danger)' : 'var(--ion-color-success)'
+                  }">
+                  @if (item.unit === 'Weight' || item.unit === 'Liter') {
+                    {{ 'Not tracked for ' + item.unit | translate }}
+                  } @else if (item.Stock === undefined || item.Stock === null) {
+                    {{ 'Stock not added' | translate }}
+                  } @else if (item.Stock === 0) {
+                    {{ 'Out of Stock' | translate }}
+                  } @else {
+                    {{ item.Stock }}
+                  }
                 </span>
               </td>
 
@@ -255,6 +276,17 @@
                         <ion-icon name="pricetag-outline" class="input-field-icon"></ion-icon>
                         <ion-input fill="outline" labelPlacement="floating" [label]="'Selling Price' | translate"
                           type="number" [(ngModel)]="editItem.SellingPrice" class="custom-input"></ion-input>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row class="ion-margin-top">
+                    <ion-col size="12">
+                      <div class="input-field-wrap">
+                        <ion-icon name="layers-outline" class="input-field-icon"></ion-icon>
+                        <ion-input fill="outline" labelPlacement="floating" [label]="'Stock Quantity' | translate"
+                          type="number" [(ngModel)]="editItem.Stock" class="custom-input"
+                          [disabled]="editItem.unit === 'Weight' || editItem.unit === 'Liter'"></ion-input>
                       </div>
                     </ion-col>
                   </ion-row>

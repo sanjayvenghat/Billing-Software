@@ -192,6 +192,11 @@ export class BillingComponent implements OnInit, OnDestroy {
     let qty = parseFloat(item.Quantity);
     if (isNaN(qty) || qty <= 0) {
       item.Quantity = 1;
+      qty = 1;
+    }
+    if (item.Stock !== undefined && (item.unit === 'Piece' || item.Unit === 'Piece') && qty > item.Stock) {
+      this.toasterService.showWarning(this.translateService.translate("Unable to exceed the quantity"));
+      item.Quantity = item.Stock;
     }
     this.calculateTotal();
   }
@@ -209,8 +214,16 @@ export class BillingComponent implements OnInit, OnDestroy {
       (item._id && item._id === product._id)
     );
     if (existingItem) {
+      if (existingItem.Stock !== undefined && (existingItem.unit === 'Piece' || existingItem.Unit === 'Piece') && (existingItem.Quantity || 1) >= existingItem.Stock) {
+        this.toasterService.showWarning(this.translateService.translate("Unable to exceed the quantity"));
+        return;
+      }
       existingItem.Quantity = (existingItem.Quantity || 1) + 1;
     } else {
+      if (product.Stock !== undefined && (product.unit === 'Piece' || product.Unit === 'Piece') && product.Stock <= 0) {
+        this.toasterService.showWarning(this.translateService.translate("Unable to exceed the quantity"));
+        return;
+      }
       product.Quantity = 1;
       if (product.unit === 'Weight') {
         product.selectedSubUnit = 'kg';
@@ -234,7 +247,12 @@ export class BillingComponent implements OnInit, OnDestroy {
   }
 
   increaseQuantity(index: number) {
-    this.cartItems[index].Quantity++;
+    const item = this.cartItems[index];
+    if (item.Stock !== undefined && (item.unit === 'Piece' || item.Unit === 'Piece') && item.Quantity >= item.Stock) {
+      this.toasterService.showWarning(this.translateService.translate("Unable to exceed the quantity"));
+      return;
+    }
+    item.Quantity++;
     this.calculateTotal();
   }
 

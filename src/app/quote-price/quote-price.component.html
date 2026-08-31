@@ -66,6 +66,18 @@
           </ion-row>
 
           <ion-row class="ion-margin-top">
+            <!-- Stock -->
+            <ion-col size="12">
+              <div class="input-field-wrap">
+                <ion-icon name="layers-outline" class="input-field-icon"></ion-icon>
+                <ion-input fill="outline" labelPlacement="floating" [label]="'Stock Quantity' | translate" type="number"
+                  [(ngModel)]="Stock" (ngModelChange)="savedItemUrl = ''" [placeholder]="'e.g. 50' | translate"
+                  class="custom-input" [disabled]="unit === 'Weight' || unit === 'Liter'"></ion-input>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="ion-margin-top">
             <!-- Unit Select -->
             <ion-col size="12">
               <div class="select-field-wrap">
@@ -96,9 +108,8 @@
             <div class="select-field-wrap">
               <ion-icon name="pricetag-outline" class="select-field-icon"></ion-icon>
               <ion-item lines="none" class="custom-select-item">
-                <ion-select [(ngModel)]="gstRate" interface="action-sheet"
-                  label="{{ 'GST Rate' | translate }}" labelPlacement="floating"
-                  [placeholder]="'Select GST Rate' | translate" class="custom-select">
+                <ion-select [(ngModel)]="gstRate" interface="action-sheet" label="{{ 'GST Rate' | translate }}"
+                  labelPlacement="floating" [placeholder]="'Select GST Rate' | translate" class="custom-select">
                   @for (opt of gstRates; track opt.gst) {
                   <ion-select-option [value]="opt.gst">
                     {{ 'GST' | translate }} {{ opt.gst }}%

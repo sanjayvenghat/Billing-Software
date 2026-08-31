@@ -68,6 +68,22 @@
             <span class="section-label">{{ 'OTHER OPTIONS' | translate }}</span>
             <div class="options-group-card">
 
+              <div class="option-row button-row" (click)="goToInventory()" style="cursor: pointer;">
+                <div class="option-info">
+                  <div class="option-icon-box"
+                    style="background-color: #EFF6FF; color: #2563EB;">
+                    <ion-icon name="cube"></ion-icon>
+                  </div>
+                  <div class="option-text">
+                    <h4>{{ 'Inventory Management' | translate }}</h4>
+                    <p>{{ 'Manage your store products and stock' | translate }}</p>
+                  </div>
+                </div>
+                <div class="option-control">
+                  <ion-icon name="chevron-forward" style="color: #9CA3AF; font-size: 20px;"></ion-icon>
+                </div>
+              </div>
+
               <div class="option-row button-row">
                 <div class="option-info">
                   <div class="option-icon-box preference-icon">

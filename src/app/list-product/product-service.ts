@@ -33,6 +33,16 @@ export class ProductService {
     );
   }
 
+  AddProduct(payload: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/AddGroceryData`, payload, { headers: this.getHeaders() }).pipe(
+      map((val: any) => val),
+      catchError((error) => {
+        console.error('Error adding grocery product:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
   UpdateProduct(ProductId: string, payload: any): Observable<any> {
     const body = { ProductId, ...payload };
     return this.http.post(`${this.apiUrl}/UpdateProduct`, body, { headers: this.getHeaders() }).pipe(

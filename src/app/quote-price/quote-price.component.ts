@@ -7,7 +7,7 @@ import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { IonCheckbox, IonItem, IonIcon, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { addIcons } from 'ionicons';
-import { download, cubeOutline, cashOutline, pricetagOutline, scaleOutline, saveOutline, qrCodeOutline, downloadOutline, barcodeOutline } from 'ionicons/icons';
+import { download, cubeOutline, cashOutline, pricetagOutline, scaleOutline, saveOutline, qrCodeOutline, downloadOutline, barcodeOutline, layersOutline } from 'ionicons/icons';
 import { environment } from 'src/environments/environment';
 import { LoaderService } from 'src/Service/LoaderService';
 import { IonSelect, IonSelectOption, } from '@ionic/angular/standalone';
@@ -31,6 +31,7 @@ export class QuotePriceComponent implements OnInit {
   SellingPrice: string = '';
   unit: string = '';
   ItemCode: string = '';
+  Stock: number = 0;
   companyId: string = '';
   generateQrCode: boolean = false;
   savedItemUrl: string = '';
@@ -54,7 +55,7 @@ export class QuotePriceComponent implements OnInit {
     private LoaderService: LoaderService,
     private translateService: TranslateService
   ) {
-    addIcons({ download, cubeOutline, cashOutline, pricetagOutline, scaleOutline, saveOutline, qrCodeOutline, downloadOutline, barcodeOutline });
+    addIcons({ download, cubeOutline, cashOutline, pricetagOutline, scaleOutline, saveOutline, qrCodeOutline, downloadOutline, barcodeOutline, 'layers-outline': layersOutline });
   }
 
   ngOnInit() {
@@ -96,6 +97,7 @@ export class QuotePriceComponent implements OnInit {
       "SellingPrice": this.SellingPrice,
       "Unit": this.unit,
       "ItemCode": this.ItemCode,
+      "Stock": this.Stock || 0,
       "GST": this.enableGst ? this.gstRate : 0,
       "CompanyId": this.companyId
     }
@@ -114,6 +116,7 @@ export class QuotePriceComponent implements OnInit {
           this.SellingPrice = "";
           this.unit = "";
           this.ItemCode = "";
+          this.Stock = 0;
           this.toaster.showSuccess(this.translateService.translate(val.message));
           this.productSaved.emit(val.CreatedUserInfo || true);
         }
@@ -156,6 +159,7 @@ export class QuotePriceComponent implements OnInit {
     this.SellingPrice = '';
     this.unit = '';
     this.ItemCode = '';
+    this.Stock = 0;
     this.generateQrCode = false;
     this.savedItemUrl = '';
     this.enableGst = false;

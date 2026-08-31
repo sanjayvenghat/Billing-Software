@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonIcon, IonList, IonMenuToggle, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { basket, documentText, documents, trendingUp, statsChart, logOut, diamond, cart, speedometer, pricetagOutline } from 'ionicons/icons';
+import { basket, documentText, documents, trendingUp, statsChart, logOut, diamond, cart, speedometer, pricetagOutline, cube } from 'ionicons/icons';
 import { Router } from '@angular/router';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { settings } from 'ionicons/icons';
@@ -26,7 +26,7 @@ import { TranslateService } from '../../Service/TranslateService';
 export class SidebarComponent implements OnInit {
 
   constructor(private router: Router, private keysStorage: KEYSSTORAGE, private translateService: TranslateService) {
-    addIcons({ basket, 'document-text': documentText, documents, 'trending-up': trendingUp, 'stats-chart': statsChart, 'log-out': logOut, diamond, settings, cart, speedometer, 'pricetag-outline': pricetagOutline });
+    addIcons({ basket, 'document-text': documentText, documents, 'trending-up': trendingUp, 'stats-chart': statsChart, 'log-out': logOut, diamond, settings, cart, speedometer, 'pricetag-outline': pricetagOutline, cube });
   }
   SideBarMenu = [
     {
@@ -39,6 +39,12 @@ export class SidebarComponent implements OnInit {
       Title: 'Go To Your E-Commerce Dashboard',
       Url: '/EcommerceDashboard',
       Icon: 'cart',
+      ColorClass: 'month-bills-box'
+    },
+    {
+      Title: 'Inventory Management',
+      Url: '/inventorymanagement',
+      Icon: 'cube',
       ColorClass: 'month-bills-box'
     },
     {

@@ -6,7 +6,7 @@ import { CurrencyPipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from 'src/Service/ToasterService';
 import { addIcons } from 'ionicons';
-import { createOutline, checkmarkOutline, closeOutline, funnel, trashOutline, addOutline, close, barcodeOutline, qrCodeOutline, downloadOutline, chevronBackOutline, chevronForwardOutline } from 'ionicons/icons';
+import { createOutline, checkmarkOutline, closeOutline, funnel, trashOutline, addOutline, close, barcodeOutline, qrCodeOutline, downloadOutline, chevronBackOutline, chevronForwardOutline, cubeOutline, layersOutline } from 'ionicons/icons';
 import { LoaderService } from 'src/Service/LoaderService';
 import { TranslatePipe } from '../../Service/TranslatePipe';
 import { TranslateService } from '../../Service/TranslateService';
@@ -61,7 +61,7 @@ export class ListProductComponent implements OnInit {
     private LoaderService: LoaderService,
     private translateService: TranslateService
   ) {
-    addIcons({ createOutline, checkmarkOutline, closeOutline, funnel, trashOutline, addOutline, close, barcodeOutline, qrCodeOutline, downloadOutline, chevronBackOutline, chevronForwardOutline });
+    addIcons({ createOutline, checkmarkOutline, closeOutline, funnel, trashOutline, addOutline, close, barcodeOutline, qrCodeOutline, downloadOutline, chevronBackOutline, chevronForwardOutline, 'cube-outline': cubeOutline, 'layers-outline': layersOutline });
     this.Grocery_List = [];
     this.Filtered_Grocery_List = [];
   }
@@ -134,7 +134,8 @@ export class ListProductComponent implements OnInit {
       SellingPrice: item.SellingPrice ?? '',
       BuyingPrice: item.BuyingPrice ?? '',
       unit: item.unit || item.Unit || 'Piece',
-      ItemCode: item.ItemCode || ''
+      ItemCode: item.ItemCode || '',
+      Stock: item.Stock || 0
     };
     this.editEnableGst = Number(item.GST) > 0;
     this.editGstRate = Number(item.GST) || 5;
@@ -153,7 +154,8 @@ export class ListProductComponent implements OnInit {
       BuyingPrice: this.editItem.BuyingPrice,
       Unit: this.editItem.unit,
       ItemCode: this.editItem.ItemCode,
-      GST: this.editEnableGst ? this.editGstRate : 0
+      GST: this.editEnableGst ? this.editGstRate : 0,
+      Stock: this.editItem.Stock || 0
     };
     if (!payload.ProductName || payload.SellingPrice === '' || payload.SellingPrice === undefined || isNaN(payload.SellingPrice) || payload.BuyingPrice === '' || payload.BuyingPrice === undefined || isNaN(payload.BuyingPrice) || !payload.Unit) {
       this.toastService.showWarning(this.translateService.translate("Please enter valid product name, prices and unit"));

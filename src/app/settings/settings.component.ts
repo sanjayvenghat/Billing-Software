@@ -21,7 +21,8 @@ import {
   trendingUp,
   colorPalette,
   flash,
-  checkmark
+  checkmark,
+  cube
 } from 'ionicons/icons';
 import { KEYSSTORAGE } from 'src/Service/LocalStorage';
 import { ToastService } from 'src/Service/ToasterService';
@@ -98,8 +99,13 @@ export class SettingsComponent implements OnInit {
       'trending-up': trendingUp,
       'color-palette': colorPalette,
       flash,
-      checkmark
+      checkmark,
+      cube
     });
+  }
+
+  goToInventory() {
+    this.router.navigate(['/inventorymanagement']);
   }
 
   ngOnInit() {
